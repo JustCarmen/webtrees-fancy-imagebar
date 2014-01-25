@@ -7,7 +7,7 @@ The development version of the module requires webtrees 1.5.2 or later.
 
 Download the latest stable release for webtrees 1.5.1 here: https://github.com/JustCarmen/fancy_imagebar/releases/tag/1.5.1
 
-### Description
+## Description
 
 The Fancy Imagebar is a nice looking imagebar between header and content of your webtrees homepage or my page.
 
@@ -25,11 +25,11 @@ On the Fancy Imagebar Configuration page you can set some other options too:
 *   Amount of Sepia
 *   Image size.
 
-### Installation, updating and translation
+## Installation, updating and translation
 
 For more information about these subjects go to the [JustCarmen help pages][1].
 
-### Bugs and feature requests
+## Bugs and feature requests
 
 If you experience any bugs or have a feature request for this module you can [create a new issue on GitHub][2] or [use the webtrees subforum 'customising'][3] to contact me.
 

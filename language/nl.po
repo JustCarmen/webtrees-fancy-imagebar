@@ -1,0 +1,79 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Fancy Imagebar\n"
+"POT-Creation-Date: 2014-01-01 16:10+0100\n"
+"PO-Revision-Date: 2014-01-01 16:12+0100\n"
+"Last-Translator: Carmen Pijpers <carmen@justcarmen.nl>\n"
+"Language-Team: \n"
+"Language: nl_NL\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.3\n"
+"X-Poedit-KeywordsList: translate;noop;plural:1,2;translate_c:2,1c\n"
+"X-Poedit-Basepath: c:\\xampp\\htdocs\\webtrees_build\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-SearchPath-0: modules_v3\\fancy_imagebar\n"
+
+#: modules_v3\fancy_imagebar/module.php:348
+msgid "Amount of sepia"
+msgstr "Hoeveelheid sepia"
+
+#. I18N: Description of the module
+#: modules_v3\fancy_imagebar/module.php:62
+msgid "An imagebar with small images on your home page and/or my page between header and content."
+msgstr "Een afbeeldingenbalk met kleine afbeeldingen op uw startpagina en/of mijn pagina tussen header en inhoud."
+
+#: modules_v3\fancy_imagebar/module.php:320
+msgid "Choose which images you want to show in the Fancy Imagebar"
+msgstr "Kies welke afbeeldingen u wilt tonen in de Fancy Imagebar"
+
+#: modules_v3\fancy_imagebar/module.php:352
+msgid "Cropped image size"
+msgstr "Formaat bijgesneden afbeelding"
+
+#. I18N: Name of the module
+#: modules_v3\fancy_imagebar/module.php:57
+msgid "Fancy Imagebar"
+msgstr "Fancy Imagebar"
+
+#: modules_v3\fancy_imagebar/help_text.php:34
+msgid "Here you can choose which images should be shown in the Fancy Imagebar. Uncheck the images you do not want to show.<br><br>If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated.<br><br>Note: Only local ’jpg’ or ’png’ images which are set as type = ’photo’ are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.<br><br>The Fancy Imagebar module respects privacy settings!"
+msgstr "Hier kunt u kiezen welke afbeeldingen u wilt tonen in de Fancy Imagebar. Vink de afbeeldingen uit die u niet wilt tonen.<br><br>Als er minder afbeeldingen zijn gekozen dan dat er nodig zijn om de hele Fancy Imagebar op te vullen, worden de afbeeldingen herhaald.<br><br>Alleen lokale ’jpg’ of ’png’ afbeeldingen die zijn ingesteld als soort = ’foto’ worden ondersteund door deze module. Externe afbeeldingen worden niet ondersteund. Het is niet mogelijk om transparantie voor png miniaturen te behouden in de Fancy Imagebar. Transparante png-miniaturen krijgen een zwarte achtergrond in de Fancy Imagebar. De afbeeldingen die in deze tabel worden getoond hebben al de juiste kenmerken.<br><br>De Fancy Imagebar module respecteert privacy instellingen!"
+
+#: modules_v3\fancy_imagebar/module.php:344
+msgid "Images Tone"
+msgstr "Kleurtoon afbeeldingen"
+
+#: modules_v3\fancy_imagebar/module.php:326
+msgid "No images to display for this tree"
+msgstr "Voor deze stamboom kunnen geen afbeeldingen worden weergegeven."
+
+#: modules_v3\fancy_imagebar/module.php:332
+msgid "Options"
+msgstr "Opties"
+
+#: modules_v3\fancy_imagebar/module.php:340
+msgid "Random images"
+msgstr "Willekeurige afbeeldingen"
+
+#: modules_v3\fancy_imagebar/module.php:335
+msgid "Show Fancy Imagebar on"
+msgstr "Toon de Fancy Imagebar op"
+
+#: modules_v3\fancy_imagebar/help_text.php:33
+msgid "Showing images on the Fancy Imagebar"
+msgstr "Afbeeldingen laten zien in de Fancy Imagebar"
+
+#: modules_v3\fancy_imagebar/module.php:274
+msgid "The settings are changed. You will loose your changes if you switch trees."
+msgstr "De instellingen zijn gewijzigd. U verliest uw wijzigingen als u naar een andere stamboom overschakelt."
+
+#: modules_v3\fancy_imagebar/module.php:315
+msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
+msgstr "De instellingen worden teruggezet naar de standaardinstellingen (voor alle stambomen). Weet u zeker dat u dit wilt?"
+
+#: modules_v3\fancy_imagebar/module.php:349
+msgid "Value between 0 and 100"
+msgstr "Waarde tussen 0 en 100"

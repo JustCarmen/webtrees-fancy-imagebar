@@ -1,0 +1,26 @@
+
+===============================================================================================================
+#The strings below exists in the Fancy Privacy List module but are part of the core translation of webtrees.
+#Do not translate these strings within the module. Remove them if they exists in the module language files.
+#Note: the line number may be different from the current line number in the fancy_privacy_list files.
+===============================================================================================================
+
+#: modules_v3\fancy_imagebar/module.php:302
+msgid "Family tree"
+msgstr ""
+
+#: modules_v3\fancy_imagebar/module.php:314
+msgid "Save"
+msgstr ""
+
+#: modules_v3\fancy_imagebar/module.php:315
+msgid "Reset"
+msgstr ""
+
+#: modules_v3\fancy_imagebar/module.php:336
+msgid "Home page"
+msgstr ""
+
+#: modules_v3\fancy_imagebar/module.php:337
+msgid "My page"
+msgstr ""

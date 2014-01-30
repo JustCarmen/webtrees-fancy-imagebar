@@ -1,0 +1,8 @@
+GOTO HTTP://WWW.JUSTCARMEN.NL/HELP FOR INSTALLATION AND UPGRADE INSTRUCTIONS
+
+Version 1.5.2 for webtrees 1.5.2 - 30-01-2014
+* Changes made to the function for adding module translations due to compatibility with webtrees 1.5.2
+=======================================================================================================
+
+Version 1.5.1 for webtrees 1.5.1 - 25-01-2014
+* First release. The version number reflects the webtrees version number.

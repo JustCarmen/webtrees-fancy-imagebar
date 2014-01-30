@@ -17,6 +17,10 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
+#: modules_v3\fancy_imagebar/module.php:318
+msgid "select all"
+msgstr ""
+
 #: modules_v3\fancy_imagebar/module.php:336
 msgid "Home page"
 msgstr ""

@@ -315,7 +315,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			<div class="clearfloat"></div>
 			<div id="block_left" class="left">
 				<div class="left">'.WT_I18N::translate('Choose which images you want to show in the Fancy Imagebar').':'.help_link('choose_images', $this->getName()).'</div>
-				<div class="selectbox"><span>'.WT_I18N::translate('select all').'</span>';
+				<div class="selectbox"><span class="nowrap">'.WT_I18N::translate('select all').'</span>';
 					$this->options('images') == 1 ? $html .= '<input id="select_all" type="checkbox" checked="checked"/>' :  $html .= '<input id="select_all" type="checkbox"/>';
 	// The datatable will be dynamically filled with images from the database.
 	$html .= '</div>

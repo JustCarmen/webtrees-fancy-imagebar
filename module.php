@@ -132,7 +132,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		
 		// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar, so there is no need to keep the mimeType png).			
 		ob_start();imagejpeg($image,null,100);$image = ob_get_clean();
-		return '<img src="data:image/jpeg;base64,'.base64_encode($image).'" alt="'.$media->getXref().'" title="'.$media->getXref().'"/><br/>
+		return '<img src="data:image/jpeg;base64,'.base64_encode($image).'" alt="'.$media->getXref().'" title="'.strip_tags($media->getFullName()).'"/><br/>
 				<span><input type="checkbox" value="'.$media->getXref().'"'.$img_checked.'></span>';		
 	}
 

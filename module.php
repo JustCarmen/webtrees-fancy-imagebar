@@ -60,28 +60,35 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 	public function getDescription() {
 		return /* I18N: Description of the module */ WT_I18N::translate('An imagebar with small images on your home page and/or my page between header and content.');
 	}
+	
+	// Set default module options
+	private function setDefault($key) {
+		$FIB_DEFAULT = array(
+			'IMAGES' 	=> '1', // All images
+			'HOMEPAGE'	=> '1',
+			'MYPAGE'	=> '1',
+			'RANDOM' 	=> '1',
+			'TONE'		=> '0',
+			'SEPIA' 	=> '30',
+			'SIZE' 		=> '60'
+		);
+		return $FIB_DEFAULT[$key];
+	}
 
 	// Get module options
-	private function options($value = '') {
+	private function options($key) {
 		$FIB_OPTIONS = unserialize(get_module_setting($this->getName(), 'FIB_OPTIONS'));
+		
+		$key = strtoupper($key);
+		$tree = WT_TREE::getIdFromName(WT_Filter::get('ged'));
+		if(empty($tree)) $tree = WT_GED_ID;
 
-		$key = WT_TREE::getIdFromName(WT_Filter::get('ged'));
-		if(empty($key)) $key = WT_GED_ID;
-
-		if (empty($FIB_OPTIONS) || (is_array($FIB_OPTIONS) && !array_key_exists($key, $FIB_OPTIONS))) {
-			$FIB_OPTIONS[$key] = array(
-				'IMAGES' 				=> '1', // All images
-				'HOMEPAGE'				=> '1',
-				'MYPAGE'				=> '1',
-				'RANDOM' 				=> '1',
-				'TONE'					=> '0',
-				'SEPIA' 				=> '30',
-				'SIZE' 					=> '60'
-			);
-		};
-
-		if($value) return($FIB_OPTIONS[$key][strtoupper($value)]);
-		else return $FIB_OPTIONS[$key];
+		if (empty($FIB_OPTIONS) || (is_array($FIB_OPTIONS) && !array_key_exists($tree, $FIB_OPTIONS))) {
+			return $this->setDefault($key);
+		}
+		else {
+ 			return($FIB_OPTIONS[$tree][$key]);
+		}
 	}
 
 	private function load_json() {

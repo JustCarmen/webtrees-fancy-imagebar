@@ -22,6 +22,7 @@
 
 /* FANCY IMAGEBAR MODULE */
 #fib_config #selectbar {width:50%;margin-bottom:20px}
+#fib_config #selectbar label {width:auto}
 #fib_config #buttons{text-align:right}
 #fib_config #block_left {width:50%}
 #fib_config #block_right{float:left;margin-left:20px}

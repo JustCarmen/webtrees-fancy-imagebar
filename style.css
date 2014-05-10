@@ -1,43 +1,110 @@
 /*
-// Style for Fancy Imagebar module
-//
-// webtrees: Web based Family History software
-// Copyright (C) 2014 webtrees development team.
-// Copyright (C) 2014 JustCarmen.
-//
-// This program is free software; you can redistribute it and/or modify
-// it under the terms of the GNU General Public License as published by
-// the Free Software Foundation; either version 2 of the License, or
-// (at your option) any later version.
-//
-// This program is distributed in the hope that it will be useful,
-// but WITHOUT ANY WARRANTY; without even the implied warranty of
-// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-// GNU General Public License for more details.
-//
-// You should have received a copy of the GNU General Public License
-// along with this program; if not, write to the Free Software
-// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
-*/
+ * Stylesheet for the Fancy Imagebar Module
+ *
+ * webtrees: Web based Family History software
+ * Copyright (C) 2014 webtrees development team.
+ * Copyright (C) 2014 JustCarmen.
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ */
 
-/* FANCY IMAGEBAR MODULE */
-#fib_config #selectbar {width:50%;margin-bottom:20px}
-#fib_config #selectbar label {width:auto}
-#fib_config #buttons{text-align:right}
-#fib_config #block_left {width:50%}
-#fib_config #block_right{float:left;margin-left:20px}
-#fib_config .left {float:left}
-#fib_config .selectbox {text-align:right}
-#fib_config #gedcom {margin-left:10px}
-#fib_config #image_block {width:100%}
-#fib_config .dataTables_scrollHead, #fib_config #image_block thead {display:none}
-#fib_config #image_block tbody {background-color:#EEFFEE;}
-#fib_config #image_block tr {background-color:#EEFFEE;float:left;padding-top:15px;text-align:center;width:20%}
-#fib_config #image_block td {width:20%}
-#fib_config .dataTables_length {text-align:right}
-#fib_config .field {padding-top:5px}
-#fib_config .no_images{display:none;padding-top:10px}
-#fib_config .label{display:inline-block;width:200px}
-#fib_config input {vertical-align:middle}
-#fib_config input[type="radio"] {vertical-align:top}
-#fib_config .clearfloat{clear:both}
+#fib_config #selectbar {
+	width: 50%;
+	margin-bottom: 20px;
+}
+
+#fib_config #selectbar label {
+	width: auto;
+}
+
+#fib_config #buttons {
+	text-align: right;
+}
+
+#fib_config #block_left {
+	width: 50%;
+}
+
+#fib_config #block_right {
+	float: left;
+	margin-left: 20px;
+}
+
+#fib_config .left {
+	float: left;
+}
+
+#fib_config .selectbox {
+	text-align: right;
+}
+
+#fib_config #gedcom {
+	margin-left: 10px;
+}
+
+#fib_config #image_block {
+	width: 100%;
+}
+
+#fib_config .dataTables_scrollHead,
+#fib_config #image_block thead {
+	display: none;
+}
+
+#fib_config #image_block tbody {
+	background-color: #EEFFEE;
+}
+
+#fib_config #image_block tr {
+	background-color: #EEFFEE;
+	float: left;
+	padding-top: 15px;
+	text-align: center;
+	width: 20%;
+}
+
+#fib_config #image_block td {
+	width: 20%;
+}
+
+#fib_config .dataTables_length {
+	text-align: right;
+}
+
+#fib_config .field {
+	padding-top: 5px;
+}
+
+#fib_config .no_images {
+	display: none;
+	padding-top: 10px;
+}
+
+#fib_config .label {
+	display: inline-block;
+	width: 200px;
+}
+
+#fib_config input {
+	vertical-align: middle;
+}
+
+#fib_config input[type="radio"] {
+	vertical-align: top;
+}
+
+#fib_config .clearfloat {
+	clear: both;
+}

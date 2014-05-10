@@ -95,11 +95,11 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		Zend_Session::writeClose();
 		$gedcom_id = WT_TREE::getIdFromName(WT_Filter::get('ged'));
 		if(!$gedcom_id) $gedcom_id = WT_GED_ID;
-		$iDisplayStart  = WT_Filter::getInteger('iDisplayStart');
-		$iDisplayLength = WT_Filter::getInteger('iDisplayLength');
+		$start  = WT_Filter::getInteger('start');
+		$length = WT_Filter::getInteger('length');
 
-		if ($iDisplayLength>0) {
-			$LIMIT = " LIMIT " . $iDisplayStart . ',' . $iDisplayLength;
+		if ($length>0) {
+			$LIMIT = " LIMIT " . $start . ',' . $length;
 		} else {
 			$LIMIT = "";
 		}
@@ -110,23 +110,23 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		$rows = WT_DB::prepare($sql)->execute($args)->fetchAll();
 
 		// Total filtered/unfiltered rows
-		$iTotalRecords = $iTotalDisplayRecords = WT_DB::prepare("SELECT FOUND_ROWS()")->fetchColumn();
+		$recordsTotal = $recordsFiltered = WT_DB::prepare("SELECT FOUND_ROWS()")->fetchColumn();
 
-		$aaData = array();
+		$data = array();
 		foreach ($rows as $row) {
 			$media = WT_Media::getInstance($row->xref, $row->gedcom_id);
 			if(file_exists($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')){
-				$aaData[] = array(
+				$data[] = array(
 					$this->displayImage($media)
 				);
 			}
 		}
 		header('Content-type: application/json');
 		echo json_encode(array( // See http://www.datatables.net/usage/server-side
-			'sEcho'                	=> WT_Filter::getInteger('sEcho'), // String, but always an integer
-			'iTotalRecords'        	=> $iTotalRecords,
-			'iTotalDisplayRecords'	=> $iTotalDisplayRecords,
-			'aaData'              	=> $aaData
+			'draw'                	=> WT_Filter::getInteger('draw'), // String, but always an integer
+			'recordsTotal'        	=> $recordsTotal,
+			'recordsFiltered'	=> $recordsFiltered,
+			'data'              	=> $data
 		));
 		exit;
 	}
@@ -211,31 +211,32 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			include_css("'.WT_MODULES_DIR.$this->getName().'/style.css");
 
 			var oTable=jQuery("#image_block").dataTable( {
-				sDom: \'<"H"pf<"dt-clear">irl>t<"F"pl>\',
-				bProcessing: true,
-				bServerSide: true,
-				sAjaxSource: "module.php?mod='.$this->getName().'&mod_action=load_json",
-				'.WT_I18N::datatablesI18N(array(5,10,15,25,50,100,500,1000,-1)).',
-				bJQueryUI: true,
-				bAutoWidth: false,
-				bFilter: false,
-				iDisplayLength: 15,
-				sPaginationType: "full_numbers",
-				bStateSave: true,
-				"sScrollY": "310px",
-				"bScrollCollapse": true,
-				iCookieDuration: 300,
-				aoColumns: [
-					{bSortable: false}
+				dom: \'<"H"pf<"dt-clear">irl>t<"F"pl>\',
+				processing: true,
+				serverSide: true,
+				ajax: "module.php?mod='.$this->getName().'&mod_action=load_json",
+				' . WT_I18N::datatablesI18N(array(5, 10, 15, 25, 50, 100, 500, 1000, -1)) . ',
+				jQueryUI: true,
+				autoWidth: false,
+				filter: false,
+				pageLength: 15,
+				pagingType: "full_numbers",
+				stateSave: true,
+				scrollY: "310px",
+				scrollCollapse: true,
+				cookieDuration: 300,
+                                sort: false,
+				columns: [
+					{}
 				],
 				fnDrawCallback: function() {
 					var images = jQuery("#imagelist").val().split("|");
 					jQuery("input[type=checkbox]", this).each(function(){
-						if(jQuery.inArray(jQuery(this).val(), images) > -1){
-							jQuery(this).prop("checked", true);
-						} else {
-							jQuery(this).prop("checked", false);
-						}
+							if(jQuery.inArray(jQuery(this).val(), images) > -1){
+									jQuery(this).prop("checked", true);
+							} else {
+									jQuery(this).prop("checked", false);
+							}
 					});
 				}
 			});

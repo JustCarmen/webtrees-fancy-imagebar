@@ -80,7 +80,9 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 
 		$key = strtoupper($key);
 		$tree = WT_TREE::getIdFromName(WT_Filter::get('ged'));
-		if(empty($tree)) $tree = WT_GED_ID;
+		if (empty($tree)) {
+			$tree = WT_GED_ID;
+		}
 
 		if (empty($FIB_OPTIONS) || (is_array($FIB_OPTIONS) && !array_key_exists($tree, $FIB_OPTIONS))) {
 			return $this->setDefault($key);
@@ -93,7 +95,9 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 	private function load_json() {
 		Zend_Session::writeClose();
 		$gedcom_id = WT_TREE::getIdFromName(WT_Filter::get('ged'));
-		if(!$gedcom_id) $gedcom_id = WT_GED_ID;
+		if (!$gedcom_id) {
+			$gedcom_id = WT_GED_ID;
+		}
 		$start  = WT_Filter::getInteger('start');
 		$length = WT_Filter::getInteger('length');
 
@@ -132,9 +136,13 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 
 	private function displayImage($media) {
 		$image = $this->FancyThumb($media, 60, 60);
-		if($this->options('images') == 1) $img_checked = ' checked="checked"';
-		elseif(is_array($this->options('images')) && in_array($media->getXref(), $this->options('images'))) $img_checked = ' checked="checked"';
-		else $img_checked = "";
+		if ($this->options('images') == 1) {
+			$img_checked = ' checked="checked"';
+		} elseif (is_array($this->options('images')) && in_array($media->getXref(), $this->options('images'))) {
+			$img_checked = ' checked="checked"';
+		} else {
+			$img_checked = "";
+		}
 
 		// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar, so there is no need to keep the mimeType png).
 		ob_start();imagejpeg($image,null,100);$image = ob_get_clean();
@@ -144,7 +152,9 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 
 	private function getXrefs() {
 		$gedcom_id = WT_TREE::getIdFromName(WT_Filter::get('ged'));
-		if(!$gedcom_id) $gedcom_id = WT_GED_ID;
+		if (!$gedcom_id) {
+			$gedcom_id = WT_GED_ID;
+		}
 		$sql = "SELECT m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file=? AND m_type=?";
 		$args = array($gedcom_id, 'photo');
 
@@ -532,7 +542,9 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		global $controller, $ctype, $SEARCH_SPIDER;
 
 		if ($this->options('images') !== 0 && WT_SCRIPT_NAME === 'index.php') {
-			if ($SEARCH_SPIDER) return null;
+			if ($SEARCH_SPIDER) {
+				return null;
+			}
 			if ($ctype=='gedcom' && $this->options('homepage') == 1 || ($ctype=='user' && $this->options('mypage') == 1)) {
 
 				// add js file to set a few theme depending styles

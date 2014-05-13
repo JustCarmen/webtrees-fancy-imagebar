@@ -145,8 +145,8 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		}
 
 		// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar, so there is no need to keep the mimeType png).
-		ob_start();imagejpeg($image,null,100);$image = ob_get_clean();
-		return '<img src="data:image/jpeg;base64,'.base64_encode($image).'" alt="'.$media->getXref().'" title="'.strip_tags($media->getFullName()).'"/><br/>
+		ob_start();imagejpeg($image,null,100);$newImage = ob_get_clean();
+		return '<img src="data:image/jpeg;base64,'.base64_encode($newImage).'" alt="'.$media->getXref().'" title="'.strip_tags($media->getFullName()).'"/><br/>
 				<span><input type="checkbox" value="'.$media->getXref().'"'.$img_checked.'></span>';
 	}
 
@@ -490,8 +490,9 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 
 	// Extend WT_Module_Menu
 	private function GetFancyImageBar(){
-
-		if($medialist=$this->FancyImageBarMedia()) {
+		
+		$medialist = $this->FancyImageBarMedia();
+		if($medialist) {
 			$width = $height = $this->options('size');
 
 			// begin looping through the media and write the imagebar
@@ -520,9 +521,9 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 				if($this->options('tone') == 1) {
 					$FancyImageBar = $this->FancyImageBarSepia($FancyImageBar, 0);
 				}
-				ob_start();imagejpeg($FancyImageBar,null,100);$FancyImageBar = ob_get_clean();
+				ob_start();imagejpeg($FancyImageBar,null,100);$NewFancyImageBar = ob_get_clean();
 				$html = '<div id="fancy_imagebar">
-							<img alt="fancy_imagebar" src="data:image/jpeg;base64,'.base64_encode($FancyImageBar).'">
+							<img alt="fancy_imagebar" src="data:image/jpeg;base64,'.base64_encode($NewFancyImageBar).'">
 						</div>';
 
 				// output

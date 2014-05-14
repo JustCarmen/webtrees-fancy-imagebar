@@ -502,33 +502,35 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 					$srcImages[] = $this->FancyThumb($media, $width, $height);
 				}
 			}
-
-			if(!empty($srcImages)) {
-				// be sure the imagebar will be big enough for wider screens
-				$newArray = array();
-
-				// determine how many thumbs we need (based on a users screen of 2400px);
-				$fib_length = ceil(2400/$this->options('size'));
-				while(count($newArray) <= $fib_length){
-					$newArray = array_merge($newArray, $srcImages);
-				}
-				// reduce the new array to the desired length (as there might be too many elements in the new array
-				$srcImages = array_slice($newArray, 0, $fib_length);
-				$FancyImageBar = $this->CreateFancyImageBar($srcImages, $width, $height, $fib_length);
-				if($this->options('tone') == 0) {
-					$FancyImageBar = $this->FancyImageBarSepia($FancyImageBar, $this->options('sepia'));
-				}
-				if($this->options('tone') == 1) {
-					$FancyImageBar = $this->FancyImageBarSepia($FancyImageBar, 0);
-				}
-				ob_start();imagejpeg($FancyImageBar,null,100);$NewFancyImageBar = ob_get_clean();
-				$html = '<div id="fancy_imagebar">
-							<img alt="fancy_imagebar" src="data:image/jpeg;base64,'.base64_encode($NewFancyImageBar).'">
-						</div>';
-
-				// output
-				return $html;
+			
+			if (count($srcImages) === 0) {
+				return false;
 			}
+			
+			// be sure the imagebar will be big enough for wider screens
+			$newArray = array();
+
+			// determine how many thumbs we need (based on a users screen of 2400px);
+			$fib_length = ceil(2400/$this->options('size'));
+			while(count($newArray) <= $fib_length){
+				$newArray = array_merge($newArray, $srcImages);
+			}
+			// reduce the new array to the desired length (as there might be too many elements in the new array
+			$images = array_slice($newArray, 0, $fib_length);
+			$FancyImageBar = $this->CreateFancyImageBar($images, $width, $height, $fib_length);
+			if($this->options('tone') == 0) {
+				$FancyImageBar = $this->FancyImageBarSepia($FancyImageBar, $this->options('sepia'));
+			}
+			if($this->options('tone') == 1) {
+				$FancyImageBar = $this->FancyImageBarSepia($FancyImageBar, 0);
+			}
+			ob_start();imagejpeg($FancyImageBar,null,100);$NewFancyImageBar = ob_get_clean();
+			$html = '<div id="fancy_imagebar">
+						<img alt="fancy_imagebar" src="data:image/jpeg;base64,'.base64_encode($NewFancyImageBar).'">
+					</div>';
+
+			// output
+			return $html;
 		}
 	}
 

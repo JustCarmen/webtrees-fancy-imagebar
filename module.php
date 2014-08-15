@@ -21,6 +21,9 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
+use WT\Auth;
+use WT\Log;
+
 if (!defined('WT_WEBTREES')) {
 	header('HTTP/1.0 403 Forbidden');
 	exit;
@@ -187,7 +190,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 	// Reset all settings to default
 	private function fib_reset() {
 		WT_DB::prepare("DELETE FROM `##module_setting` WHERE setting_name LIKE 'FIB%'")->execute();
-		\WT\Log::addConfigurationLog($this->getTitle().' reset to default values');
+		Log::addConfigurationLog($this->getTitle().' reset to default values');
 	}
 
 	private function config() {
@@ -195,7 +198,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 
 		$controller=new WT_Controller_Page;
 		$controller
-			->restrictAccess(\WT\Auth::isAdmin())
+			->restrictAccess(Auth::isAdmin())
 			->setPageTitle($this->getTitle())
 			->pageHeader()
 			->addExternalJavascript(WT_JQUERY_DATATABLES_URL);
@@ -205,7 +208,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			$NEW_FIB_OPTIONS[$key] = WT_Filter::postArray('NEW_FIB_OPTIONS');
 			$NEW_FIB_OPTIONS[$key]['IMAGES'] = explode("|", WT_Filter::post('NEW_FIB_IMAGES'));
 			set_module_setting($this->getName(), 'FIB_OPTIONS',  serialize($NEW_FIB_OPTIONS));
-			\WT\Log::addConfigurationLog($this->getTitle().' config updated');
+			Log::addConfigurationLog($this->getTitle().' config updated');
 		}
 
 		$controller->addInlineJavascript('

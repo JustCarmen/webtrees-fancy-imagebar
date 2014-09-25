@@ -111,7 +111,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		$rows = WT_DB::prepare($sql)->execute($args)->fetchAll();
 
 		// Total filtered/unfiltered rows
-		$recordsTotal = $recordsFiltered = WT_DB::prepare("SELECT FOUND_ROWS()")->fetchColumn();
+		$recordsTotal = $recordsFiltered = WT_DB::prepare("SELECT FOUND_ROWS()")->fetchOne();
 
 		$data = array();
 		foreach ($rows as $row) {

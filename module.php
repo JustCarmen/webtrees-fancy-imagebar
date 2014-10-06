@@ -74,7 +74,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 
 	// Get module options
 	private function options($key) {
-		$FIB_OPTIONS = unserialize(get_module_setting($this->getName(), 'FIB_OPTIONS'));
+		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
 
 		$key = strtoupper($key);
 		$tree = WT_TREE::getIdFromName(WT_Filter::get('ged'));
@@ -202,7 +202,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			$key = WT_Filter::postInteger('NEW_FIB_TREE');
 			$NEW_FIB_OPTIONS[$key] = WT_Filter::postArray('NEW_FIB_OPTIONS');
 			$NEW_FIB_OPTIONS[$key]['IMAGES'] = explode("|", WT_Filter::post('NEW_FIB_IMAGES'));
-			set_module_setting($this->getName(), 'FIB_OPTIONS',  serialize($NEW_FIB_OPTIONS));
+			$this->setSetting('FIB_OPTIONS',  serialize($NEW_FIB_OPTIONS));
 			Log::addConfigurationLog($this->getTitle().' config updated');
 		}
 

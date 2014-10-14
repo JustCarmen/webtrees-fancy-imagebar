@@ -27,9 +27,11 @@ if ($theme === 'clouds') {
 	jQuery('#fancy_imagebar').css({"margin":"10px 10px 0 10px","border":"1px solid #003399"});
 	jQuery('#fancy_imagebar img').css({"margin-bottom":"-2px"});
 }
+
 if ($theme === 'colors') {
 	jQuery('#fancy_imagebar').append('<div class="divider" style="background-color:#999;height:1px;margin-top:1px">');
 }
+
 if ($theme === 'fab') {
 	jQuery('#fancy_imagebar').css({"border":"#A9A9A9 1px solid","border-radius":"3px","margin":"0 3px"});
 	jQuery('#fancy_imagebar img').css({"margin-bottom":"-3px"});
@@ -37,12 +39,21 @@ if ($theme === 'fab') {
 if ($theme === 'justblack') {
 	jQuery('#fancy_imagebar').css({"margin-top":"-1px"}).append('<div class="divider" style="margin-top:3px">');
 }
+
+if ($theme === 'justlight') {
+	//extra javascript needed to keep the imagebar always in position (because of the fixed header)
+	jQuery("#wrap").css('padding-top', jQuery('#nav-container').outerHeight() - jQuery("#fancy_imagebar").outerHeight() + 15);
+	jQuery('#fancy_imagebar img').css({"border-top":"5px solid #428bca", "border-bottom":"5px solid #428bca"});
+}
+
 if ($theme === 'minimal') {
 	jQuery('#fancy_imagebar').css({"padding-top":"2px"}).append('<div class="divider" style="background-color:#555555;height:1px">');
 }
+
 if ($theme === 'webtrees') {
 	jQuery('#fancy_imagebar').append('<div class="divider" style="background-color:#81A9CB;height:2px;margin-top:3px">');
 }
+
 if ($theme === 'xenea') {
 	jQuery('#fancy_imagebar').append('<div class="divider" style="background-color:#0073CF;height:2px;margin:7px 0 15px">');
 }

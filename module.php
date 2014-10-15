@@ -523,7 +523,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 				$FancyImageBar = $this->FancyImageBarSepia($FancyImageBar, 0);
 			}
 			ob_start();imagejpeg($FancyImageBar,null,100);$NewFancyImageBar = ob_get_clean();
-			$html = '<div id="fancy_imagebar">
+			$html = '<div id="fancy_imagebar" style="display:none">
 						<img alt="fancy_imagebar" src="data:image/jpeg;base64,'.base64_encode($NewFancyImageBar).'">
 					</div>';
 
@@ -552,8 +552,10 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 				$controller->addExternalJavascript(WT_MODULES_DIR.$this->getName().'/style.js');
 
 				// put the fancy imagebar in the right position
-				$controller->addInlineJavaScript("jQuery('#content').before(jQuery('#fancy_imagebar'));");
 				$html = $this->GetFancyImageBar();
+				$controller->addInlineJavaScript('
+					jQuery("#content").before(jQuery("#fancy_imagebar").show());
+				');				
 
 				// output
 				ob_start();

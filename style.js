@@ -41,8 +41,6 @@ if ($theme === 'justblack') {
 }
 
 if ($theme === 'justlight') {
-	//extra javascript needed to keep the imagebar always in position (because of the fixed header)
-	jQuery("#wrap").css('padding-top', jQuery('#nav-container').outerHeight() - jQuery("#fancy_imagebar").outerHeight() + 15);
 	jQuery('#fancy_imagebar img').css({"border-top":"5px solid #428bca", "border-bottom":"5px solid #428bca"});
 }
 

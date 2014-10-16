@@ -199,10 +199,11 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			->addExternalJavascript(WT_JQUERY_DATATABLES_URL);
 
 		if (WT_Filter::postBool('save')) {
+			$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
 			$key = WT_Filter::postInteger('NEW_FIB_TREE');
-			$NEW_FIB_OPTIONS[$key] = WT_Filter::postArray('NEW_FIB_OPTIONS');
-			$NEW_FIB_OPTIONS[$key]['IMAGES'] = explode("|", WT_Filter::post('NEW_FIB_IMAGES'));
-			$this->setSetting('FIB_OPTIONS',  serialize($NEW_FIB_OPTIONS));
+			$FIB_OPTIONS[$key] = WT_Filter::postArray('NEW_FIB_OPTIONS');
+			$FIB_OPTIONS[$key]['IMAGES'] = explode("|", WT_Filter::post('NEW_FIB_IMAGES'));
+			$this->setSetting('FIB_OPTIONS',  serialize($FIB_OPTIONS));
 			Log::addConfigurationLog($this->getTitle().' config updated');
 		}
 

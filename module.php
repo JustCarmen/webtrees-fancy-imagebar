@@ -326,7 +326,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			$html .= '	</select>
 				</div>
 				<div id="buttons">
-					<input type="submit" value="'.WT_I18N::translate('Save').'">&nbsp;&nbsp;
+					<input type="submit" value="'.WT_I18N::translate('Save').'">
 					<input type="reset" value="'.WT_I18N::translate('Reset').'" onclick="if (confirm(\''.WT_I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?').'\')) window.location.href=\'module.php?mod='.$this->getName().'&amp;mod_action=admin_reset\';">
 				</div>
 			</div>
@@ -341,7 +341,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 				<h3 class="no_images">'.WT_I18N::translate('No images to display for this tree').'</h3>';
 				$this->options('images') == 1 ? $imagelist = $this->getXrefs() : $imagelist = $this->options('images');
 	$html .= '	<input id="imagelist" type="hidden" name="NEW_FIB_IMAGES" value = "'.implode("|", $imagelist).'">
-				<table id="image_block"><thead><th>&nbsp;</th></thead><tbody></tbody></table>
+				<table id="image_block"><thead><th></th></thead><tbody></tbody></table>
 			</div>
 			<div id="block_right" class="right">
 				<h3>'.WT_I18N::translate('Options').':</h3>
@@ -361,11 +361,11 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 					</div>
 					<div class="field sepia">
 						<label class="label">'.WT_I18N::translate('Amount of sepia').':</label>
-						<input type="text" name="NEW_FIB_OPTIONS[SEPIA]" size="3" value="'.$this->options('sepia').'"/>&nbsp;'.WT_I18N::translate('Value between 0 and 100').'
+						<input type="text" name="NEW_FIB_OPTIONS[SEPIA]" size="3" value="'.$this->options('sepia').'"/> '.WT_I18N::translate('Value between 0 and 100').'
 					</div>
 					<div class="field">
 						<label class="label">'.WT_I18N::translate('Cropped image size').':</label>
-						<input type="text" name="NEW_FIB_OPTIONS[SIZE]" size="3" value="'.$this->options('size').'"/>&nbsp;px
+						<input type="text" name="NEW_FIB_OPTIONS[SIZE]" size="3" value="'.$this->options('size').'"/> px
 					</div>
 				</div>
 			</div>

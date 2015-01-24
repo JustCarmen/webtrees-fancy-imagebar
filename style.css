@@ -20,91 +20,62 @@
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
  */
 
-#fib_config #selectbar {
-	width: 50%;
+form {
 	margin-bottom: 20px;
 }
 
-#fib_config #selectbar label {
-	width: auto;
+.panel-heading a:after {
+    font-family: 'FontAwesome';
+    content:"\f078";
+    float: right;
+    color: grey;
+}
+.panel-heading a.collapsed:after {
+	content:"\f054";
 }
 
-#fib_config #buttons {
-	text-align: right;
+#panel-info {
+	border: 1px solid #ccc;
+	margin-bottom: 10px;
+	padding: 10px;
 }
 
-#fib_config #block_left {
-	width: 50%;
+.table {
+	border-top: 1px solid #ddd;
+	border-bottom: 1px solid #ddd;
 }
 
-#fib_config #block_right {
-	float: left;
-	margin-left: 20px;
-}
-
-#fib_config .left {
-	float: left;
-}
-
-#fib_config .selectbox {
-	text-align: right;
-}
-
-#fib_config #gedcom {
-	margin-left: 10px;
-}
-
-#fib_config #image_block {
-	width: 100%;
-}
-
-#fib_config .dataTables_scrollHead,
-#fib_config #image_block thead {
+.table thead {
 	display: none;
 }
 
-#fib_config #image_block tbody {
-	background-color: #EEFFEE;
+.table > tbody > tr > td {
+	border: none;
 }
 
-#fib_config #image_block tr {
-	background-color: #EEFFEE;
+#image_block {
+	margin-bottom: 15px !important;
+}
+
+#image_block_info,
+.dataTables_paginate {
+	float: right;
+}
+
+#image_block tr {
 	float: left;
-	padding-top: 15px;
+	padding: 15px;
 	text-align: center;
-	width: 20%;
 }
 
-#fib_config #image_block td {
-	width: 20%;
+.select-all {
+	float: left;
 }
 
-#fib_config .dataTables_length {
-	text-align: right;
-}
-
-#fib_config .field {
-	padding-top: 5px;
-}
-
-#fib_config .no_images {
-	display: none;
-	padding-top: 10px;
-}
-
-#fib_config .label {
-	display: inline-block;
-	width: 200px;
-}
-
-#fib_config input {
-	vertical-align: middle;
-}
-
-#fib_config input[type="radio"] {
-	vertical-align: top;
-}
-
-#fib_config .clearfloat {
+.dt-clear {
 	clear: both;
+}
+
+.form-inline .checkbox {
+	display: block;
 }

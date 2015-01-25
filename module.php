@@ -197,7 +197,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			->restrictAccess(Auth::isAdmin())
 			->setPageTitle($this->getTitle())
 			->pageHeader()
-			->addExternalJavascript(WT_JQUERY_DATATABLES_URL)
+			->addExternalJavascript(WT_JQUERY_DATATABLES_JS_URL)
 			->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL);
 
 		if (WT_Filter::postBool('save')) {

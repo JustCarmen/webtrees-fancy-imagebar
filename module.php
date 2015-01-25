@@ -269,7 +269,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 				 formChanged = true;
 			});
 
-			jQuery("input[name=select_all]").click(function(){
+			jQuery("input[name=select-all]").click(function(){
 				if (jQuery(this).is(":checked") == true) {
 					jQuery("#imagelist").val("' . implode("|", $this->getXrefs()) . '");
 					oTable.find(":checkbox").prop("checked", true);
@@ -352,9 +352,9 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 								<p class="small"><?php echo WT_I18N::translate('The Fancy Imagebar module respects privacy settings!'); ?></p>
 							</div>
 							<!-- SELECT ALL -->
-							<div class="select-all checkbox">
+							<div class="checkbox">
 								<label>
-									<?php echo checkbox('select_all') . WT_I18N::translate('select all'); ?>
+									<?php echo checkbox('select-all') . WT_I18N::translate('select all'); ?>
 								</label>
 								<?php // The datatable will be dynamically filled with images from the database. ?>
 							</div>

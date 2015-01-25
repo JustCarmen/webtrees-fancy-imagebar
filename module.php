@@ -313,7 +313,12 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			});
 		');
 		?>
-
+		
+		<ol class="breadcrumb small">
+			<li><a href="admin.php"><?php echo WT_I18N::translate('Administration'); ?></a></li>
+			<li><a href="admin_modules.php"><?php echo WT_I18N::translate('Module administration'); ?></a></li>
+			<li class="active"><?php echo $controller->getPageTitle(); ?></li>
+		</ol>
 		<h2><?php echo $this->getTitle(); ?></h2>
 		<form class="form-horizontal" method="post" name="configform" action="<?php echo $this->getConfigLink(); ?>">
 			<input type="hidden" name="save" value="1">

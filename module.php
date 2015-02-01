@@ -313,7 +313,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			});
 		');
 		?>
-		
+
 		<ol class="breadcrumb small">
 			<li><a href="admin.php"><?php echo WT_I18N::translate('Control panel'); ?></a></li>
 			<li><a href="admin_modules.php"><?php echo WT_I18N::translate('Module administration'); ?></a></li>
@@ -459,10 +459,14 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 					</div>
 				</div>
 			</div>
-			<button class="btn btn-primary" type="submit"><?php echo WT_I18N::translate('Save'); ?></button>
+			<button class="btn btn-primary" type="submit">
+				<i class="fa fa-check"></i>
+				<?php echo WT_I18N::translate('Save'); ?>
+			</button>
 			<button class="btn btn-primary" type="reset" onclick="if (confirm('<?php echo WT_I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?'); ?>'))
-						window.location.href = 'module.php?mod=<?php echo $this->getName(); ?>&amp;mod_action=admin_reset';">
-					<?php echo WT_I18N::translate('Reset'); ?>
+								window.location.href = 'module.php?mod=<?php echo $this->getName(); ?>&amp;mod_action=admin_reset';">
+				<i class="fa fa-recycle"></i>
+				<?php echo WT_I18N::translate('Reset'); ?>
 			</button>
 		</form>
 		<?php

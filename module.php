@@ -351,7 +351,10 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 					</div>
 					<div id="collapseOne" class="panel-collapse collapse in">
 						<div class="panel-body">
-							<div id="panel-info" class="bg-info">
+							<div class="alert alert-info alert-dismissible" role="alert">
+								<button type="button" class="close" data-dismiss="alert" aria-label="' . WT_I18N::translate('close') . '">
+									<span aria-hidden="true">&times;</span>
+								</button>
 								<p class="small"><?php echo WT_I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. Uncheck the images you do not want to show. If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated.'); ?></p>
 								<p class="small"><?php echo WT_I18N::translate('Note: Only local “jpg” or “png” images which are set as type = “photo” are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.'); ?></p>
 								<p class="small"><?php echo WT_I18N::translate('The Fancy Imagebar module respects privacy settings!'); ?></p>

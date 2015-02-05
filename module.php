@@ -1,62 +1,57 @@
 <?php
-/*
- * Fancy Imagebar Module
- *
- * webtrees: Web based Family History software
- * Copyright (C) 2014 webtrees development team.
- * Copyright (C) 2014 JustCarmen.
- *
- * This program is free software; you can redistribute it and/or
- * modify it under the terms of the GNU General Public License
- * as published by the Free Software Foundation; either version 2
- * of the License, or (at your option) any later version.
- *
+namespace Webtrees;
+
+/**
+ * webtrees: online genealogy
+ * Copyright (C) 2015 webtrees development team
+ * Copyright (C) 2015 JustCarmen
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
  * This program is distributed in the hope that it will be useful,
  * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
  * GNU General Public License for more details.
- *
  * You should have received a copy of the GNU General Public License
- * along with this program; if not, write to the Free Software
- * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use WT\Auth;
-use WT\Log;
-use WT\Theme;
+use Zend_Session;
+use Zend_Translate;
 
-class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT_Module_Menu {
+class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, ModuleMenuInterface {
 
 	public function __construct() {
 		parent::__construct();
 		// Load any local user translations
 		if (is_dir(WT_MODULES_DIR . $this->getName() . '/language')) {
 			if (file_exists(WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.mo')) {
-				WT_I18N::addTranslation(
+				I18N::addTranslation(
 					new Zend_Translate('gettext', WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.mo', WT_LOCALE)
 				);
 			}
 			if (file_exists(WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.php')) {
-				WT_I18N::addTranslation(
+				I18N::addTranslation(
 					new Zend_Translate('array', WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.php', WT_LOCALE)
 				);
 			}
 			if (file_exists(WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.csv')) {
-				WT_I18N::addTranslation(
+				I18N::addTranslation(
 					new Zend_Translate('csv', WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.csv', WT_LOCALE)
 				);
 			}
 		}
 	}
 
-	// Extend WT_Module
+	// Extend Module
 	public function getTitle() {
-		return /* I18N: Name of the module */ WT_I18N::translate('Fancy Imagebar');
+		return /* I18N: Name of the module */ I18N::translate('Fancy Imagebar');
 	}
 
-	// Extend WT_Module
+	// Extend Module
 	public function getDescription() {
-		return /* I18N: Description of the module */ WT_I18N::translate('An imagebar with small images between header and content.');
+		return /* I18N: Description of the module */ I18N::translate('An imagebar with small images between header and content.');
 	}
 
 	// Set default module options
@@ -79,7 +74,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
 
 		$key = strtoupper($key);
-		$tree = WT_TREE::getIdFromName(WT_Filter::get('ged'));
+		$tree = Tree::getIdFromName(Filter::get('ged'));
 		if (empty($tree)) {
 			$tree = WT_GED_ID;
 		}
@@ -93,12 +88,12 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 
 	private function load_json() {
 		Zend_Session::writeClose();
-		$gedcom_id = WT_TREE::getIdFromName(WT_Filter::get('ged'));
+		$gedcom_id = Tree::getIdFromName(Filter::get('ged'));
 		if (!$gedcom_id) {
 			$gedcom_id = WT_GED_ID;
 		}
-		$start = WT_Filter::getInteger('start');
-		$length = WT_Filter::getInteger('length');
+		$start = Filter::getInteger('start');
+		$length = Filter::getInteger('length');
 
 		if ($length > 0) {
 			$LIMIT = " LIMIT " . $start . ',' . $length;
@@ -109,14 +104,14 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		$sql = "SELECT SQL_CACHE SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file=? AND m_type=?" . $LIMIT;
 		$args = array($gedcom_id, 'photo');
 
-		$rows = WT_DB::prepare($sql)->execute($args)->fetchAll();
+		$rows = Database::prepare($sql)->execute($args)->fetchAll();
 
 		// Total filtered/unfiltered rows
-		$recordsTotal = $recordsFiltered = WT_DB::prepare("SELECT FOUND_ROWS()")->fetchOne();
+		$recordsTotal = $recordsFiltered = Database::prepare("SELECT FOUND_ROWS()")->fetchOne();
 
 		$data = array();
 		foreach ($rows as $row) {
-			$media = WT_Media::getInstance($row->xref, $row->gedcom_id);
+			$media = Media::getInstance($row->xref, $row->gedcom_id);
 			if (file_exists($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
 				$data[] = array(
 					$this->displayImage($media)
@@ -125,7 +120,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		}
 		header('Content-type: application/json');
 		echo json_encode(array(// See http://www.datatables.net/usage/server-side
-			'draw'				 => WT_Filter::getInteger('draw'), // String, but always an integer
+			'draw'				 => Filter::getInteger('draw'), // String, but always an integer
 			'recordsTotal'		 => $recordsTotal,
 			'recordsFiltered'	 => $recordsFiltered,
 			'data'				 => $data
@@ -150,14 +145,14 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 	}
 
 	private function getXrefs() {
-		$gedcom_id = WT_TREE::getIdFromName(WT_Filter::get('ged'));
+		$gedcom_id = Tree::getIdFromName(Filter::get('ged'));
 		if (!$gedcom_id) {
 			$gedcom_id = WT_GED_ID;
 		}
 		$sql = "SELECT m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file=? AND m_type=?";
 		$args = array($gedcom_id, 'photo');
 
-		$rows = WT_DB::prepare($sql)->execute($args)->fetchAll();
+		$rows = Database::prepare($sql)->execute($args)->fetchAll();
 		$list = array();
 		foreach ($rows as $row) {
 			$list[] = $row->xref;
@@ -165,7 +160,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		return $list;
 	}
 
-	// Extend WT_Module_Config
+	// Extend ModuleConfigInterface
 	public function modAction($mod_action) {
 		switch ($mod_action) {
 			case 'admin_config':
@@ -185,14 +180,12 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 
 	// Reset all settings to default
 	private function fib_reset() {
-		WT_DB::prepare("DELETE FROM `##module_setting` WHERE setting_name LIKE 'FIB%'")->execute();
+		Database::prepare("DELETE FROM `##module_setting` WHERE setting_name LIKE 'FIB%'")->execute();
 		Log::addConfigurationLog($this->getTitle() . ' reset to default values');
 	}
 
 	private function config() {
-		require WT_ROOT . 'includes/functions/functions_edit.php';
-
-		$controller = new WT_Controller_Page;
+		$controller = new PageController;
 		$controller
 			->restrictAccess(Auth::isAdmin())
 			->setPageTitle($this->getTitle())
@@ -200,11 +193,11 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			->addExternalJavascript(WT_JQUERY_DATATABLES_JS_URL)
 			->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL);
 
-		if (WT_Filter::postBool('save')) {
+		if (Filter::postBool('save')) {
 			$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
-			$tree = WT_Filter::postInteger('NEW_FIB_TREE');
-			$FIB_OPTIONS[$tree] = WT_Filter::postArray('NEW_FIB_OPTIONS');
-			$FIB_OPTIONS[$tree]['IMAGES'] = explode("|", WT_Filter::post('NEW_FIB_IMAGES'));
+			$tree = Filter::postInteger('NEW_FIB_TREE');
+			$FIB_OPTIONS[$tree] = Filter::postArray('NEW_FIB_OPTIONS');
+			$FIB_OPTIONS[$tree]['IMAGES'] = explode("|", Filter::post('NEW_FIB_IMAGES'));
 			$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
 			Log::addConfigurationLog($this->getTitle() . ' config updated');
 		}
@@ -225,7 +218,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 				processing: true,
 				serverSide: true,
 				ajax: "module.php?mod=' . $this->getName() . '&mod_action=load_json",
-				' . WT_I18N::datatablesI18N(array(10, 20, 50, 100, 500, 1000, -1)) . ',
+				' . I18N::datatablesI18N(array(10, 20, 50, 100, 500, 1000, -1)) . ',
 				autoWidth: false,
 				filter: false,
 				pageLength: 10,
@@ -250,7 +243,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 
 			// dynamic title
 			var treeName = jQuery("#tree option:selected").text();
-			jQuery("#panel2 .panel-title a").text("' . WT_I18N::translate('Options for') . '" + treeName);
+			jQuery("#panel2 .panel-title a").text("' . I18N::translate('Options for') . '" + treeName);
 
 			var formChanged = false;
 			jQuery(oTable).on("change", "input[type=checkbox]",function() {
@@ -287,13 +280,13 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 
 			var current = jQuery("#tree option:selected");
 			jQuery("#tree").change(function() {
-				if (formChanged == false || (formChanged == true && confirm("' . WT_I18N::translate('The settings are changed. You will loose your changes if you switch trees.') . '"))) {
+				if (formChanged == false || (formChanged == true && confirm("' . I18N::translate('The settings are changed. You will loose your changes if you switch trees.') . '"))) {
 					var ged = jQuery("option:selected", this).data("ged");
 					var treeName = jQuery("option:selected", this).text();
 					jQuery.get("module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged, function(data) {
 						 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
 						 jQuery("#options").replaceWith(jQuery(data).find("#options"));
-						 jQuery("#panel2 .panel-title a").text("' . WT_I18N::translate('Options for') . '" + treeName);
+						 jQuery("#panel2 .panel-title a").text("' . I18N::translate('Options for') . '" + treeName);
 						 oTable.fnDraw();
 					});
 					formChanged = false;
@@ -315,18 +308,18 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		?>
 
 		<ol class="breadcrumb small">
-			<li><a href="admin.php"><?php echo WT_I18N::translate('Control panel'); ?></a></li>
-			<li><a href="admin_modules.php"><?php echo WT_I18N::translate('Module administration'); ?></a></li>
+			<li><a href="admin.php"><?php echo I18N::translate('Control panel'); ?></a></li>
+			<li><a href="admin_modules.php"><?php echo I18N::translate('Module administration'); ?></a></li>
 			<li class="active"><?php echo $controller->getPageTitle(); ?></li>
 		</ol>
 		<h2><?php echo $this->getTitle(); ?></h2>
 		<form class="form-horizontal" method="post" name="configform" action="<?php echo $this->getConfigLink(); ?>">
 			<input type="hidden" name="save" value="1">
 			<div class="form-group">
-				<label class="control-label col-sm-1"><?php echo WT_I18N::translate('Family tree'); ?></label>
+				<label class="control-label col-sm-1"><?php echo I18N::translate('Family tree'); ?></label>
 				<div class="col-sm-3">
 					<select id="tree" name="NEW_FIB_TREE" id="NEW_FIB_TREE" class="form-control">
-						<?php foreach (WT_Tree::getAll() as $tree): ?>
+						<?php foreach (Tree::getAll() as $tree): ?>
 							<?php if ($tree->id() == WT_GED_ID): ?>
 								<option value="<?php echo $tree->id(); ?>" data-ged="<?php echo $tree->nameHtml(); ?>" selected="selected">
 									<?php echo $tree->titleHtml(); ?>
@@ -345,29 +338,29 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 					<div class="panel-heading">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne">
-								<?php echo WT_I18N::translate('Choose which images you want to show in the Fancy Imagebar'); ?>
+								<?php echo I18N::translate('Choose which images you want to show in the Fancy Imagebar'); ?>
 							</a>
 						</h4>
 					</div>
 					<div id="collapseOne" class="panel-collapse collapse in">
 						<div class="panel-body">
 							<div class="alert alert-info alert-dismissible" role="alert">
-								<button type="button" class="close" data-dismiss="alert" aria-label="' . WT_I18N::translate('close') . '">
+								<button type="button" class="close" data-dismiss="alert" aria-label="' . I18N::translate('close') . '">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<p class="small"><?php echo WT_I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. Uncheck the images you do not want to show. If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated.'); ?></p>
-								<p class="small"><?php echo WT_I18N::translate('Note: Only local “jpg” or “png” images which are set as type = “photo” are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.'); ?></p>
-								<p class="small"><?php echo WT_I18N::translate('The Fancy Imagebar module respects privacy settings!'); ?></p>
+								<p class="small"><?php echo I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. Uncheck the images you do not want to show. If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated.'); ?></p>
+								<p class="small"><?php echo I18N::translate('Note: Only local “jpg” or “png” images which are set as type = “photo” are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.'); ?></p>
+								<p class="small"><?php echo I18N::translate('The Fancy Imagebar module respects privacy settings!'); ?></p>
 							</div>
 							<!-- SELECT ALL -->
 							<div class="checkbox">
 								<label>
-									<?php echo checkbox('select-all') . WT_I18N::translate('select all'); ?>
+									<?php echo checkbox('select-all') . I18N::translate('select all'); ?>
 								</label>
 								<?php // The datatable will be dynamically filled with images from the database. ?>
 							</div>
 							<!-- IMAGE LIST -->
-							<h3 id="no-images" class="hidden"><?php echo WT_I18N::translate('No images to display for this tree'); ?></h3>
+							<h3 id="no-images" class="hidden"><?php echo I18N::translate('No images to display for this tree'); ?></h3>
 							<?php $this->options('images') == 1 ? $imagelist = $this->getXrefs() : $imagelist = $this->options('images'); ?>
 							<input id="imagelist" type="hidden" name="NEW_FIB_IMAGES" value = "<?php echo implode("|", $imagelist); ?>">
 							<table id="image_block" class="table">
@@ -390,33 +383,33 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 							<div class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
 									<!-- FANCY IMAGEBAR -->
-									<?php echo WT_I18N::translate('Show Fancy Imagebar on'); ?>
+									<?php echo I18N::translate('Show Fancy Imagebar on'); ?>
 								</label>
 								<div class="checkbox col-sm-8">
 									<label>
-										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[HOMEPAGE]', $this->options('homepage')) . WT_I18N::translate('Home page'); ?>
+										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[HOMEPAGE]', $this->options('homepage')) . I18N::translate('Home page'); ?>
 									</label>
 									<label>' .
-										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[MYPAGE]', $this->options('mypage')) . WT_I18N::translate('My page'); ?>
+										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[MYPAGE]', $this->options('mypage')) . I18N::translate('My page'); ?>
 									</label>
 									<label>' .
-										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[OTHERPAGES]', $this->options('otherpages')) . WT_I18N::translate('Other pages'); ?>
+										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[OTHERPAGES]', $this->options('otherpages')) . I18N::translate('Other pages'); ?>
 									</label>
 								</div>
 							</div>
 							<!-- RANDOM IMAGES -->
 							<div class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
-									<?php echo WT_I18N::translate('Random images'); ?>
+									<?php echo I18N::translate('Random images'); ?>
 								</label>
 								<div class="col-sm-8">
-									<?php echo radio_buttons('NEW_FIB_OPTIONS[RANDOM]', array(WT_I18N::translate("no"), WT_I18N::translate("yes")), $this->options('random'), 'class="radio-inline"'); ?>
+									<?php echo radio_buttons('NEW_FIB_OPTIONS[RANDOM]', array(I18N::translate("no"), I18N::translate("yes")), $this->options('random'), 'class="radio-inline"'); ?>
 								</div>
 							</div>
 							<!-- IMAGE TONE -->
 							<div id="tone" class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
-									<?php echo WT_I18N::translate('Images Tone'); ?>
+									<?php echo I18N::translate('Images Tone'); ?>
 								</label>
 								<div class="col-sm-2">
 									<?php echo select_edit_control('NEW_FIB_OPTIONS[TONE]', array('Sepia', 'Black and White', 'Colors'), null, $this->options('tone'), 'class="form-control"'); ?>
@@ -425,7 +418,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 							<!-- SEPIA -->
 							<div id="sepia" class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
-									<?php echo WT_I18N::translate('Amount of sepia'); ?>
+									<?php echo I18N::translate('Amount of sepia'); ?>
 								</label>
 								<div class="col-sm-2">
 									<input
@@ -437,13 +430,13 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 										>
 								</div>
 								<p class="col-sm-offset-3 col-sm-8 small text-muted">
-									<?php echo WT_I18N::translate('Enter a value between 0 and 100'); ?>
+									<?php echo I18N::translate('Enter a value between 0 and 100'); ?>
 								</p>
 							</div>
 							<!-- CROPPING SIZE -->
 							<div class="form-group">
 								<label class="control-label col-sm-3">
-									<?php echo WT_I18N::translate('Cropped image size'); ?>
+									<?php echo I18N::translate('Cropped image size'); ?>
 								</label>
 								<div class="row">
 									<div class="col-sm-2">
@@ -464,18 +457,18 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			</div>
 			<button class="btn btn-primary" type="submit">
 				<i class="fa fa-check"></i>
-				<?php echo WT_I18N::translate('Save'); ?>
+				<?php echo I18N::translate('Save'); ?>
 			</button>
-			<button class="btn btn-primary" type="reset" onclick="if (confirm('<?php echo WT_I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?'); ?>'))
+			<button class="btn btn-primary" type="reset" onclick="if (confirm('<?php echo I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?'); ?>'))
 								window.location.href = 'module.php?mod=<?php echo $this->getName(); ?>&amp;mod_action=admin_reset';">
 				<i class="fa fa-recycle"></i>
-				<?php echo WT_I18N::translate('Reset'); ?>
+				<?php echo I18N::translate('Reset'); ?>
 			</button>
 		</form>
 		<?php
 	}
 
-	// Implement WT_Module_Config
+	// Implement ModuleConfigInterface
 	public function getConfigLink() {
 		return 'module.php?mod=' . $this->getName() . '&amp;mod_action=admin_config';
 	}
@@ -495,10 +488,10 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		$sql .= $this->options('random') == 1 ? " ORDER BY RAND()" : " ORDER BY m_id DESC";
 		$sql .= " LIMIT " . ceil(2400 / $this->options('size'));
 
-		$rows = WT_DB::prepare($sql)->execute()->fetchAll();
+		$rows = Database::prepare($sql)->execute()->fetchAll();
 		$list = array();
 		foreach ($rows as $row) {
-			$media = WT_Media::getInstance($row->xref, $row->gedcom_id);
+			$media = Media::getInstance($row->xref, $row->gedcom_id);
 			if ($media->canShow() && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
 				$list[] = $media;
 			}
@@ -582,7 +575,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		return $FancyImageBar;
 	}
 
-	// Extend WT_Module_Menu
+	// Extend ModuleMenuInterface
 	private function GetFancyImageBar() {
 
 		$medialist = $this->FancyImageBarMedia();
@@ -628,12 +621,12 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		}
 	}
 
-	// Implement WT_Module_Menu
+	// Implement ModuleMenuInterface
 	public function defaultMenuOrder() {
 		return 999;
 	}
 
-	// Implement WT_Module_Menu
+	// Implement ModuleMenuInterface
 	public function getMenu() {
 		// We don't actually have a menu - this is just a convenient "hook" to execute code at the right time during page execution
 		global $controller, $ctype, $SEARCH_SPIDER;
@@ -647,7 +640,7 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 			if ($this->options('otherpages') == 1 || (WT_SCRIPT_NAME === 'index.php' && ($ctype == 'gedcom' && $this->options('homepage') == 1 || ($ctype == 'user' && $this->options('mypage') == 1)))) {
 
 				// add js file to set a few theme depending styles
-				$controller->addInlineJavascript('var $theme = "' . Theme::theme()->themeId() . '"', WT_Controller_Base::JS_PRIORITY_HIGH);
+				$controller->addInlineJavascript('var $theme = "' . Theme::theme()->themeId() . '"', BaseController::JS_PRIORITY_HIGH);
 				$controller->addExternalJavascript(WT_MODULES_DIR . $this->getName() . '/style.js');
 
 				// put the fancy imagebar in the right position

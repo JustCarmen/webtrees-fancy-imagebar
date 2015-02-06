@@ -324,13 +324,13 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 				<div class="col-sm-3">
 					<select id="tree" name="NEW_FIB_TREE" id="NEW_FIB_TREE" class="form-control">
 						<?php foreach (Tree::getAll() as $tree): ?>
-							<?php if ($tree->id() == WT_GED_ID): ?>
-								<option value="<?php echo $tree->id(); ?>" data-ged="<?php echo $tree->nameHtml(); ?>" selected="selected">
-									<?php echo $tree->titleHtml(); ?>
+							<?php if ($tree->getTreeId() == WT_GED_ID): ?>
+								<option value="<?php echo $tree->getTreeId(); ?>" data-ged="<?php echo $tree->getNameHtml(); ?>" selected="selected">
+									<?php echo $tree->getTitleHtml(); ?>
 								</option>
 							<?php else: ?>
-								<option value="<?php echo $tree->id(); ?>" data-ged="<?php echo $tree->nameHtml(); ?>">
-									<?php echo $tree->titleHtml(); ?>
+								<option value="<?php echo $tree->getTreeId(); ?>" data-ged="<?php echo $tree->getNameHtml(); ?>">
+									<?php echo $tree->getTitleHtml(); ?>
 								</option>
 							<?php endif; ?>
 						<?php endforeach; ?>

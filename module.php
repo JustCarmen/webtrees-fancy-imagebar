@@ -101,8 +101,10 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 			$LIMIT = "";
 		}
 
-		$sql = "SELECT SQL_CACHE SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file=? AND m_type=?" . $LIMIT;
-		$args = array($gedcom_id, 'photo');
+		$sql = "SELECT SQL_CACHE SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file = :gedcom_id AND m_type = 'photo'" . $LIMIT;
+		$args = array(
+			'gedcom_id' => $gedcom_id
+		);
 
 		$rows = Database::prepare($sql)->execute($args)->fetchAll();
 
@@ -149,8 +151,10 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 		if (!$gedcom_id) {
 			$gedcom_id = WT_GED_ID;
 		}
-		$sql = "SELECT m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file=? AND m_type=?";
-		$args = array($gedcom_id, 'photo');
+		$sql = "SELECT m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file = :gedcom_id AND m_type = 'photo'";
+		$args = array(
+			'gedcom_id' => $gedcom_id
+		);
 
 		$rows = Database::prepare($sql)->execute($args)->fetchAll();
 		$list = array();

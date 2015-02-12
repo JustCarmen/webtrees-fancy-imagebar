@@ -178,7 +178,8 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 				$this->config();
 				break;
 			default:
-				header('HTTP/1.0 404 Not Found');
+				http_response_code(404);
+				break;
 		}
 	}
 

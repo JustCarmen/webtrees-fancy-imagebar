@@ -28,7 +28,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	public function __construct() {
 		parent::__construct();
 
-		$this->tree_id = $this->tree_id();
+		$this->tree_id = $this->treeId();
 
 		// Load any local user translations
 		if (is_dir(WT_MODULES_DIR . $this->getName() . '/language')) {
@@ -61,7 +61,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	}
 
 	// get the current Tree ID
-	private function tree_id() {
+	private function treeId() {
 		global $WT_TREE;
 
 		$tree_id = $WT_TREE->getIdFromName(Filter::get('ged'));
@@ -99,7 +99,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 		}
 	}
 
-	private function load_json() {
+	private function loadJson() {
 		Zend_Session::writeClose();
 
 		$start = Filter::getInteger('start');
@@ -141,7 +141,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	}
 
 	private function displayImage($media) {
-		$image = $this->FancyThumb($media, 60, 60);
+		$image = $this->fancyThumb($media, 60, 60);
 		if ($this->options('images') == 1) {
 			$img_checked = ' checked="checked"';
 		} elseif (is_array($this->options('images')) && in_array($media->getXref(), $this->options('images'))) {
@@ -177,10 +177,10 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 				$this->config();
 				break;
 			case 'load_json':
-				$this->load_json();
+				$this->loadJson();
 				break;
 			case 'admin_reset':
-				$this->fib_reset();
+				$this->fibReset();
 				$this->config();
 				break;
 			default:
@@ -190,7 +190,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	}
 
 	// Reset all settings to default
-	private function fib_reset() {
+	private function fibReset() {
 		Database::prepare("DELETE FROM `##module_setting` WHERE setting_name LIKE 'FIB%'")->execute();
 		Log::addConfigurationLog($this->getTitle() . ' reset to default values');
 	}
@@ -485,7 +485,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	}
 
 	// Get the medialist from the database
-	private function FancyImageBarMedia() {
+	private function fancyImageBarMedia() {
 		$sql = "SELECT SQL_CACHE m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file='" . $this->tree_id . "'";
 		if ($this->options('images') == 1) {
 			$sql .= " AND m_type='photo'";
@@ -510,7 +510,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 		return $list;
 	}
 
-	private function FancyThumb($mediaobject, $thumbwidth, $thumbheight) {
+	private function fancyThumb($mediaobject, $thumbwidth, $thumbheight) {
 		$imgSrc = $mediaobject->getServerFilename();
 		$type = $mediaobject->mimeType();
 
@@ -547,7 +547,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 		return $thumb;
 	}
 
-	private function CreateFancyImageBar($srcImages, $thumbWidth, $thumbHeight, $numberOfThumbs) {
+	private function createFancyImageBar($srcImages, $thumbWidth, $thumbHeight, $numberOfThumbs) {
 		// defaults
 		$pxBetweenThumbs = 0;
 		$leftOffSet = $topOffSet = 0;
@@ -566,7 +566,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 		return $FancyImageBar;
 	}
 
-	private function FancyImageBarSepia($FancyImageBar, $depth) {
+	private function fancyImageBarSepia($FancyImageBar, $depth) {
 		@imagetruecolortopalette($FancyImageBar, 1, 256);
 
 		for ($c = 0; $c < 256; $c++) {
@@ -587,9 +587,9 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	}
 
 	// Extend ModuleMenuInterface
-	private function GetFancyImageBar() {
+	private function getFancyImageBar() {
 
-		$medialist = $this->FancyImageBarMedia();
+		$medialist = $this->fancyImageBarMedia();
 		if ($medialist) {
 			$width = $height = $this->options('size');
 
@@ -597,7 +597,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 			$srcImages = array();
 			foreach ($medialist as $media) {
 				if (file_exists($media->getServerFilename())) {
-					$srcImages[] = $this->FancyThumb($media, $width, $height);
+					$srcImages[] = $this->fancyThumb($media, $width, $height);
 				}
 			}
 
@@ -615,12 +615,12 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 			}
 			// reduce the new array to the desired length (as there might be too many elements in the new array
 			$images = array_slice($newArray, 0, $fib_length);
-			$FancyImageBar = $this->CreateFancyImageBar($images, $width, $height, $fib_length);
+			$FancyImageBar = $this->createFancyImageBar($images, $width, $height, $fib_length);
 			if ($this->options('tone') == 0) {
-				$FancyImageBar = $this->FancyImageBarSepia($FancyImageBar, $this->options('sepia'));
+				$FancyImageBar = $this->fancyImageBarSepia($FancyImageBar, $this->options('sepia'));
 			}
 			if ($this->options('tone') == 1) {
-				$FancyImageBar = $this->FancyImageBarSepia($FancyImageBar, 0);
+				$FancyImageBar = $this->fancyImageBarSepia($FancyImageBar, 0);
 			}
 			ob_start(); imagejpeg($FancyImageBar, null, 100); $NewFancyImageBar = ob_get_clean();
 			$html = '<div id="fancy_imagebar" style="display:none">
@@ -655,7 +655,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 				$controller->addExternalJavascript(WT_MODULES_DIR . $this->getName() . '/style.js');
 
 				// put the fancy imagebar in the right position
-				echo $this->GetFancyImageBar();
+				echo $this->getFancyImageBar();
 				$controller->addInlineJavaScript('
 					jQuery("main").before(jQuery("#fancy_imagebar").show());
 				');

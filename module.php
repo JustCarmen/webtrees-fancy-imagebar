@@ -88,9 +88,9 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	}
 
 	// Get module options
-	private function options($key) {
+	private function options($k) {
 		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
-		$key = strtoupper($key);
+		$key = strtoupper($k);
 
 		if (empty($FIB_OPTIONS[$this->tree_id]) || (is_array($FIB_OPTIONS[$this->tree_id]) && !array_key_exists($key, $FIB_OPTIONS[$this->tree_id]))) {
 			return $this->setDefault($key);

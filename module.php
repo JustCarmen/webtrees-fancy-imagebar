@@ -28,7 +28,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	public function __construct() {
 		parent::__construct();
 
-		$this->tree_id = $this->treeId();
+		$this->tree_id = $this->getTreeId();
 
 		// Load any local user translations
 		if (is_dir(WT_MODULES_DIR . $this->getName() . '/language')) {
@@ -61,7 +61,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	}
 
 	// get the current Tree ID
-	private function treeId() {
+	private function getTreeId() {
 		global $WT_TREE;
 
 		$tree_id = $WT_TREE->getIdFromName(Filter::get('ged'));

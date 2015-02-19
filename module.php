@@ -22,8 +22,14 @@ use Zend_Translate;
 
 class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, ModuleMenuInterface {
 
+	/** @var integer The tree's ID number */
+	private $tree_id;
+
 	public function __construct() {
 		parent::__construct();
+
+		$this->tree_id = $this->tree_id();
+
 		// Load any local user translations
 		if (is_dir(WT_MODULES_DIR . $this->getName() . '/language')) {
 			if (file_exists(WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.mo')) {
@@ -54,6 +60,18 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 		return /* I18N: Description of the module */ I18N::translate('An imagebar with small images between header and content.');
 	}
 
+	// get the current Tree ID
+	private function tree_id() {
+		global $WT_TREE;
+
+		$tree_id = $WT_TREE->getIdFromName(Filter::get('ged'));
+		if (!$tree_id) {
+			$tree_id = $WT_TREE->getTreeId();
+		}
+
+		return $tree_id;
+	}
+
 	// Set default module options
 	private function setDefault($key) {
 		$FIB_DEFAULT = array(
@@ -72,26 +90,18 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	// Get module options
 	private function options($key) {
 		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
-
 		$key = strtoupper($key);
-		$tree = Tree::getIdFromName(Filter::get('ged'));
-		if (empty($tree)) {
-			$tree = WT_GED_ID;
-		}
 
-		if (empty($FIB_OPTIONS[$tree]) || (is_array($FIB_OPTIONS[$tree]) && !array_key_exists($key, $FIB_OPTIONS[$tree]))) {
+		if (empty($FIB_OPTIONS[$this->tree_id]) || (is_array($FIB_OPTIONS[$this->tree_id]) && !array_key_exists($key, $FIB_OPTIONS[$this->tree_id]))) {
 			return $this->setDefault($key);
 		} else {
-			return($FIB_OPTIONS[$tree][$key]);
+			return($FIB_OPTIONS[$this->tree_id][$key]);
 		}
 	}
 
 	private function load_json() {
 		Zend_Session::writeClose();
-		$gedcom_id = Tree::getIdFromName(Filter::get('ged'));
-		if (!$gedcom_id) {
-			$gedcom_id = WT_GED_ID;
-		}
+
 		$start = Filter::getInteger('start');
 		$length = Filter::getInteger('length');
 
@@ -101,9 +111,9 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 			$LIMIT = "";
 		}
 
-		$sql = "SELECT SQL_CACHE SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file = :gedcom_id AND m_type = 'photo'" . $LIMIT;
+		$sql = "SELECT SQL_CACHE SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id AND m_type = 'photo'" . $LIMIT;
 		$args = array(
-			'gedcom_id' => $gedcom_id
+			'tree_id' => $this->tree_id
 		);
 
 		$rows = Database::prepare($sql)->execute($args)->fetchAll();
@@ -113,7 +123,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 
 		$data = array();
 		foreach ($rows as $row) {
-			$media = Media::getInstance($row->xref, $row->gedcom_id);
+			$media = Media::getInstance($row->xref, $row->tree_id);
 			if (file_exists($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
 				$data[] = array(
 					$this->displayImage($media)
@@ -147,13 +157,9 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	}
 
 	private function getXrefs() {
-		$gedcom_id = Tree::getIdFromName(Filter::get('ged'));
-		if (!$gedcom_id) {
-			$gedcom_id = WT_GED_ID;
-		}
-		$sql = "SELECT m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file = :gedcom_id AND m_type = 'photo'";
+		$sql = "SELECT m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id AND m_type = 'photo'";
 		$args = array(
-			'gedcom_id' => $gedcom_id
+			'tree_id' => $this->tree_id
 		);
 
 		$rows = Database::prepare($sql)->execute($args)->fetchAll();
@@ -325,7 +331,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 				<div class="col-sm-3">
 					<select id="tree" name="NEW_FIB_TREE" id="NEW_FIB_TREE" class="form-control">
 						<?php foreach (Tree::getAll() as $tree): ?>
-							<?php if ($tree->getTreeId() == WT_GED_ID): ?>
+							<?php if ($tree->getTreeId() === $this->tree_id): ?>
 								<option value="<?php echo $tree->getTreeId(); ?>" data-ged="<?php echo $tree->getNameHtml(); ?>" selected="selected">
 									<?php echo $tree->getTitleHtml(); ?>
 								</option>
@@ -480,7 +486,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 
 	// Get the medialist from the database
 	private function FancyImageBarMedia() {
-		$sql = "SELECT SQL_CACHE m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file='" . WT_GED_ID . "'";
+		$sql = "SELECT SQL_CACHE m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file='" . $this->tree_id . "'";
 		if ($this->options('images') == 1) {
 			$sql .= " AND m_type='photo'";
 		} else {

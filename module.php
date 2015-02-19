@@ -24,27 +24,31 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 
 	/** @var integer The tree's ID number */
 	private $tree_id;
+	
+	/** @var string location of the fancy treeview module files */
+	private $module;
 
 	public function __construct() {
 		parent::__construct();
 
 		$this->tree_id = $this->getTreeId();
+		$this->module = WT_MODULES_DIR . $this->getName();;
 
 		// Load any local user translations
-		if (is_dir(WT_MODULES_DIR . $this->getName() . '/language')) {
-			if (file_exists(WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.mo')) {
+		if (is_dir($this->module . '/language')) {
+			if (file_exists($this->module . '/language/' . WT_LOCALE . '.mo')) {
 				I18N::addTranslation(
-					new Zend_Translate('gettext', WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.mo', WT_LOCALE)
+					new Zend_Translate('gettext', $this->module . '/language/' . WT_LOCALE . '.mo', WT_LOCALE)
 				);
 			}
-			if (file_exists(WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.php')) {
+			if (file_exists($this->module . '/language/' . WT_LOCALE . '.php')) {
 				I18N::addTranslation(
-					new Zend_Translate('array', WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.php', WT_LOCALE)
+					new Zend_Translate('array', $this->module . '/language/' . WT_LOCALE . '.php', WT_LOCALE)
 				);
 			}
-			if (file_exists(WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.csv')) {
+			if (file_exists($this->module . '/language/' . WT_LOCALE . '.csv')) {
 				I18N::addTranslation(
-					new Zend_Translate('csv', WT_MODULES_DIR . $this->getName() . '/language/' . WT_LOCALE . '.csv', WT_LOCALE)
+					new Zend_Translate('csv', $this->module . '/language/' . WT_LOCALE . '.csv', WT_LOCALE)
 				);
 			}
 		}
@@ -222,7 +226,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 				css.setAttribute("href", css_file);
 				html_doc.appendChild(css);
 			}
-			include_css("' . WT_MODULES_DIR . $this->getName() . '/style.css");
+			include_css("' . $this->module . '/style.css");
 
 			var oTable=jQuery("#image_block").dataTable( {
 				dom: \'<"H"pf<"dt-clear">irl>t<"F"pl>\',
@@ -652,7 +656,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 
 				// add js file to set a few theme depending styles
 				$controller->addInlineJavascript('var $theme = "' . Theme::theme()->themeId() . '"', BaseController::JS_PRIORITY_HIGH);
-				$controller->addExternalJavascript(WT_MODULES_DIR . $this->getName() . '/style.js');
+				$controller->addExternalJavascript($this->module . '/style.js');
 
 				// put the fancy imagebar in the right position
 				echo $this->getFancyImageBar();

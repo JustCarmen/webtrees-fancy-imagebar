@@ -514,37 +514,39 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 		$imgSrc = $mediaobject->getServerFilename();
 		$type = $mediaobject->mimeType();
 
-		//getting the image dimensions
-		list($width_orig, $height_orig) = @getimagesize($imgSrc);
-		switch ($type) {
-			case 'image/jpeg':
-				$image = @imagecreatefromjpeg($imgSrc);
-				break;
-			case 'image/png':
-				$image = @imagecreatefrompng($imgSrc);
-				break;
+		if(file_exists($imgSrc)) {
+			//getting the image dimensions
+			list($width_orig, $height_orig) = getimagesize($imgSrc);
+			switch ($type) {
+				case 'image/jpeg':
+					$image = imagecreatefromjpeg($imgSrc);
+					break;
+				case 'image/png':
+					$image = imagecreatefrompng($imgSrc);
+					break;
+			}
+
+			$ratio_orig = $width_orig / $height_orig;
+
+			if ($thumbwidth / $thumbheight > $ratio_orig) {
+				$new_height = $thumbwidth / $ratio_orig;
+				$new_width = $thumbwidth;
+			} else {
+				$new_width = $thumbheight * $ratio_orig;
+				$new_height = $thumbheight;
+			}
+
+			// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
+			$new_image = imagecreatetruecolor(round($new_width), round($new_height));
+			imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
+
+			$thumb = imagecreatetruecolor($thumbwidth, $thumbheight);
+			imagecopyresampled($thumb, $new_image, 0, 0, 0, 0, $thumbwidth, $thumbheight, $thumbwidth, $thumbheight);
+
+			imagedestroy($new_image);
+			imagedestroy($image);
+			return $thumb;
 		}
-
-		$ratio_orig = $width_orig / $height_orig;
-
-		if ($thumbwidth / $thumbheight > $ratio_orig) {
-			$new_height = $thumbwidth / $ratio_orig;
-			$new_width = $thumbwidth;
-		} else {
-			$new_width = $thumbheight * $ratio_orig;
-			$new_height = $thumbheight;
-		}
-
-		// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
-		$new_image = @imagecreatetruecolor(round($new_width), round($new_height));
-		@imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
-
-		$thumb = @imagecreatetruecolor($thumbwidth, $thumbheight);
-		@imagecopyresampled($thumb, $new_image, 0, 0, 0, 0, $thumbwidth, $thumbheight, $thumbwidth, $thumbheight);
-
-		@imagedestroy($new_image);
-		@imagedestroy($image);
-		return $thumb;
 	}
 
 	private function createFancyImageBar($srcImages, $thumbWidth, $thumbHeight, $numberOfThumbs) {
@@ -555,22 +557,22 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 		$canvasHeight = $thumbHeight;
 
 		// create the FancyImagebar canvas to put the thumbs on
-		$FancyImageBar = @imagecreatetruecolor($canvasWidth, $canvasHeight);
+		$FancyImageBar = imagecreatetruecolor($canvasWidth, $canvasHeight);
 
 		foreach ($srcImages as $index => $thumb) {
 			$x = ($index % $numberOfThumbs) * ($thumbWidth + $pxBetweenThumbs) + $leftOffSet;
 			$y = floor($index / $numberOfThumbs) * ($thumbWidth + $pxBetweenThumbs) + $topOffSet;
 
-			@imagecopy($FancyImageBar, $thumb, $x, $y, 0, 0, $thumbWidth, $thumbHeight);
+			imagecopy($FancyImageBar, $thumb, $x, $y, 0, 0, $thumbWidth, $thumbHeight);
 		}
 		return $FancyImageBar;
 	}
 
 	private function fancyImageBarSepia($FancyImageBar, $depth) {
-		@imagetruecolortopalette($FancyImageBar, 1, 256);
+		imagetruecolortopalette($FancyImageBar, 1, 256);
 
 		for ($c = 0; $c < 256; $c++) {
-			$col = @imagecolorsforindex($FancyImageBar, $c);
+			$col = imagecolorsforindex($FancyImageBar, $c);
 			$new_col = floor($col['red'] * 0.2125 + $col['green'] * 0.7154 + $col['blue'] * 0.0721);
 			if ($depth > 0) {
 				$r = $new_col + $depth;
@@ -581,54 +583,56 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 				$g = $new_col;
 				$b = $new_col;
 			}
-			@imagecolorset($FancyImageBar, $c, max(0, min(255, $r)), max(0, min(255, $g)), max(0, min(255, $b)));
+			imagecolorset($FancyImageBar, $c, max(0, min(255, $r)), max(0, min(255, $g)), max(0, min(255, $b)));
 		}
 		return $FancyImageBar;
 	}
 
 	// Extend ModuleMenuInterface
 	private function getFancyImageBar() {
+		if (extension_loaded('gd')) {
+			$medialist = $this->fancyImageBarMedia();
+			if ($medialist) {
+				$width = $height = $this->options('size');
 
-		$medialist = $this->fancyImageBarMedia();
-		if ($medialist) {
-			$width = $height = $this->options('size');
-
-			// begin looping through the media and write the imagebar
-			$srcImages = array();
-			foreach ($medialist as $media) {
-				if (file_exists($media->getServerFilename())) {
-					$srcImages[] = $this->fancyThumb($media, $width, $height);
+				// begin looping through the media and write the imagebar
+				$srcImages = array();
+				foreach ($medialist as $media) {
+					if (file_exists($media->getServerFilename())) {
+						$srcImages[] = $this->fancyThumb($media, $width, $height);
+					}
 				}
-			}
 
-			if (count($srcImages) === 0) {
-				return false;
-			}
+				if (count($srcImages) === 0) {
+					return false;
+				}
 
-			// be sure the imagebar will be big enough for wider screens
-			$newArray = array();
+				// be sure the imagebar will be big enough for wider screens
+				$newArray = array();
 
-			// determine how many thumbs we need (based on a users screen of 2400px);
-			$fib_length = ceil(2400 / $this->options('size'));
-			while (count($newArray) <= $fib_length) {
-				$newArray = array_merge($newArray, $srcImages);
-			}
-			// reduce the new array to the desired length (as there might be too many elements in the new array
-			$images = array_slice($newArray, 0, $fib_length);
-			$FancyImageBar = $this->createFancyImageBar($images, $width, $height, $fib_length);
-			if ($this->options('tone') == 0) {
-				$FancyImageBar = $this->fancyImageBarSepia($FancyImageBar, $this->options('sepia'));
-			}
-			if ($this->options('tone') == 1) {
-				$FancyImageBar = $this->fancyImageBarSepia($FancyImageBar, 0);
-			}
-			ob_start(); imagejpeg($FancyImageBar, null, 100); $NewFancyImageBar = ob_get_clean();
-			$html = '<div id="fancy_imagebar" style="display:none">
-						<img alt="fancy_imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '">
-					</div>';
+				// determine how many thumbs we need (based on a users screen of 2400px);
+				$fib_length = ceil(2400 / $this->options('size'));
+				while (count($newArray) <= $fib_length) {
+					$newArray = array_merge($newArray, $srcImages);
+				}
+				// reduce the new array to the desired length (as there might be too many elements in the new array
+				$images = array_slice($newArray, 0, $fib_length);
 
-			// output
-			return $html;
+				$FancyImageBar = $this->createFancyImageBar($images, $width, $height, $fib_length);
+				if ($this->options('tone') == 0) {
+					$FancyImageBar = $this->fancyImageBarSepia($FancyImageBar, $this->options('sepia'));
+				}
+				if ($this->options('tone') == 1) {
+					$FancyImageBar = $this->fancyImageBarSepia($FancyImageBar, 0);
+				}
+				ob_start(); imagejpeg($FancyImageBar, null, 100); $NewFancyImageBar = ob_get_clean();
+				$html = '<div id="fancy_imagebar" style="display:none">
+							<img alt="fancy_imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '">
+						</div>';
+
+				// output
+				return $html;
+			}
 		}
 	}
 

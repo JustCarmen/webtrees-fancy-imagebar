@@ -644,13 +644,9 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	// Implement ModuleMenuInterface
 	public function getMenu() {
 		// We don't actually have a menu - this is just a convenient "hook" to execute code at the right time during page execution
-		global $controller, $ctype, $SEARCH_SPIDER;
+		global $controller, $ctype;
 
-		if ($SEARCH_SPIDER) {
-			return null;
-		}
-
-		if ($this->options('images') !== 0) {
+		if (!Auth::isSearchEngine() && $this->options('images') !== 0) {
 
 			if ($this->options('otherpages') == 1 || (WT_SCRIPT_NAME === 'index.php' && ($ctype == 'gedcom' && $this->options('homepage') == 1 || ($ctype == 'user' && $this->options('mypage') == 1)))) {
 

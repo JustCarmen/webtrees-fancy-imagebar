@@ -229,7 +229,7 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 			include_css("' . $this->module . '/style.css");
 
 			var oTable=jQuery("#image_block").dataTable( {
-				dom: \'<"H"pf<"dt-clear">irl>t<"F"pl>\',
+				dom: \'<p<"dt-clear">il>t<r>\',
 				processing: true,
 				serverSide: true,
 				ajax: "module.php?mod=' . $this->getName() . '&mod_action=load_json",

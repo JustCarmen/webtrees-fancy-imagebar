@@ -20,7 +20,7 @@ namespace Fisharebest\Webtrees;
 use Zend_Session;
 use Zend_Translate;
 
-class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, ModuleMenuInterface {
+class FancyImagebar extends Module implements ModuleConfigInterface, ModuleMenuInterface {
 
 	/** @var integer The tree's ID number */
 	private $tree_id;
@@ -29,10 +29,10 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	private $module;
 
 	public function __construct() {
-		parent::__construct();
+		parent::__construct('fancy_imagebar');
 
 		$this->tree_id = $this->getTreeId();
-		$this->module = WT_MODULES_DIR . $this->getName();;
+		$this->module = WT_MODULES_DIR . $this->getName();
 
 		// Load any local user translations
 		if (is_dir($this->module . '/language')) {
@@ -669,3 +669,5 @@ class fancy_imagebar_WT_Module extends Module implements ModuleConfigInterface, 
 	}
 
 }
+
+return new FancyImagebar;

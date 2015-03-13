@@ -24,7 +24,7 @@ class FancyImagebar extends Module implements ModuleConfigInterface, ModuleMenuI
 
 	/** @var integer The tree's ID number */
 	private $tree_id;
-	
+
 	/** @var string location of the fancy treeview module files */
 	private $module;
 
@@ -68,12 +68,12 @@ class FancyImagebar extends Module implements ModuleConfigInterface, ModuleMenuI
 	private function getTreeId() {
 		global $WT_TREE;
 
-		$tree_id = $WT_TREE->getIdFromName(Filter::get('ged'));
-		if (!$tree_id) {
-			$tree_id = $WT_TREE->getTreeId();
+		$tree = $WT_TREE->findByName(Filter::get('ged'));
+		if ($tree) {
+			return $tree->getTreeId();
+		} else {
+			return $WT_TREE->getTreeId();
 		}
-
-		return $tree_id;
 	}
 
 	// Set default module options
@@ -127,7 +127,8 @@ class FancyImagebar extends Module implements ModuleConfigInterface, ModuleMenuI
 
 		$data = array();
 		foreach ($rows as $row) {
-			$media = Media::getInstance($row->xref, $row->tree_id);
+			$tree = Tree::findById($row->tree_id);
+			$media = Media::getInstance($row->xref, $tree);
 			if (file_exists($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
 				$data[] = array(
 					$this->displayImage($media)
@@ -506,7 +507,8 @@ class FancyImagebar extends Module implements ModuleConfigInterface, ModuleMenuI
 		$rows = Database::prepare($sql)->execute()->fetchAll();
 		$list = array();
 		foreach ($rows as $row) {
-			$media = Media::getInstance($row->xref, $row->gedcom_id);
+			$tree = Tree::findById($row->gedcom_id);
+			$media = Media::getInstance($row->xref, $tree);
 			if ($media->canShow() && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
 				$list[] = $media;
 			}

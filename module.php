@@ -412,38 +412,40 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 	private function FancyThumb($mediaobject, $thumbwidth, $thumbheight) {
 		$imgSrc = $mediaobject->getServerFilename();
 		$type = $mediaobject->mimeType();
+		
+		if(file_exists($imgSrc)) {
+			//getting the image dimensions
+			list($width_orig, $height_orig) = @getimagesize($imgSrc);
+			switch ($type) {
+				case 'image/jpeg':
+					$image = @imagecreatefromjpeg($imgSrc);
+					break;
+				case 'image/png':
+					$image = @imagecreatefrompng($imgSrc);
+					break;
+			}
 
-		//getting the image dimensions
-		list($width_orig, $height_orig) = @getimagesize($imgSrc);
-		switch ($type) {
-			case 'image/jpeg':
-				$image = @imagecreatefromjpeg($imgSrc);
-				break;
-			case 'image/png':
-				$image = @imagecreatefrompng($imgSrc);
-				break;
+			$ratio_orig = $width_orig/$height_orig;
+
+			if ($thumbwidth/$thumbheight > $ratio_orig) {
+			   $new_height = $thumbwidth/$ratio_orig;
+			   $new_width = $thumbwidth;
+			} else {
+			   $new_width = $thumbheight*$ratio_orig;
+			   $new_height = $thumbheight;
+			}
+
+			// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
+			$new_image = @imagecreatetruecolor(round($new_width), round($new_height));
+			@imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
+
+			$thumb = @imagecreatetruecolor($thumbwidth, $thumbheight);
+			@imagecopyresampled($thumb, $new_image, 0, 0, 0, 0, $thumbwidth, $thumbheight, $thumbwidth, $thumbheight);
+
+			@imagedestroy($new_image);
+			@imagedestroy($image);
+			return $thumb;
 		}
-
-		$ratio_orig = $width_orig/$height_orig;
-
-		if ($thumbwidth/$thumbheight > $ratio_orig) {
-		   $new_height = $thumbwidth/$ratio_orig;
-		   $new_width = $thumbwidth;
-		} else {
-		   $new_width = $thumbheight*$ratio_orig;
-		   $new_height = $thumbheight;
-		}
-
-		// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
-		$new_image = @imagecreatetruecolor(round($new_width), round($new_height));
-		@imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
-
-		$thumb = @imagecreatetruecolor($thumbwidth, $thumbheight);
-		@imagecopyresampled($thumb, $new_image, 0, 0, 0, 0, $thumbwidth, $thumbheight, $thumbwidth, $thumbheight);
-
-		@imagedestroy($new_image);
-		@imagedestroy($image);
-		return $thumb;
 	}
 
 	private function CreateFancyImageBar($srcImages, $thumbWidth, $thumbHeight, $numberOfThumbs) {

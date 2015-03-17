@@ -116,38 +116,43 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		$data = array();
 		foreach ($rows as $row) {
 			$media = WT_Media::getInstance($row->xref, $row->gedcom_id);
-			if(file_exists($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')){
-				$data[] = array(
-					$this->displayImage($media)
-				);
-			}
+			$data[] = array(
+				$this->displayImage($media)
+			);
 		}
 		header('Content-type: application/json');
 		echo json_encode(array( // See http://www.datatables.net/usage/server-side
 			'draw'                	=> WT_Filter::getInteger('draw'), // String, but always an integer
 			'recordsTotal'        	=> $recordsTotal,
-			'recordsFiltered'	=> $recordsFiltered,
+			'recordsFiltered'		=> $recordsFiltered,
 			'data'              	=> $data
 		));
 		exit;
 	}
 
 	private function displayImage($media) {
-		$image = $this->FancyThumb($media, 60, 60);
-		if ($this->options('images') == 1) {
-			$img_checked = ' checked="checked"';
-		} elseif (is_array($this->options('images')) && in_array($media->getXref(), $this->options('images'))) {
-			$img_checked = ' checked="checked"';
+		if(file_exists($media->getServerFilename()) && getimagesize($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')){
+			$image = $this->FancyThumb($media, 60, 60);
+			if ($this->options('images') == 1) {
+				$img_checked = ' checked="checked"';
+			} elseif (is_array($this->options('images')) && in_array($media->getXref(), $this->options('images'))) {
+				$img_checked = ' checked="checked"';
+			} else {
+				$img_checked = "";
+			}
+
+			// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar, so there is no need to keep the mimeType png).
+			ob_start();imagejpeg($image,null,100);$newImage = ob_get_clean();
+			return '<img src="data:image/jpeg;base64,'.base64_encode($newImage).'" alt="'.$media->getXref().'" title="'.strip_tags($media->getFullName()).'"/><br/>
+					<span><input type="checkbox" value="'.$media->getXref().'"'.$img_checked.'></span>';
 		} else {
-			$img_checked = "";
+			// this image doesn't exist on the server or is not a valid image
+			$mime_type = str_replace('/', '-', $media->mimeType());		
+			return '<div class="no-image"><i class="icon-mime-' . $mime_type . '" title="' . WT_i18N::translate('The image “%s” doesn’t exist or is not a valid image', strip_tags($media->getFullName()) . ' ('. $media->getXref() .')') . '"></i></div>
+				<span><input type="checkbox" value="" disabled="disabled"></span>';
 		}
-
-		// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar, so there is no need to keep the mimeType png).
-		ob_start();imagejpeg($image,null,100);$newImage = ob_get_clean();
-		return '<img src="data:image/jpeg;base64,'.base64_encode($newImage).'" alt="'.$media->getXref().'" title="'.strip_tags($media->getFullName()).'"/><br/>
-				<span><input type="checkbox" value="'.$media->getXref().'"'.$img_checked.'></span>';
 	}
-
+	
 	private function getXrefs() {
 		$gedcom_id = WT_TREE::getIdFromName(WT_Filter::get('ged'));
 		if (!$gedcom_id) {
@@ -413,39 +418,37 @@ class fancy_imagebar_WT_Module extends WT_Module implements WT_Module_Config, WT
 		$imgSrc = $mediaobject->getServerFilename();
 		$type = $mediaobject->mimeType();
 		
-		if(file_exists($imgSrc)) {
-			//getting the image dimensions
-			list($width_orig, $height_orig) = @getimagesize($imgSrc);
-			switch ($type) {
-				case 'image/jpeg':
-					$image = @imagecreatefromjpeg($imgSrc);
-					break;
-				case 'image/png':
-					$image = @imagecreatefrompng($imgSrc);
-					break;
-			}
-
-			$ratio_orig = $width_orig/$height_orig;
-
-			if ($thumbwidth/$thumbheight > $ratio_orig) {
-			   $new_height = $thumbwidth/$ratio_orig;
-			   $new_width = $thumbwidth;
-			} else {
-			   $new_width = $thumbheight*$ratio_orig;
-			   $new_height = $thumbheight;
-			}
-
-			// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
-			$new_image = @imagecreatetruecolor(round($new_width), round($new_height));
-			@imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
-
-			$thumb = @imagecreatetruecolor($thumbwidth, $thumbheight);
-			@imagecopyresampled($thumb, $new_image, 0, 0, 0, 0, $thumbwidth, $thumbheight, $thumbwidth, $thumbheight);
-
-			@imagedestroy($new_image);
-			@imagedestroy($image);
-			return $thumb;
+		//getting the image dimensions
+		list($width_orig, $height_orig) = getimagesize($imgSrc);
+		switch ($type) {
+			case 'image/jpeg':
+				$image = imagecreatefromjpeg($imgSrc);
+				break;
+			case 'image/png':
+				$image = imagecreatefrompng($imgSrc);
+				break;
 		}
+
+		$ratio_orig = $width_orig/$height_orig;
+
+		if ($thumbwidth/$thumbheight > $ratio_orig) {
+		   $new_height = $thumbwidth/$ratio_orig;
+		   $new_width = $thumbwidth;
+		} else {
+		   $new_width = $thumbheight*$ratio_orig;
+		   $new_height = $thumbheight;
+		}
+
+		// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
+		$new_image = imagecreatetruecolor(round($new_width), round($new_height));
+		imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
+
+		$thumb = imagecreatetruecolor($thumbwidth, $thumbheight);
+		imagecopyresampled($thumb, $new_image, 0, 0, 0, 0, $thumbwidth, $thumbheight, $thumbwidth, $thumbheight);
+
+		imagedestroy($new_image);
+		imagedestroy($image);
+		return $thumb;
 	}
 
 	private function CreateFancyImageBar($srcImages, $thumbWidth, $thumbHeight, $numberOfThumbs) {

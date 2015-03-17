@@ -92,6 +92,14 @@
 	padding-top: 10px;
 }
 
+#fib_config .no-image {	
+	display: block;
+	height: 60px;
+	line-height: 60px;
+	margin: 0 auto;
+	width: 60px;
+}
+
 #fib_config .label {
 	display: inline-block;
 	width: 200px;

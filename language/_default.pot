@@ -1,79 +1,84 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar 1.6.0\n"
-"POT-Creation-Date: 2014-01-01 16:10+0100\n"
-"PO-Revision-Date: 2014-10-14 07:10+0100\n"
+"POT-Creation-Date: 2015-03-17 08:15+0100\n"
+"PO-Revision-Date: 2015-03-17 08:15+0100\n"
 "Last-Translator: Carmen Pijpers <carmen@justcarmen.nl>\n"
 "Language-Team: \n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.6.9\n"
+"X-Generator: Poedit 1.7.5\n"
 "X-Poedit-KeywordsList: translate;noop;plural:1,2;translate_c:2,1c\n"
 "X-Poedit-Basepath: c:\\xampp\\htdocs\\webtrees_build\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: modules_v3\\fancy_imagebar\n"
 
-#: modules_v3\fancy_imagebar/module.php:348
+#: modules_v3\fancy_imagebar/module.php:368
 msgid "Amount of sepia"
 msgstr ""
 
 #. I18N: Description of the module
-#: modules_v3\fancy_imagebar/module.php:62
+#: modules_v3\fancy_imagebar/module.php:58
 msgid "An imagebar with small images on your home page and/or my page between header and content."
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:320
+#: modules_v3\fancy_imagebar/module.php:340
 msgid "Choose which images you want to show in the Fancy Imagebar"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:352
+#: modules_v3\fancy_imagebar/module.php:372
 msgid "Cropped image size"
 msgstr ""
 
 #. I18N: Name of the module
-#: modules_v3\fancy_imagebar/module.php:57
+#: modules_v3\fancy_imagebar/module.php:53
 msgid "Fancy Imagebar"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/help_text.php:34
+#: modules_v3\fancy_imagebar/help_text.php:32
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. Uncheck the images you do not want to show.<br><br>If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated.<br><br>Note: Only local ’jpg’ or ’png’ images which are set as type = ’photo’ are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.<br><br>The Fancy Imagebar module respects privacy settings!"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:344
+#: modules_v3\fancy_imagebar/module.php:364
 msgid "Images Tone"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:326
+#: modules_v3\fancy_imagebar/module.php:346
 msgid "No images to display for this tree"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:332
+#: modules_v3\fancy_imagebar/module.php:352
 msgid "Options"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:340
+#: modules_v3\fancy_imagebar/module.php:360
 msgid "Random images"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:335
+#: modules_v3\fancy_imagebar/module.php:355
 msgid "Show Fancy Imagebar on"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/help_text.php:33
+#: modules_v3\fancy_imagebar/help_text.php:31
 msgid "Showing images on the Fancy Imagebar"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:274
+#: modules_v3\fancy_imagebar/module.php:151
+#, php-format
+msgid "The image “%s” doesn’t exist or is not a valid image"
+msgstr ""
+
+#: modules_v3\fancy_imagebar/module.php:292
 msgid "The settings are changed. You will loose your changes if you switch trees."
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:315
+#: modules_v3\fancy_imagebar/module.php:335
 msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:349
+#: modules_v3\fancy_imagebar/module.php:369
 msgid "Value between 0 and 100"
 msgstr ""

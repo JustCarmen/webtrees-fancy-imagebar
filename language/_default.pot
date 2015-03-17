@@ -1,88 +1,93 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar 1.6.0\n"
-"POT-Creation-Date: 2015-01-24 10:36+0100\n"
-"PO-Revision-Date: 2015-01-24 10:36+0100\n"
+"POT-Creation-Date: 2015-03-17 22:15+0100\n"
+"PO-Revision-Date: 2015-03-17 22:16+0100\n"
 "Last-Translator: Carmen Pijpers <carmen@justcarmen.nl>\n"
 "Language-Team: \n"
 "Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.7.3\n"
+"X-Generator: Poedit 1.7.5\n"
 "X-Poedit-KeywordsList: translate;noop;plural:1,2;translate_c:2,1c\n"
 "X-Poedit-Basepath: c:\\xampp\\htdocs\\webtrees_build\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-SearchPath-0: modules_v3\\fancy_imagebar\n"
 
-#: modules_v3\fancy_imagebar/module.php:418
+#: modules_v3\fancy_imagebar/module.php:442
 msgid "Amount of sepia"
 msgstr ""
 
 #. I18N: Description of the module
-#: modules_v3\fancy_imagebar/module.php:59
+#: modules_v3\fancy_imagebar/module.php:64
 msgid "An imagebar with small images between header and content."
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:343
+#: modules_v3\fancy_imagebar/module.php:362
 msgid "Choose which images you want to show in the Fancy Imagebar"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:436
+#: modules_v3\fancy_imagebar/module.php:460
 msgid "Cropped image size"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:430
+#: modules_v3\fancy_imagebar/module.php:454
 msgid "Enter a value between 0 and 100"
 msgstr ""
 
 #. I18N: Name of the module
-#: modules_v3\fancy_imagebar/module.php:54
+#: modules_v3\fancy_imagebar/module.php:59
 msgid "Fancy Imagebar"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:349
+#: modules_v3\fancy_imagebar/module.php:372
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. Uncheck the images you do not want to show. If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated."
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:409
+#: modules_v3\fancy_imagebar/module.php:433
 msgid "Images Tone"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:360
+#: modules_v3\fancy_imagebar/module.php:384
 msgid "No images to display for this tree"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:350
+#: modules_v3\fancy_imagebar/module.php:373
 msgid "Note: Only local “jpg” or “png” images which are set as type = “photo” are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already."
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:253
-#: modules_v3\fancy_imagebar/module.php:296
+#: modules_v3\fancy_imagebar/module.php:267
+#: modules_v3\fancy_imagebar/module.php:310
 msgid "Options for"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:393
+#: modules_v3\fancy_imagebar/module.php:417
 msgid "Other pages"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:400
+#: modules_v3\fancy_imagebar/module.php:424
 msgid "Random images"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:383
+#: modules_v3\fancy_imagebar/module.php:407
 msgid "Show Fancy Imagebar on"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:351
+#: modules_v3\fancy_imagebar/module.php:374
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:290
+#: modules_v3\fancy_imagebar/module.php:164
+#, php-format
+msgid "The image “%s” doesn’t exist or is not a valid image"
+msgstr ""
+
+#: modules_v3\fancy_imagebar/module.php:304
 msgid "The settings are changed. You will loose your changes if you switch trees."
 msgstr ""
 
-#: modules_v3\fancy_imagebar/module.php:456
+#: modules_v3\fancy_imagebar/module.php:483
 msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
 msgstr ""

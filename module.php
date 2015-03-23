@@ -33,25 +33,6 @@ class FancyImagebar extends Module implements ModuleConfigInterface, ModuleMenuI
 
 		$this->tree_id = $this->getTreeId();
 		$this->module = WT_MODULES_DIR . $this->getName();
-
-		// Load any local user translations
-		if (is_dir($this->module . '/language')) {
-			if (file_exists($this->module . '/language/' . WT_LOCALE . '.mo')) {
-				I18N::addTranslation(
-					new Zend_Translate('gettext', $this->module . '/language/' . WT_LOCALE . '.mo', WT_LOCALE)
-				);
-			}
-			if (file_exists($this->module . '/language/' . WT_LOCALE . '.php')) {
-				I18N::addTranslation(
-					new Zend_Translate('array', $this->module . '/language/' . WT_LOCALE . '.php', WT_LOCALE)
-				);
-			}
-			if (file_exists($this->module . '/language/' . WT_LOCALE . '.csv')) {
-				I18N::addTranslation(
-					new Zend_Translate('csv', $this->module . '/language/' . WT_LOCALE . '.csv', WT_LOCALE)
-				);
-			}
-		}
 	}
 
 	// Extend Module

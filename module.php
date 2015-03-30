@@ -20,7 +20,7 @@ namespace Fisharebest\Webtrees;
 use Zend_Session;
 use Zend_Translate;
 
-class FancyImagebar extends Module implements ModuleConfigInterface, ModuleMenuInterface {
+class FancyImagebar extends AbstractModule implements ModuleConfigInterface, ModuleMenuInterface {
 
 	/** @var integer The tree's ID number */
 	private $tree_id;

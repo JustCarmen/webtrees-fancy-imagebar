@@ -405,7 +405,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 									<?php echo I18N::translate('Random images'); ?>
 								</label>
 								<div class="col-sm-8">
-									<?php echo radio_buttons('NEW_FIB_OPTIONS[RANDOM]', array(I18N::translate("no"), I18N::translate("yes")), $this->options('random'), 'class="radio-inline"'); ?>
+									<?php echo edit_field_yes_no('NEW_FIB_OPTIONS[RANDOM]', $this->options('random'), 'class="radio-inline"'); ?>
 								</div>
 							</div>
 							<!-- IMAGE TONE -->

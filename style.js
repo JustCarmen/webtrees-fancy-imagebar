@@ -16,10 +16,18 @@
 
 /* global $theme */
 
-jQuery('#fancy_imagebar').css({"clear":"both","overflow":"hidden"});
+jQuery('#fancy_imagebar').css({
+	"clear": "both",
+	"overflow": "hidden"
+});
 if ($theme === 'clouds') {
-	jQuery('#fancy_imagebar').css({"margin":"10px 10px 0 10px","border":"1px solid #003399"});
-	jQuery('#fancy_imagebar img').css({"margin-bottom":"-2px"});
+	jQuery('#fancy_imagebar').css({
+		"margin": "10px 10px 0 10px",
+		"border": "1px solid #003399"
+	});
+	jQuery('#fancy_imagebar img').css({
+		"margin-bottom": "-2px"
+	});
 }
 
 if ($theme === 'colors') {
@@ -27,19 +35,32 @@ if ($theme === 'colors') {
 }
 
 if ($theme === 'fab') {
-	jQuery('#fancy_imagebar').css({"border":"#A9A9A9 1px solid","border-radius":"3px","margin":"0 3px"});
-	jQuery('#fancy_imagebar img').css({"margin-bottom":"-3px"});
+	jQuery('#fancy_imagebar').css({
+		"border": "#A9A9A9 1px solid",
+		"border-radius": "3px",
+		"margin": "0 3px"
+	});
+	jQuery('#fancy_imagebar img').css({
+		"margin-bottom": "-3px"
+	});
 }
 if ($theme === 'justblack') {
-	jQuery('#fancy_imagebar').css({"margin-top":"-1px"}).append('<div class="divider" style="margin-top:3px">');
+	jQuery('#fancy_imagebar').css({
+		"margin-top": "-1px"
+	}).append('<div class="divider" style="margin-top:3px">');
 }
 
 if ($theme === 'justlight') {
-	jQuery('#fancy_imagebar img').css({"border-top":"5px solid #428bca", "border-bottom":"5px solid #428bca"});
+	jQuery('#fancy_imagebar img').css({
+		"border-top": "5px solid #428bca",
+		"border-bottom": "5px solid #428bca"
+	});
 }
 
 if ($theme === 'minimal') {
-	jQuery('#fancy_imagebar').css({"padding-top":"2px"}).append('<div class="divider" style="background-color:#555555;height:1px">');
+	jQuery('#fancy_imagebar').css({
+		"padding-top": "2px"
+	}).append('<div class="divider" style="background-color:#555555;height:1px">');
 }
 
 if ($theme === 'webtrees') {

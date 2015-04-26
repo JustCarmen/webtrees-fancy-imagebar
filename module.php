@@ -124,7 +124,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 	}
 
 	private function displayImage($media) {
-		if(file_exists($media->getServerFilename()) && getimagesize($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')){
+		if (file_exists($media->getServerFilename()) && getimagesize($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
 			$image = $this->fancyThumb($media, 60, 60);
 			if ($this->options('images') == 1) {
 				$img_checked = ' checked="checked"';
@@ -140,8 +140,8 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 					<label class="checkbox"><input type="checkbox" value="' . $media->getXref() . '"' . $img_checked . '></label>';
 		} else {
 			// this image doesn't exist on the server or is not a valid image
-			$mime_type = str_replace('/', '-', $media->mimeType());		
-			return '<div class="no-image"><i class="icon-mime-' . $mime_type . '" title="' . I18N::translate('The image “%s” doesn’t exist or is not a valid image', strip_tags($media->getFullName()) . ' ('. $media->getXref() .')') . '"></i></div>
+			$mime_type = str_replace('/', '-', $media->mimeType());
+			return '<div class="no-image"><i class="icon-mime-' . $mime_type . '" title="' . I18N::translate('The image “%s” doesn’t exist or is not a valid image', strip_tags($media->getFullName()) . ' (' . $media->getXref() . ')') . '"></i></div>
 				<label class="checkbox"><input type="checkbox" value="" disabled="disabled"></label>';
 		}
 	}

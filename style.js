@@ -1,4 +1,4 @@
-/**
+/*
  * webtrees: online genealogy
  * Copyright (C) 2015 webtrees development team
  * Copyright (C) 2015 JustCarmen
@@ -13,6 +13,8 @@
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+
+/* global $theme */
 
 jQuery('#fancy_imagebar').css({"clear":"both","overflow":"hidden"});
 if ($theme === 'clouds') {

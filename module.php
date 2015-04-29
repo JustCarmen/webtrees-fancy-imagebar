@@ -17,8 +17,6 @@ namespace Fisharebest\Webtrees;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-use Zend_Session;
-
 class FancyImagebar extends AbstractModule implements ModuleConfigInterface, ModuleMenuInterface {
 
 	/** @var integer The tree's ID number */
@@ -84,8 +82,6 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 	}
 
 	private function loadJson() {
-		Zend_Session::writeClose();
-
 		$start = Filter::getInteger('start');
 		$length = Filter::getInteger('length');
 

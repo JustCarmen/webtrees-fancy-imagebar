@@ -472,7 +472,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 
 	// Get the medialist from the database
 	private function fancyImageBarMedia() {
-		$sql = "SELECT SQL_CACHE m_id AS xref, m_file AS gedcom_id FROM `##media` WHERE m_file='" . $this->tree_id . "'";
+		$sql = "SELECT SQL_CACHE m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file='" . $this->tree_id . "'";
 		if ($this->options('images') == 1) {
 			$sql .= " AND m_type='photo'";
 		} else {
@@ -488,7 +488,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 		$rows = Database::prepare($sql)->execute()->fetchAll();
 		$list = array();
 		foreach ($rows as $row) {
-			$tree = Tree::findById($row->gedcom_id);
+			$tree = Tree::findById($row->tree_id);
 			$media = Media::getInstance($row->xref, $tree);
 			if ($media->canShow() && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
 				$list[] = $media;

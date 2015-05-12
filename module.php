@@ -60,7 +60,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 			'IMAGES'	 => '1', // All images
 			'HOMEPAGE'	 => '1',
 			'MYPAGE'	 => '1',
-			'OTHERPAGES' => '0',
+			'ALLPAGES' => '0',
 			'RANDOM'	 => '1',
 			'TONE'		 => '0',
 			'SEPIA'		 => '30',
@@ -390,7 +390,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[MYPAGE]', $this->options('mypage')) . I18N::translate('My page'); ?>
 									</label>
 									<label>' .
-										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[OTHERPAGES]', $this->options('otherpages')) . I18N::translate('Other pages'); ?>
+										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[ALLPAGES]', $this->options('allpages')) . I18N::translate('All pages'); ?>
 									</label>
 								</div>
 							</div>
@@ -633,7 +633,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 
 		if (!Auth::isSearchEngine() && $this->options('images') !== 0 && Theme::theme()->themeId() !== '_administration') {
 
-			if ($this->options('otherpages') == 1 || (WT_SCRIPT_NAME === 'index.php' && ($ctype == 'gedcom' && $this->options('homepage') == 1 || ($ctype == 'user' && $this->options('mypage') == 1)))) {
+			if ($this->options('allpages') == 1 || (WT_SCRIPT_NAME === 'index.php' && ($ctype == 'gedcom' && $this->options('homepage') == 1 || ($ctype == 'user' && $this->options('mypage') == 1)))) {
 
 				// add js file to set a few theme depending styles
 				$controller->addInlineJavascript('var $theme = "' . Theme::theme()->themeId() . '"', BaseController::JS_PRIORITY_HIGH);

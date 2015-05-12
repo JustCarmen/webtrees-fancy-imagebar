@@ -64,8 +64,8 @@ msgid "Options for"
 msgstr "Opties voor"
 
 #: modules_v3\fancy_imagebar/module.php:417
-msgid "Other pages"
-msgstr "Andere pagina's"
+msgid "All pages"
+msgstr "Alle pagina's"
 
 #: modules_v3\fancy_imagebar/module.php:424
 msgid "Random images"

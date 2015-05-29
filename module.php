@@ -45,12 +45,14 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 	// get the current Tree ID
 	private function getTreeId() {
 		global $WT_TREE;
-
-		$tree = $WT_TREE->findByName(Filter::get('ged'));
-		if ($tree) {
-			return $tree->getTreeId();
-		} else {
-			return $WT_TREE->getTreeId();
+		
+		if ($WT_TREE) {
+			$tree = $WT_TREE->findByName(Filter::get('ged'));
+			if ($tree) {
+				return $tree->getTreeId();
+			} else {
+				return $WT_TREE->getTreeId();
+			}
 		}
 	}
 

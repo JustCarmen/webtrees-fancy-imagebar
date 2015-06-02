@@ -17,6 +17,12 @@ namespace Fisharebest\Webtrees;
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
+use Fisharebest\Webtrees\Module\AbstractModule;
+use Fisharebest\Webtrees\Module\ModuleConfigInterface;
+use Fisharebest\Webtrees\Module\ModuleMenuInterface;
+use Fisharebest\Webtrees\Controller\BaseController;
+use Fisharebest\Webtrees\Controller\PageController;
+
 class FancyImagebar extends AbstractModule implements ModuleConfigInterface, ModuleMenuInterface {
 
 	/** @var integer The tree's ID number */

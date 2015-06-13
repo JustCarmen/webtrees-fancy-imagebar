@@ -22,6 +22,7 @@ use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleMenuInterface;
 use Fisharebest\Webtrees\Controller\BaseController;
 use Fisharebest\Webtrees\Controller\PageController;
+use Fisharebest\Webtrees\Functions\FunctionsEdit;
 
 class FancyImagebar extends AbstractModule implements ModuleConfigInterface, ModuleMenuInterface {
 
@@ -360,7 +361,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 							<!-- SELECT ALL -->
 							<div class="checkbox">
 								<label>
-									<?php echo checkbox('select-all') . I18N::translate('select all'); ?>
+									<?php echo FunctionsEdit::checkbox('select-all') . I18N::translate('select all'); ?>
 								</label>
 								<?php // The datatable will be dynamically filled with images from the database. ?>
 							</div>
@@ -392,13 +393,13 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 								</label>
 								<div class="checkbox col-sm-8">
 									<label>
-										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[HOMEPAGE]', $this->options('homepage')) . I18N::translate('Home page'); ?>
+										<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[HOMEPAGE]', $this->options('homepage')) . I18N::translate('Home page'); ?>
 									</label>
-									<label>' .
-										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[MYPAGE]', $this->options('mypage')) . I18N::translate('My page'); ?>
+									<label>
+										<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[MYPAGE]', $this->options('mypage')) . I18N::translate('My page'); ?>
 									</label>
-									<label>' .
-										<?php echo two_state_checkbox('NEW_FIB_OPTIONS[ALLPAGES]', $this->options('allpages')) . I18N::translate('All pages'); ?>
+									<label>
+										<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[ALLPAGES]', $this->options('allpages')) . I18N::translate('All pages'); ?>
 									</label>
 								</div>
 							</div>
@@ -408,7 +409,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 									<?php echo I18N::translate('Random images'); ?>
 								</label>
 								<div class="col-sm-8">
-									<?php echo edit_field_yes_no('NEW_FIB_OPTIONS[RANDOM]', $this->options('random'), 'class="radio-inline"'); ?>
+									<?php echo FunctionsEdit::editFieldYesNo('NEW_FIB_OPTIONS[RANDOM]', $this->options('random'), 'class="radio-inline"'); ?>
 								</div>
 							</div>
 							<!-- IMAGE TONE -->
@@ -417,7 +418,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 									<?php echo I18N::translate('Images Tone'); ?>
 								</label>
 								<div class="col-sm-2">
-									<?php echo select_edit_control('NEW_FIB_OPTIONS[TONE]', array('Sepia', 'Black and White', 'Colors'), null, $this->options('tone'), 'class="form-control"'); ?>
+									<?php echo FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[TONE]', array('Sepia', 'Black and White', 'Colors'), null, $this->options('tone'), 'class="form-control"'); ?>
 								</div>
 							</div>
 							<!-- SEPIA -->

@@ -1,6 +1,4 @@
 <?php
-namespace Fisharebest\Webtrees;
-
 /**
  * webtrees: online genealogy
  * Copyright (C) 2015 webtrees development team
@@ -16,13 +14,14 @@ namespace Fisharebest\Webtrees;
  * You should have received a copy of the GNU General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
+namespace Fisharebest\Webtrees;
 
-use Fisharebest\Webtrees\Module\AbstractModule;
-use Fisharebest\Webtrees\Module\ModuleConfigInterface;
-use Fisharebest\Webtrees\Module\ModuleMenuInterface;
 use Fisharebest\Webtrees\Controller\BaseController;
 use Fisharebest\Webtrees\Controller\PageController;
 use Fisharebest\Webtrees\Functions\FunctionsEdit;
+use Fisharebest\Webtrees\Module\AbstractModule;
+use Fisharebest\Webtrees\Module\ModuleConfigInterface;
+use Fisharebest\Webtrees\Module\ModuleMenuInterface;
 
 class FancyImagebar extends AbstractModule implements ModuleConfigInterface, ModuleMenuInterface {
 
@@ -52,7 +51,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 	// get the current Tree ID
 	private function getTreeId() {
 		global $WT_TREE;
-		
+
 		if ($WT_TREE) {
 			$tree = $WT_TREE->findByName(Filter::get('ged'));
 			if ($tree) {
@@ -69,7 +68,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 			'IMAGES'	 => '1', // All images
 			'HOMEPAGE'	 => '1',
 			'MYPAGE'	 => '1',
-			'ALLPAGES' => '0',
+			'ALLPAGES'	 => '0',
 			'RANDOM'	 => '1',
 			'TONE'		 => '0',
 			'SEPIA'		 => '30',
@@ -363,7 +362,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 								<label>
 									<?php echo FunctionsEdit::checkbox('select-all') . I18N::translate('select all'); ?>
 								</label>
-								<?php // The datatable will be dynamically filled with images from the database. ?>
+								<?php // The datatable will be dynamically filled with images from the database.  ?>
 							</div>
 							<!-- IMAGE LIST -->
 							<h3 id="no-images" class="hidden"><?php echo I18N::translate('No images to display for this tree'); ?></h3>
@@ -466,7 +465,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 				<?php echo I18N::translate('Save'); ?>
 			</button>
 			<button class="btn btn-primary" type="reset" onclick="if (confirm('<?php echo I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?'); ?>'))
-								window.location.href = 'module.php?mod=<?php echo $this->getName(); ?>&amp;mod_action=admin_reset';">
+						window.location.href = 'module.php?mod=<?php echo $this->getName(); ?>&amp;mod_action=admin_reset';">
 				<i class="fa fa-recycle"></i>
 				<?php echo I18N::translate('Reset'); ?>
 			</button>

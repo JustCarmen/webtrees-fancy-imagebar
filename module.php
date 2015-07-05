@@ -37,13 +37,13 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 	private $tree_id;
 
 	/** @var string location of the fancy treeview module files */
-	private $module;
+	private $directory;
 
 	public function __construct() {
 		parent::__construct('fancy_imagebar');
 
 		$this->tree_id = $this->getTreeId();
-		$this->module = WT_MODULES_DIR . $this->getName();
+		$this->directory = WT_MODULES_DIR . $this->getName();
 	}
 
 	// Extend Module
@@ -224,7 +224,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 				css.setAttribute("href", css_file);
 				html_doc.appendChild(css);
 			}
-			include_css("' . $this->module . '/css/style.css");
+			include_css("' . $this->directory . '/css/style.css");
 
 			var oTable=jQuery("#image_block").dataTable( {
 				dom: \'<p<"dt-clear">il>t<r>\',
@@ -653,7 +653,7 @@ class FancyImagebar extends AbstractModule implements ModuleConfigInterface, Mod
 
 				// add js file to set a few theme depending styles
 				$controller->addInlineJavascript('var $theme = "' . Theme::theme()->themeId() . '"', BaseController::JS_PRIORITY_HIGH);
-				$controller->addExternalJavascript($this->module . '/js/style.js');
+				$controller->addExternalJavascript($this->directory . '/js/style.js');
 
 				// put the fancy imagebar in the right position
 				echo $this->getFancyImageBar();

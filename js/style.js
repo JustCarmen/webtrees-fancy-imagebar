@@ -14,7 +14,11 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-/* global $theme */
+/* global $theme
+ * $theme can refer to the theme itself or the parent theme (in case of a custom child theme)
+ * to modify the theme for a childtheme, modify it's parent unless the childtheme needs a different css
+ * In that case, copy the parent code/css to make a new child code/css.
+ */
 
 jQuery('#fancy_imagebar').css({
 	"clear": "both",

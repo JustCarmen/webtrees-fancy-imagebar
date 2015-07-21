@@ -111,7 +111,15 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 			if ($this->module()->options('allpages') == 1 || (WT_SCRIPT_NAME === 'index.php' && ($ctype == 'gedcom' && $this->module()->options('homepage') == 1 || ($ctype == 'user' && $this->module()->options('mypage') == 1)))) {
 
 				// add js file to set a few theme depending styles
-				$controller->addInlineJavascript('var $theme = "' . Theme::theme()->themeId() . '"', BaseController::JS_PRIORITY_HIGH);
+				$parentclass = get_parent_class(Theme::theme());
+				if (basename($parentclass) === 'AbstractTheme') {
+					$theme = Theme::theme()->themeId();
+				} else {
+					$parenttheme = new $parentclass;
+					$theme = $parenttheme->themeId();
+				}
+				
+				$controller->addInlineJavascript('var $theme = "' . $theme . '"', BaseController::JS_PRIORITY_HIGH);
 				$controller->addExternalJavascript($this->directory . '/js/style.js');
 
 				// put the fancy imagebar in the right position

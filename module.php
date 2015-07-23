@@ -47,7 +47,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 
 	/**
 	 * Get the module class.
-	 * 
+	 *
 	 * Class functions are called with $this inside the source directory.
 	 */
 	private function module() {
@@ -114,12 +114,17 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 				$parentclass = get_parent_class(Theme::theme());
 				if (basename($parentclass) === 'AbstractTheme') {
 					$theme = Theme::theme()->themeId();
+					$childtheme = '';
 				} else {
 					$parenttheme = new $parentclass;
 					$theme = $parenttheme->themeId();
+					$childtheme = Theme::theme()->themeId();;
 				}
-				
-				$controller->addInlineJavascript('var $theme = "' . $theme . '"', BaseController::JS_PRIORITY_HIGH);
+
+				$controller->addInlineJavascript('
+					var $theme		= "' . $theme . '";
+					var $childtheme = "' . $childtheme . '";
+				', BaseController::JS_PRIORITY_HIGH);
 				$controller->addExternalJavascript($this->directory . '/js/style.js');
 
 				// put the fancy imagebar in the right position

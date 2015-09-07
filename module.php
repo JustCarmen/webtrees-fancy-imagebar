@@ -127,7 +127,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 
 				// add js file to set a few theme depending styles
 				$parentclass = get_parent_class(Theme::theme());
-				if (basename($parentclass) === 'AbstractTheme') {
+				$parentclassname = explode('\\', $parentclass);
+				if (end($parentclassname) === 'AbstractTheme') {
 					$theme = Theme::theme()->themeId();
 					$childtheme = '';
 				} else {

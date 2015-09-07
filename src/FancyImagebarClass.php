@@ -17,16 +17,18 @@
 namespace JustCarmen\WebtreesAddOns\FancyImagebar;
 
 use Fisharebest\Webtrees\Database;
+use Fisharebest\Webtrees\File;
 use Fisharebest\Webtrees\Filter;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Media;
 use Fisharebest\Webtrees\Tree;
+use Rhumsaa\Uuid\Uuid;
 
 /**
  * Class Fancy Imagebar
  */
 class FancyImagebarClass extends FancyImagebarModule {
-	
+
 	// get the current Tree ID
 	protected function getTreeId() {
 		global $WT_TREE;
@@ -40,7 +42,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			}
 		}
 	}
-	
+
 	// Get module options
 	protected function options($k) {
 		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
@@ -89,54 +91,43 @@ class FancyImagebarClass extends FancyImagebarModule {
 			'data'				 => $data
 		));
 		exit;
-	}	
+	}
 
 	// Extend ModuleMenuInterface
 	protected function getFancyImagebar() {
-		if (extension_loaded('gd')) {
-			$medialist = $this->fancyImagebarMedia();
-			if ($medialist) {
-				$width = $height = $this->options('size');
+		$width = $height = $this->options('size');
 
-				// begin looping through the media and write the imagebar
-				$srcImages = array();
-				foreach ($medialist as $media) {
-					if (file_exists($media->getServerFilename())) {
-						$srcImages[] = $this->fancyThumb($media, $width, $height);
-					}
-				}
+		$thumbnails = $this->getThumbnails();
 
-				if (count($srcImages) === 0) {
-					return false;
-				}
-
-				// be sure the imagebar will be big enough for wider screens
-				$newArray = array();
-
-				// determine how many thumbs we need (based on a users screen of 2400px);
-				$fib_length = ceil(2400 / $this->options('size'));
-				while (count($newArray) <= $fib_length) {
-					$newArray = array_merge($newArray, $srcImages);
-				}
-				// reduce the new array to the desired length (as there might be too many elements in the new array
-				$images = array_slice($newArray, 0, $fib_length);
-
-				$fancyImagebar = $this->createFancyImagebar($images, $width, $height, $fib_length);
-				if ($this->options('tone') == 0) {
-					$fancyImagebar = $this->fancyImageBarSepia($fancyImagebar, $this->options('sepia'));
-				}
-				if ($this->options('tone') == 1) {
-					$fancyImagebar = $this->fancyImageBarSepia($fancyImagebar, 0);
-				}
-				ob_start(); imagejpeg($fancyImagebar, null, 100); $NewFancyImageBar = ob_get_clean();
-				$html = '<div id="fancy_imagebar" style="display:none">
-							<img alt="fancy_imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '">
-						</div>';
-
-				// output
-				return $html;
-			}
+		if (count($thumbnails) === 0) {
+			return false;
 		}
+
+		// be sure the imagebar will be big enough for wider screens
+		$newArray = array();
+
+		// determine how many thumbs we need (based on a users screen of 2400px);
+		$fib_length = ceil(2400 / $this->options('size'));
+		while (count($newArray) <= $fib_length) {
+			$newArray = array_merge($newArray, $thumbnails);
+		}
+		// reduce the new array to the desired length (as there might be too many elements in the new array
+		$images = array_slice($newArray, 0, $fib_length);
+
+		$fancyImagebar = $this->createFancyImagebar($images, $width, $height, $fib_length);
+		if ($this->options('tone') == 0) {
+			$fancyImagebar = $this->fancyImageBarSepia($fancyImagebar, $this->options('sepia'));
+		}
+		if ($this->options('tone') == 1) {
+			$fancyImagebar = $this->fancyImageBarSepia($fancyImagebar, 0);
+		}
+		ob_start(); imagejpeg($fancyImagebar, null, 100); $NewFancyImageBar = ob_get_clean();
+		$html = '<div id="fancy_imagebar" style="display:none">
+					<img alt="fancy_imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '">
+				</div>';
+
+		// output
+		return $html;
 	}
 
 	protected function getXrefs() {
@@ -151,7 +142,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			$list[] = $row->xref;
 		}
 		return $list;
-	}	
+	}
 
 	// Set default module options
 	private function setDefault($key) {
@@ -193,18 +184,19 @@ class FancyImagebarClass extends FancyImagebarModule {
 
 	// Get the medialist from the database
 	private function fancyImagebarMedia() {
+		$images = $this->options('images');
+
 		$sql = "SELECT SQL_CACHE m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file='" . $this->getTreeId() . "'";
-		if ($this->options('images') == 1) {
+		if ($images === '1') {
 			$sql .= " AND m_type='photo'";
 		} else {
 			// single quotes needed around id's for sql statement.
-			foreach ($this->options('images') as $image) {
+			foreach ($images as $image) {
 				$images_sql[] = '\'' . $image . '\'';
 			}
 			$sql .= " AND m_id IN (" . implode(',', $images_sql) . ")";
 		}
 		$sql .= $this->options('random') == 1 ? " ORDER BY RAND()" : " ORDER BY m_id DESC";
-		$sql .= " LIMIT " . ceil(2400 / $this->options('size'));
 
 		$rows = Database::prepare($sql)->execute()->fetchAll();
 		$list = array();
@@ -218,34 +210,95 @@ class FancyImagebarClass extends FancyImagebarModule {
 		return $list;
 	}
 
-	private function fancyThumb($mediaobject, $thumbwidth, $thumbheight) {
-		$imgSrc = $mediaobject->getServerFilename();
+	protected function getCacheDir() {
+		return WT_DATA_DIR . 'fib_cache' . DIRECTORY_SEPARATOR . $this->getTreeId() . DIRECTORY_SEPARATOR;
+	}
+
+	protected function createThumbnails() {
+		$cache_dir = $this->getCacheDir();
+		if (file_exists($cache_dir)) {
+			// remove all old cached files from the server
+			foreach (glob($cache_dir . '*') as $file) {
+				if (is_file($file)) {
+					unlink($file);
+				}
+			}
+		} else {
+			File::mkdir($cache_dir);
+		}
+
+		$mediaobjects = $this->fancyImagebarMedia();
+		foreach ($mediaobjects as $mediaobject) {
+			if (file_exists($mediaobject->getServerFilename())) {
+				$thumbnail = $this->fancyThumb($mediaobject);
+				$cache_filename = $cache_dir . Uuid::uuid4() . '.jpg';
+				if ($thumbnail) {
+					imagejpeg($thumbnail, $cache_filename);
+				}
+			}
+		}
+	}
+
+	private function getThumbnails() {
+		$this->useImagesFromCache();
+		foreach (glob($this->getCacheDir() . '*') as $cache_filename) {
+			$thumbnails[] = imagecreatefromjpeg($cache_filename);
+		}
+		if ($this->options('random') === '1') {
+			shuffle($thumbnails);
+		}
+		return $thumbnails;
+	}
+
+	private function useImagesFromCache() {
+		$cache_dir = $this->getCacheDir();
+		if (!file_exists($cache_dir) || count(glob($cache_dir . '*')) === 0) {
+			$this->createThumbnails();
+		} else {
+			foreach (glob($cache_dir . '*') as $cache_filename) {
+				if (is_file($cache_filename)) {
+					$filemtime = filemtime($cache_filename);
+				} else {
+					$filemtime = 0;
+				}
+
+				if (time() > $filemtime + 86400) { // 86400 = 1 day (24 * 60 * 60)
+					$this->createThumbnails();
+					break;
+				}
+			}
+		}
+	}
+
+	private function fancyThumb($mediaobject) {
+		$filename = $mediaobject->getServerFilename();
 		$type = $mediaobject->mimeType();
 
 		//getting the image dimensions
-		list($width_orig, $height_orig) = getimagesize($imgSrc);
+		list($imagewidth, $imageheight) = getimagesize($filename);
 		switch ($type) {
 			case 'image/jpeg':
-				$image = imagecreatefromjpeg($imgSrc);
+				$image = imagecreatefromjpeg($filename);
 				break;
 			case 'image/png':
-				$image = imagecreatefrompng($imgSrc);
+				$image = imagecreatefrompng($filename);
 				break;
 		}
 
-		$ratio_orig = $width_orig / $height_orig;
+		$ratio = $imagewidth / $imageheight;
+		$thumbwidth = $thumbheight = $this->options('size');
 
-		if ($thumbwidth / $thumbheight > $ratio_orig) {
-			$new_height = $thumbwidth / $ratio_orig;
+		if ($thumbwidth / $thumbheight > $ratio) {
+			$new_height = $thumbwidth / $ratio;
 			$new_width = $thumbwidth;
 		} else {
-			$new_width = $thumbheight * $ratio_orig;
+			$new_width = $thumbheight * $ratio;
 			$new_height = $thumbheight;
 		}
 
 		// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
 		$new_image = imagecreatetruecolor(round($new_width), round($new_height));
-		imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $width_orig, $height_orig);
+		imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $imagewidth, $imageheight);
 
 		$thumb = imagecreatetruecolor($thumbwidth, $thumbheight);
 		imagecopyresampled($thumb, $new_image, 0, 0, 0, 0, $thumbwidth, $thumbheight, $thumbwidth, $thumbheight);

@@ -20,7 +20,9 @@ use Composer\Autoload\ClassLoader;
 use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\Controller\BaseController;
 use Fisharebest\Webtrees\Database;
+use Fisharebest\Webtrees\File;
 use Fisharebest\Webtrees\Filter;
+use Fisharebest\Webtrees\FlashMessages;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Log;
 use Fisharebest\Webtrees\Module\AbstractModule;
@@ -70,10 +72,20 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 			case 'admin_config':
 				if (Filter::postBool('save')) {
 					$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
-					$tree = Filter::postInteger('NEW_FIB_TREE');
-					$FIB_OPTIONS[$tree] = Filter::postArray('NEW_FIB_OPTIONS');
-					$FIB_OPTIONS[$tree]['IMAGES'] = explode("|", Filter::post('NEW_FIB_IMAGES'));
+					$tree_id = Filter::postInteger('NEW_FIB_TREE');
+					$FIB_OPTIONS[$tree_id] = Filter::postArray('NEW_FIB_OPTIONS');
+					$images = empty(Filter::post('NEW_FIB_IMAGES')) ? '0' : explode("|", Filter::post('NEW_FIB_IMAGES'));
+					$FIB_OPTIONS[$tree_id]['IMAGES'] = $images;
 					$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
+
+					if ($images) {
+						// now create the images to cache
+						$this->module()->createThumbnails();
+					} else {
+						// remove previously cached images
+						File::delete($this->module()->getCacheDir());
+					}
+
 					Log::addConfigurationLog($this->getTitle() . ' config updated');
 				}
 				$template = new AdminTemplate;
@@ -106,9 +118,12 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 		// We don't actually have a menu - this is just a convenient "hook" to execute code at the right time during page execution
 		global $controller, $ctype;
 
-		if (!Auth::isSearchEngine() && $this->module()->options('images') !== 0 && Theme::theme()->themeId() !== '_administration') {
+		if (Auth::isSearchEngine() || !$this->module()->options('images') || Theme::theme()->themeId() === '_administration') {
+			return null;
+		}
 
-			if ($this->module()->options('allpages') == 1 || (WT_SCRIPT_NAME === 'index.php' && ($ctype == 'gedcom' && $this->module()->options('homepage') == 1 || ($ctype == 'user' && $this->module()->options('mypage') == 1)))) {
+		try {
+			if ($this->module()->options('allpages') || (WT_SCRIPT_NAME === 'index.php' && ($ctype == 'gedcom' && $this->module()->options('homepage') || ($ctype == 'user' && $this->module()->options('mypage'))))) {
 
 				// add js file to set a few theme depending styles
 				$parentclass = get_parent_class(Theme::theme());
@@ -118,7 +133,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 				} else {
 					$parenttheme = new $parentclass;
 					$theme = $parenttheme->themeId();
-					$childtheme = Theme::theme()->themeId();;
+					$childtheme = Theme::theme()->themeId();
 				}
 
 				$controller->addInlineJavascript('
@@ -133,7 +148,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 					jQuery("main").before(jQuery("#fancy_imagebar").show());
 				');
 			}
+		} catch (\ErrorException $ex) {
+			Log::addErrorLog('Fancy Imagebar: ' . $ex->getMessage());
 		}
+
 		return null;
 	}
 

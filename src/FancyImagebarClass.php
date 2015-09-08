@@ -28,8 +28,50 @@ use Rhumsaa\Uuid\Uuid;
  * Class Fancy Imagebar
  */
 class FancyImagebarClass extends FancyImagebarModule {
+	
+	/**
+	 * Set the default module options
+	 * 
+	 * @param type $key
+	 * @return string
+	 */
+	private function setDefault($key) {
+		$FIB_DEFAULT = array(
+			'IMAGES'	 => '1', // All images
+			'HOMEPAGE'	 => '1',
+			'MYPAGE'	 => '1',
+			'ALLPAGES'	 => '0',
+			'RANDOM'	 => '1',
+			'TONE'		 => '0',
+			'SEPIA'		 => '30',
+			'SIZE'		 => '60'
+		);
+		return $FIB_DEFAULT[$key];
+	}
+	
+	/**
+	 * Get module options
+	 * 
+	 * @param type $k
+	 * @return type
+	 */
+	protected function options($k) {
+		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
+		$key = strtoupper($k);
 
-	// get the current Tree ID
+		if (empty($FIB_OPTIONS[$this->getTreeId()]) || (is_array($FIB_OPTIONS[$this->getTreeId()]) && !array_key_exists($key, $FIB_OPTIONS[$this->getTreeId()]))) {
+			return $this->setDefault($key);
+		} else {
+			return($FIB_OPTIONS[$this->getTreeId()][$key]);
+		}
+	}
+	
+	/**
+	 * Get the current tree id
+	 * 
+	 * @global type $WT_TREE
+	 * @return type
+	 */
 	protected function getTreeId() {
 		global $WT_TREE;
 
@@ -42,19 +84,30 @@ class FancyImagebarClass extends FancyImagebarModule {
 			}
 		}
 	}
+	
+	/**
+	 * Get a list of all the media xrefs
+	 * 
+	 * @return list
+	 */
+	protected function getXrefs() {
+		$sql = "SELECT m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id AND m_type = 'photo'";
+		$args = array(
+			'tree_id' => $this->getTreeId()
+		);
 
-	// Get module options
-	protected function options($k) {
-		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
-		$key = strtoupper($k);
-
-		if (empty($FIB_OPTIONS[$this->getTreeId()]) || (is_array($FIB_OPTIONS[$this->getTreeId()]) && !array_key_exists($key, $FIB_OPTIONS[$this->getTreeId()]))) {
-			return $this->setDefault($key);
-		} else {
-			return($FIB_OPTIONS[$this->getTreeId()][$key]);
+		$rows = Database::prepare($sql)->execute($args)->fetchAll();
+		$list = array();
+		foreach ($rows as $row) {
+			$list[] = $row->xref;
 		}
+		return $list;
 	}
-
+	
+	/**
+	 * Use Json to load images in control panel (datatable)* 
+	 * 
+	 */
 	protected function loadJson() {
 		$start = Filter::getInteger('start');
 		$length = Filter::getInteger('length');
@@ -92,8 +145,41 @@ class FancyImagebarClass extends FancyImagebarModule {
 		));
 		exit;
 	}
+	
+	/**
+	 * Display images in control panel
+	 * 
+	 * @param type $media
+	 * @return type
+	 */
+	private function displayImage($media) {
+		if (file_exists($media->getServerFilename()) && getimagesize($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
+			$image = $this->fancyThumb($media, 60, 60);
+			if ($this->options('images') == 1) {
+				$img_checked = ' checked="checked"';
+			} elseif (is_array($this->options('images')) && in_array($media->getXref(), $this->options('images'))) {
+				$img_checked = ' checked="checked"';
+			} else {
+				$img_checked = "";
+			}
 
-	// Extend ModuleMenuInterface
+			// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar, so there is no need to keep the mimeType png).
+			ob_start(); imagejpeg($image, null, 100); $newImage = ob_get_clean();
+			return '<img src="data:image/jpeg;base64,' . base64_encode($newImage) . '" alt="' . $media->getXref() . '" title="' . strip_tags($media->getFullName()) . '"/>
+					<label class="checkbox"><input type="checkbox" value="' . $media->getXref() . '"' . $img_checked . '></label>';
+		} else {
+			// this image doesn't exist on the server or is not a valid image
+			$mime_type = str_replace('/', '-', $media->mimeType());
+			return '<div class="no-image"><i class="icon-mime-' . $mime_type . '" title="' . I18N::translate('The image “%s” doesn’t exist or is not a valid image', strip_tags($media->getFullName()) . ' (' . $media->getXref() . ')') . '"></i></div>
+				<label class="checkbox"><input type="checkbox" value="" disabled="disabled"></label>';
+		}
+	}
+	
+	/**
+	 * Get the Fancy Imagebar with chosen images and options
+	 * 
+	 * @return html
+	 */
 	protected function getFancyImagebar() {
 		$width = $height = $this->options('size');
 
@@ -129,60 +215,12 @@ class FancyImagebarClass extends FancyImagebarModule {
 		// output
 		return $html;
 	}
-
-	protected function getXrefs() {
-		$sql = "SELECT m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id AND m_type = 'photo'";
-		$args = array(
-			'tree_id' => $this->getTreeId()
-		);
-
-		$rows = Database::prepare($sql)->execute($args)->fetchAll();
-		$list = array();
-		foreach ($rows as $row) {
-			$list[] = $row->xref;
-		}
-		return $list;
-	}
-
-	// Set default module options
-	private function setDefault($key) {
-		$FIB_DEFAULT = array(
-			'IMAGES'	 => '1', // All images
-			'HOMEPAGE'	 => '1',
-			'MYPAGE'	 => '1',
-			'ALLPAGES'	 => '0',
-			'RANDOM'	 => '1',
-			'TONE'		 => '0',
-			'SEPIA'		 => '30',
-			'SIZE'		 => '60'
-		);
-		return $FIB_DEFAULT[$key];
-	}
-
-	private function displayImage($media) {
-		if (file_exists($media->getServerFilename()) && getimagesize($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
-			$image = $this->fancyThumb($media, 60, 60);
-			if ($this->options('images') == 1) {
-				$img_checked = ' checked="checked"';
-			} elseif (is_array($this->options('images')) && in_array($media->getXref(), $this->options('images'))) {
-				$img_checked = ' checked="checked"';
-			} else {
-				$img_checked = "";
-			}
-
-			// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar, so there is no need to keep the mimeType png).
-			ob_start(); imagejpeg($image, null, 100); $newImage = ob_get_clean();
-			return '<img src="data:image/jpeg;base64,' . base64_encode($newImage) . '" alt="' . $media->getXref() . '" title="' . strip_tags($media->getFullName()) . '"/>
-					<label class="checkbox"><input type="checkbox" value="' . $media->getXref() . '"' . $img_checked . '></label>';
-		} else {
-			// this image doesn't exist on the server or is not a valid image
-			$mime_type = str_replace('/', '-', $media->mimeType());
-			return '<div class="no-image"><i class="icon-mime-' . $mime_type . '" title="' . I18N::translate('The image “%s” doesn’t exist or is not a valid image', strip_tags($media->getFullName()) . ' (' . $media->getXref() . ')') . '"></i></div>
-				<label class="checkbox"><input type="checkbox" value="" disabled="disabled"></label>';
-		}
-	}
-
-	// Get the medialist from the database
+	
+	/**
+	 * Get the medialist from the database
+	 * 
+	 * @return list
+	 */
 	private function fancyImagebarMedia() {
 		$images = $this->options('images');
 
@@ -209,11 +247,42 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 		return $list;
 	}
-
+	
+	/**
+	 * Get the fib-cache directory
+	 * 
+	 * @return directory name
+	 */
 	protected function getCacheDir() {
 		return WT_DATA_DIR . 'fib_cache' . DIRECTORY_SEPARATOR . $this->getTreeId() . DIRECTORY_SEPARATOR;
 	}
+	
+	/**
+	 * Check if thumbnails from cache should be recreated	 * 
+	 */
+	private function useImagesFromCache() {
+		$cache_dir = $this->getCacheDir();
+		if (!file_exists($cache_dir) || count(glob($cache_dir . '*')) === 0) {
+			$this->createThumbnails();
+		} else {
+			foreach (glob($cache_dir . '*') as $cache_filename) {
+				if (is_file($cache_filename)) {
+					$filemtime = filemtime($cache_filename);
+				} else {
+					$filemtime = 0;
+				}
 
+				if (time() > $filemtime + 86400) { // 86400 = 1 day (24 * 60 * 60)
+					$this->createThumbnails();
+					break;
+				}
+			}
+		}
+	}
+	
+	/**
+	 * (Re)create thumbnails to cache
+	 */
 	protected function createThumbnails() {
 		$cache_dir = $this->getCacheDir();
 		if (file_exists($cache_dir)) {
@@ -238,7 +307,12 @@ class FancyImagebarClass extends FancyImagebarModule {
 			}
 		}
 	}
-
+	
+	/**
+	 * Get the thumbnails from cache
+	 * 
+	 * @return array with thumbnails
+	 */
 	private function getThumbnails() {
 		$this->useImagesFromCache();
 		foreach (glob($this->getCacheDir() . '*') as $cache_filename) {
@@ -249,26 +323,13 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 		return $thumbnails;
 	}
-
-	private function useImagesFromCache() {
-		$cache_dir = $this->getCacheDir();
-		if (!file_exists($cache_dir) || count(glob($cache_dir . '*')) === 0) {
-			$this->createThumbnails();
-		} else {
-			foreach (glob($cache_dir . '*') as $cache_filename) {
-				if (is_file($cache_filename)) {
-					$filemtime = filemtime($cache_filename);
-				} else {
-					$filemtime = 0;
-				}
-
-				if (time() > $filemtime + 86400) { // 86400 = 1 day (24 * 60 * 60)
-					$this->createThumbnails();
-					break;
-				}
-			}
-		}
-	}
+	
+	/**
+	 * Create a thumbnail
+	 * 
+	 * @param type $mediaobject
+	 * @return thumbnail
+	 */
 
 	private function fancyThumb($mediaobject) {
 		$filename = $mediaobject->getServerFilename();
@@ -307,7 +368,16 @@ class FancyImagebarClass extends FancyImagebarModule {
 		imagedestroy($image);
 		return $thumb;
 	}
-
+	
+	/**
+	 * Create the Fancy Imagebar
+	 * 
+	 * @param type $srcImages
+	 * @param type $thumbWidth
+	 * @param type $thumbHeight
+	 * @param type $numberOfThumbs
+	 * @return Fancy Imagebar
+	 */
 	private function createFancyImagebar($srcImages, $thumbWidth, $thumbHeight, $numberOfThumbs) {
 		// defaults
 		$pxBetweenThumbs = 0;
@@ -326,7 +396,14 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 		return $fancyImagebar;
 	}
-
+	
+	/**
+	 * Use sepia (optional)
+	 * 
+	 * @param type $fancyImagebar
+	 * @param type $depth
+	 * @return Fancy Imagebar in Sepia
+	 */
 	private function fancyImagebarSepia($fancyImagebar, $depth) {
 		imagetruecolortopalette($fancyImagebar, 1, 256);
 

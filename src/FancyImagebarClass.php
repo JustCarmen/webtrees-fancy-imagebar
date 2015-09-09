@@ -28,10 +28,10 @@ use Rhumsaa\Uuid\Uuid;
  * Class Fancy Imagebar
  */
 class FancyImagebarClass extends FancyImagebarModule {
-	
+
 	/**
 	 * Set the default module options
-	 * 
+	 *
 	 * @param type $key
 	 * @return string
 	 */
@@ -48,10 +48,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 		);
 		return $FIB_DEFAULT[$key];
 	}
-	
+
 	/**
 	 * Get module options
-	 * 
+	 *
 	 * @param type $k
 	 * @return type
 	 */
@@ -65,10 +65,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 			return($FIB_OPTIONS[$this->getTreeId()][$key]);
 		}
 	}
-	
+
 	/**
 	 * Get the current tree id
-	 * 
+	 *
 	 * @global type $WT_TREE
 	 * @return type
 	 */
@@ -84,10 +84,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 			}
 		}
 	}
-	
+
 	/**
 	 * Get a list of all the media xrefs
-	 * 
+	 *
 	 * @return list
 	 */
 	protected function getXrefs() {
@@ -103,10 +103,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 		return $list;
 	}
-	
+
 	/**
-	 * Use Json to load images in control panel (datatable)* 
-	 * 
+	 * Use Json to load images in control panel (datatable)*
+	 *
 	 */
 	protected function loadJson() {
 		$start = Filter::getInteger('start');
@@ -145,10 +145,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 		));
 		exit;
 	}
-	
+
 	/**
 	 * Display images in control panel
-	 * 
+	 *
 	 * @param type $media
 	 * @return type
 	 */
@@ -174,10 +174,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 				<label class="checkbox"><input type="checkbox" value="" disabled="disabled"></label>';
 		}
 	}
-	
+
 	/**
 	 * Get the Fancy Imagebar with chosen images and options
-	 * 
+	 *
 	 * @return html
 	 */
 	protected function getFancyImagebar() {
@@ -215,10 +215,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 		// output
 		return $html;
 	}
-	
+
 	/**
 	 * Get the medialist from the database
-	 * 
+	 *
 	 * @return list
 	 */
 	private function fancyImagebarMedia() {
@@ -282,7 +282,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	/**
 	 * remove all old cached files for this tree
 	 */
-	protected function emptyCache(){
+	protected function emptyCache() {
 		foreach (glob($this->cacheDir() . '*') as $cache_file) {
 			if (is_file($cache_file)) {
 				$tree_id = intval(explode('-', basename($cache_file))[0]);

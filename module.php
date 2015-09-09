@@ -79,11 +79,11 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 					$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
 
 					if ($images) {
-						// now create the images to cache
-						$this->module()->createThumbnails();
+						// now (re)create the image cache
+						$this->module()->createCache();
 					} else {
 						// remove previously cached images
-						File::delete($this->module()->getCacheDir());
+						$this->module()->emptyCache();
 					}
 
 					Log::addConfigurationLog($this->getTitle() . ' config updated');

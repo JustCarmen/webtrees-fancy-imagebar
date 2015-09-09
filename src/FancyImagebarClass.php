@@ -247,90 +247,92 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 		return $list;
 	}
-	
-	/**
-	 * Get the fib-cache directory
-	 * 
-	 * @return directory name
-	 */
-	protected function getCacheDir() {
-		return WT_DATA_DIR . 'fib_cache' . DIRECTORY_SEPARATOR . $this->getTreeId() . DIRECTORY_SEPARATOR;
-	}
-	
-	/**
-	 * Check if thumbnails from cache should be recreated	 * 
-	 */
-	private function useImagesFromCache() {
-		$cache_dir = $this->getCacheDir();
-		if (!file_exists($cache_dir) || count(glob($cache_dir . '*')) === 0) {
-			$this->createThumbnails();
-		} else {
-			foreach (glob($cache_dir . '*') as $cache_filename) {
-				if (is_file($cache_filename)) {
-					$filemtime = filemtime($cache_filename);
-				} else {
-					$filemtime = 0;
-				}
 
-				if (time() > $filemtime + 86400) { // 86400 = 1 day (24 * 60 * 60)
-					$this->createThumbnails();
-					break;
-				}
-			}
-		}
+	private function cacheDir() {
+		return WT_DATA_DIR . 'fib_cache/';
 	}
-	
+
+	private function cacheFileName(Media $mediaobject) {
+		return $this->cacheDir() . $this->getTreeId() . '-' . $mediaobject->getXref() . '-' . filemtime($mediaobject->getServerFilename()) . '.jpg';
+	}
+
 	/**
 	 * (Re)create thumbnails to cache
+	 * This function is used when saving settings in control panel
+	 *
 	 */
-	protected function createThumbnails() {
-		$cache_dir = $this->getCacheDir();
-		if (file_exists($cache_dir)) {
-			// remove all old cached files from the server
-			foreach (glob($cache_dir . '*') as $file) {
-				if (is_file($file)) {
-					unlink($file);
-				}
-			}
+	protected function createCache() {
+		if (file_exists($this->cacheDir())) {
+			$this->emptyCache();
 		} else {
-			File::mkdir($cache_dir);
+			File::mkdir($this->cacheDir());
 		}
 
 		$mediaobjects = $this->fancyImagebarMedia();
 		foreach ($mediaobjects as $mediaobject) {
 			if (file_exists($mediaobject->getServerFilename())) {
 				$thumbnail = $this->fancyThumb($mediaobject);
-				$cache_filename = $cache_dir . Uuid::uuid4() . '.jpg';
 				if ($thumbnail) {
-					imagejpeg($thumbnail, $cache_filename);
+					imagejpeg($thumbnail, $this->cacheFileName($mediaobject));
 				}
 			}
 		}
 	}
-	
+
 	/**
-	 * Get the thumbnails from cache
-	 * 
+	 * remove all old cached files for this tree
+	 */
+	protected function emptyCache(){
+		foreach (glob($this->cacheDir() . '*') as $cache_file) {
+			if (is_file($cache_file)) {
+				$tree_id = intval(explode('-', basename($cache_file))[0]);
+				if ($tree_id === $this->getTreeId()) {
+					unlink($cache_file);
+				}
+			}
+		}
+	}
+
+	/**
+	 * Get the thumbnails from cache or (re)create them.
+	 * Check the filetime of the original image with the filetime stored in the cached image filename
+	 * Only recreate a thumbnail if the filetime differs: the original image has been changed.
+	 *
 	 * @return array with thumbnails
 	 */
 	private function getThumbnails() {
-		$this->useImagesFromCache();
-		foreach (glob($this->getCacheDir() . '*') as $cache_filename) {
-			$thumbnails[] = imagecreatefromjpeg($cache_filename);
+		$cache_dir = $this->cacheDir();
+
+		if (!file_exists($cache_dir)) {
+			File::mkdir($cache_dir);
 		}
+
+		$mediaobjects = $this->fancyImagebarMedia();
+		foreach ($mediaobjects as $mediaobject) {
+			if (file_exists($mediaobject->getServerFilename())) {
+				$cache_filename = $this->cacheFileName($mediaobject);
+				if (is_file($cache_filename)) {
+					$thumbnails[] = imagecreatefromjpeg($cache_filename);
+				} else {
+					$thumbnail = $this->fancyThumb($mediaobject);
+					imagejpeg($thumbnail, $cache_filename);
+					$thumbnails[] = $thumbnail;
+				}
+			}
+		}
+
 		if ($this->options('random') === '1') {
 			shuffle($thumbnails);
 		}
 		return $thumbnails;
 	}
-	
+
 	/**
 	 * Create a thumbnail
-	 * 
+	 *
 	 * @param type $mediaobject
 	 * @return thumbnail
 	 */
-
 	private function fancyThumb($mediaobject) {
 		$filename = $mediaobject->getServerFilename();
 		$type = $mediaobject->mimeType();
@@ -368,10 +370,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 		imagedestroy($image);
 		return $thumb;
 	}
-	
+
 	/**
 	 * Create the Fancy Imagebar
-	 * 
+	 *
 	 * @param type $srcImages
 	 * @param type $thumbWidth
 	 * @param type $thumbHeight
@@ -396,10 +398,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 		return $fancyImagebar;
 	}
-	
+
 	/**
 	 * Use sepia (optional)
-	 * 
+	 *
 	 * @param type $fancyImagebar
 	 * @param type $depth
 	 * @return Fancy Imagebar in Sepia

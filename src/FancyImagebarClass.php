@@ -342,7 +342,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @param type $mediaobject
 	 * @return thumbnail
 	 */
-	private function fancyThumb($mediaobject) {
+	private function fancyThumb(Media $mediaobject) {
 		$filename = $mediaobject->getServerFilename();
 		$type = $mediaobject->mimeType();
 

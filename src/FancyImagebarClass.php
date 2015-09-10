@@ -246,11 +246,22 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 		return $list;
 	}
-
+	
+	/**
+	 * Get the fib_cache directory
+	 * 
+	 * @return cache directory
+	 */
 	private function cacheDir() {
 		return WT_DATA_DIR . 'fib_cache/';
 	}
-
+	
+	/**
+	 * Get the filename of the cached image
+	 * 
+	 * @param Media $mediaobject
+	 * @return filename
+	 */
 	private function cacheFileName(Media $mediaobject) {
 		return $this->cacheDir() . $this->getTreeId() . '-' . $mediaobject->getXref() . '-' . filemtime($mediaobject->getServerFilename()) . '.jpg';
 	}

@@ -234,8 +234,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			}
 			$sql .= " AND m_id IN (" . implode(',', $images_sql) . ")";
 		}
-		$sql .= $this->options('random') == 1 ? " ORDER BY RAND()" : " ORDER BY m_id DESC";
-
+		
 		$rows = Database::prepare($sql)->execute()->fetchAll();
 		$list = array();
 		foreach ($rows as $row) {

@@ -90,6 +90,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 				return $template->pageContent();
 			case 'load_json':
 				return $this->module()->loadJson();
+			case 'imagebar':
+				return $this->module()->getFancyImageBar();
 			case 'admin_reset':
 				Database::prepare("DELETE FROM `##module_setting` WHERE setting_name LIKE 'FIB%'")->execute();
 				Log::addConfigurationLog($this->getTitle() . ' reset to default values');
@@ -134,18 +136,24 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 					$theme = $parenttheme->themeId();
 					$childtheme = Theme::theme()->themeId();
 				}
-
-				$controller->addInlineJavascript('
-					var $theme		= "' . $theme . '";
-					var $childtheme = "' . $childtheme . '";
-				', BaseController::JS_PRIORITY_HIGH);
-				$controller->addExternalJavascript($this->directory . '/js/style.js');
-
-				// put the fancy imagebar in the right position
-				echo $this->module()->getFancyImagebar();
-				$controller->addInlineJavaScript('
-					jQuery("main").before(jQuery("#fancy_imagebar").show());
-				');
+				
+				$controller
+					->addInlineJavascript('
+						var $theme		= "' . $theme . '";
+						var $childtheme = "' . $childtheme . '";
+							
+						jQuery.ajax({
+							cache: true,
+							type: "GET",
+							url: "module.php?mod=' . $this->getName() . '&mod_action=imagebar",
+							context: this,
+							success: function (data) {
+								jQuery("main").before(data);
+								jQuery("#fancy_imagebar").fibStyle();
+							}
+						});
+					', BaseController::JS_PRIORITY_HIGH)
+					->addExternalJavascript($this->directory . '/js/style.js', BaseController::JS_PRIORITY_HIGH);
 			}
 		} catch (\ErrorException $ex) {
 			Log::addErrorLog('Fancy Imagebar: ' . $ex->getMessage());

@@ -21,6 +21,7 @@ use Fisharebest\Webtrees\File;
 use Fisharebest\Webtrees\Filter;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Media;
+use Fisharebest\Webtrees\Query\QueryMedia;
 use Fisharebest\Webtrees\Tree;
 
 /**
@@ -36,14 +37,16 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function setDefault($key) {
 		$FIB_DEFAULT = array(
-			'IMAGES'	 => '1', // All images
-			'HOMEPAGE'	 => '1',
-			'MYPAGE'	 => '1',
-			'ALLPAGES'	 => '0',
-			'RANDOM'	 => '1',
-			'TONE'		 => '0',
-			'SEPIA'		 => '30',
-			'SIZE'		 => '60'
+			'IMAGES'		=> '1', // All images
+			'IMAGE_FOLDER'	=> 'all', // All folders
+			'PHOTOS'	    => '1',
+			'HOMEPAGE'		=> '1',
+			'MYPAGE'		=> '1',
+			'ALLPAGES'		=> '0',
+			'RANDOM'		=> '1',
+			'TONE'			=> '0',
+			'SEPIA'			=> '30',
+			'SIZE'			=> '60'
 		);
 		return $FIB_DEFAULT[$key];
 	}
@@ -83,19 +86,105 @@ class FancyImagebarClass extends FancyImagebarModule {
 			}
 		}
 	}
+	
+	/**
+	 * Get the chosen image folder
+	 * 
+	 * @return string
+	 */
+	protected function getImageFolder() {
+		if (Filter::get('folder')) {
+			$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
+			$FIB_OPTIONS[$this->getTreeId()]['IMAGE_FOLDER'] = Filter::get('folder');
+			$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
+		}
+		
+		if ($this->options('image_folder') !== 'all') {
+			return $this->options('image_folder');
+		}
+	}
+	
+	/**
+	 * Should we only use images with type="photo" set?
+	 * 
+	 * @return boolean
+	 */
+	protected function getPhotos() {
+		$status = Filter::get('photos');
+		if ($status) {
+			$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
+			if ($status === 'true') {
+				$FIB_OPTIONS[$this->getTreeId()]['PHOTOS'] = '1';
+			} else {
+				$FIB_OPTIONS[$this->getTreeId()]['PHOTOS'] = '0';
+			}	
+			$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
+		}
+		
+		if ($this->options('photos')) {
+			return true;
+		}
+	}
+	
+	/**
+	 * Get a list of all the media folders
+	 * 
+	 * @global $WT_TREE
+	 * @return array
+	 */
+	protected function listMediaFolders() {
+		global $WT_TREE;
 
+		$MEDIA_DIRECTORY = $WT_TREE->getPreference('MEDIA_DIRECTORY');
+		$folders = QueryMedia::folderList();
+		array_shift($folders);
+		
+		$folderlist = array();	
+		$folderlist['all'] = I18N::translate('All');
+		foreach ($folders as $key => $value) {
+			if (count(glob(WT_DATA_DIR . $MEDIA_DIRECTORY . $value . '*')) > 0) {
+				$folder = array_filter(explode("/", $value));
+				// only list first level folders
+				if (count($folder) > 0 && !array_search($folder[0], $folderlist)) {
+					$folderlist[$folder[0]] = I18N::translate($folder[0]);
+				}
+			}
+		}
+		return $folderlist;
+	}
+	
+	/**
+	 * Get the media info from the database
+	 * 
+	 * @param type $LIMIT
+	 * @return array
+	 */
+	private function dbMedia($LIMIT = ''){
+		$sql = "SELECT SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id";
+		$args['tree_id'] = $this->getTreeId();
+		
+		if ($this->getImageFolder()) {
+			$sql .= " AND SUBSTRING_INDEX(m_filename, '/', 1) = :image_folder";
+			$args['image_folder'] = $this->getImageFolder();
+		}
+		
+		if ($this->getPhotos()) {
+			$sql .= " AND m_type = 'photo'";
+		}
+		
+		$sql .= " AND m_ext IN ('jpg', 'jpeg', 'png')" . $LIMIT;
+
+		$rows = Database::prepare($sql)->execute($args)->fetchAll();
+		return $rows;
+	}
+	
 	/**
 	 * Get a list of all the media xrefs
 	 *
 	 * @return list
 	 */
-	protected function getXrefs() {
-		$sql = "SELECT m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id AND m_type = 'photo'";
-		$args = array(
-			'tree_id' => $this->getTreeId()
-		);
-
-		$rows = Database::prepare($sql)->execute($args)->fetchAll();
+	protected function getXrefs() {		
+		$rows = $this->dbMedia();
 		$list = array();
 		foreach ($rows as $row) {
 			$list[] = $row->xref;
@@ -117,12 +206,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			$LIMIT = "";
 		}
 
-		$sql = "SELECT SQL_CACHE SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id AND m_type = 'photo'" . $LIMIT;
-		$args = array(
-			'tree_id' => $this->getTreeId()
-		);
-
-		$rows = Database::prepare($sql)->execute($args)->fetchAll();
+		$rows = $this->dbMedia($LIMIT);
 
 		// Total filtered/unfiltered rows
 		$recordsTotal = $recordsFiltered = Database::prepare("SELECT FOUND_ROWS()")->fetchOne();

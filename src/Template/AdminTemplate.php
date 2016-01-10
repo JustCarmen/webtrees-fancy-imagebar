@@ -122,6 +122,7 @@ class AdminTemplate extends FancyImagebarClass {
 					var ged = jQuery("option:selected", this).data("ged");
 					var treeName = jQuery("option:selected", this).text();
 					jQuery.get("module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged, function(data) {
+						 jQuery(".folderlist").replaceWith(jQuery(data).find(".folderlist"));
 						 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
 						 jQuery("#options").replaceWith(jQuery(data).find("#options"));
 						 jQuery("#panel2 .panel-title a").text("' . I18N::translate('Options for') . '" + treeName);
@@ -134,6 +135,28 @@ class AdminTemplate extends FancyImagebarClass {
 					jQuery(current).prop("selected", true);
 				}
 			})
+			
+			// folder select
+			jQuery("form").on("change", ".folderlist", function(){
+				var ged = jQuery("option:selected", "#tree").data("ged");
+				var folder = jQuery("option:selected", this).val();
+				jQuery.get("module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged + "&folder=" + folder, function(data) {
+					 jQuery(".folderlist").replaceWith(jQuery(data).find(".folderlist"));
+					 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
+					 formChanged = false;
+					 oTable.fnDraw();
+				});
+			});
+			
+			// select files with or without type = "photo"
+			jQuery("form").on("click", ".photos", function(){
+				var ged = jQuery("option:selected", "#tree").data("ged");
+				jQuery.get("module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged + "&photos=" + jQuery(this).is(":checked"), function(data) {
+					 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
+					 formChanged = false;
+					 oTable.fnDraw();
+				});
+			});
 
 			// extra options for Sepia Tone
 			if(jQuery("#tone select").val() == 0) jQuery("#sepia").show();
@@ -188,17 +211,28 @@ class AdminTemplate extends FancyImagebarClass {
 								<button type="button" class="close" data-dismiss="alert" aria-label="' . I18N::translate('close') . '">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<p class="small"><?php echo I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. Uncheck the images you do not want to show. If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated.'); ?></p>
-								<p class="small"><?php echo I18N::translate('Note: Only local “jpg” or “png” images which are set as type = “photo” are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.'); ?></p>
+								<p class="small"><?php echo I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated.'); ?></p>
+								<p class="small"><?php echo I18N::translate('Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.'); ?></p>
 								<p class="small"><?php echo I18N::translate('The Fancy Imagebar module respects privacy settings!'); ?></p>
 							</div>
-							<!-- SELECT ALL -->
-							<div class="checkbox">
-								<label>
-									<?php echo FunctionsEdit::checkbox('select-all') . I18N::translate('select all'); ?>
+							<!-- MEDIA LIST -->
+							<?php $folders = $this->listMediaFolders(); ?>
+							<div id="medialist" class="form-group">
+								<label class="control-label col-sm-1">
+									<?php echo I18N::translate('Media folder'); ?>
 								</label>
-								<?php // The datatable will be dynamically filled with images from the database.  ?>
+								<div class="col-sm-3">
+									<?php echo FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[IMAGE_FOLDER]', $folders,null, $this->options('image_folder'), 'class="folderlist form-control"'); ?>
+								</div>
+								<label class="checkbox-inline">
+									<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[PHOTOS]', $this->options('photos'), 'class="photos"') . I18N::translate('Only show images with type = “photo”'); ?>
+								</label>
 							</div>
+							<!-- SELECT ALL -->
+							<label class="checkbox-inline">
+								<?php echo FunctionsEdit::checkbox('select-all') . I18N::translate('select all'); ?>
+							</label>
+							<?php // The datatable will be dynamically filled with images from the database.  ?>
 							<!-- IMAGE LIST -->
 							<h3 id="no-images" class="hidden"><?php echo I18N::translate('No images to display for this tree'); ?></h3>
 							<?php 

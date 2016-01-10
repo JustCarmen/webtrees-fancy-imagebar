@@ -303,23 +303,20 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function fancyImagebarMedia() {
 		$images = $this->options('images');
-
-		$sql = "SELECT SQL_CACHE m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file='" . $this->getTreeId() . "'";
+		
 		if ($images === '1') {
-			$sql .= " AND m_type='photo'";
-		} else {
-			// single quotes needed around id's for sql statement.
-			foreach ($images as $image) {
-				$images_sql[] = '\'' . $image . '\'';
+			$rows = $this->dbMedia();
+			foreach ($rows as $row) {
+				$xrefs[] = $row->xref;
 			}
-			$sql .= " AND m_id IN (" . implode(',', $images_sql) . ")";
+		} else {
+			$xrefs = $this->options('images');
 		}
-
-		$rows = Database::prepare($sql)->execute()->fetchAll();
+		
 		$list = array();
-		foreach ($rows as $row) {
-			$tree = Tree::findById($row->tree_id);
-			$media = Media::getInstance($row->xref, $tree);
+		foreach ($xrefs as $xref) {
+			$tree = Tree::findById($this->getTreeId());
+			$media = Media::getInstance($xref, $tree);
 			if ($media->canShow() && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
 				$list[] = $media;
 			}

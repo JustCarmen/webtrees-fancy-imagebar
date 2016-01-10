@@ -136,12 +136,12 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 					$theme = $parenttheme->themeId();
 					$childtheme = Theme::theme()->themeId();
 				}
-				
+
 				$controller
 					->addInlineJavascript('
 						var $theme		= "' . $theme . '";
 						var $childtheme = "' . $childtheme . '";
-							
+
 						jQuery.ajax({
 							cache: true,
 							type: "GET",

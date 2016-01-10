@@ -135,7 +135,7 @@ class AdminTemplate extends FancyImagebarClass {
 					jQuery(current).prop("selected", true);
 				}
 			})
-			
+
 			// folder select
 			jQuery("form").on("change", ".folderlist", function(){
 				var ged = jQuery("option:selected", "#tree").data("ged");
@@ -147,7 +147,7 @@ class AdminTemplate extends FancyImagebarClass {
 					 oTable.fnDraw();
 				});
 			});
-			
+
 			// select files with or without type = "photo"
 			jQuery("form").on("click", ".photos", function(){
 				var ged = jQuery("option:selected", "#tree").data("ged");
@@ -222,7 +222,7 @@ class AdminTemplate extends FancyImagebarClass {
 									<?php echo I18N::translate('Media folder'); ?>
 								</label>
 								<div class="col-sm-3">
-									<?php echo FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[IMAGE_FOLDER]', $folders,null, $this->options('image_folder'), 'class="folderlist form-control"'); ?>
+									<?php echo FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[IMAGE_FOLDER]', $folders, null, $this->options('image_folder'), 'class="folderlist form-control"'); ?>
 								</div>
 								<label class="checkbox-inline">
 									<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[PHOTOS]', $this->options('photos'), 'class="photos"') . I18N::translate('Only show images with type = “photo”'); ?>
@@ -235,7 +235,7 @@ class AdminTemplate extends FancyImagebarClass {
 							<?php // The datatable will be dynamically filled with images from the database.  ?>
 							<!-- IMAGE LIST -->
 							<h3 id="no-images" class="hidden"><?php echo I18N::translate('No images to display for this tree'); ?></h3>
-							<?php 
+							<?php
 							switch ($this->options('images')) {
 								case '0':
 									$imagelist = "";
@@ -346,7 +346,7 @@ class AdminTemplate extends FancyImagebarClass {
 				<?php echo I18N::translate('save'); ?>
 			</button>
 			<button class="btn btn-primary" type="reset" onclick="if (confirm('<?php echo I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?'); ?>'))
-						window.location.href = 'module.php?mod=<?php echo $this->getName(); ?>&amp;mod_action=admin_reset';">
+								window.location.href = 'module.php?mod=<?php echo $this->getName(); ?>&amp;mod_action=admin_reset';">
 				<i class="fa fa-recycle"></i>
 				<?php echo I18N::translate('reset'); ?>
 			</button>

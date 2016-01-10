@@ -37,16 +37,16 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function setDefault($key) {
 		$FIB_DEFAULT = array(
-			'IMAGES'		=> '1', // All images
-			'IMAGE_FOLDER'	=> 'all', // All folders
-			'PHOTOS'	    => '1',
-			'HOMEPAGE'		=> '1',
-			'MYPAGE'		=> '1',
-			'ALLPAGES'		=> '0',
-			'RANDOM'		=> '1',
-			'TONE'			=> '0',
-			'SEPIA'			=> '30',
-			'SIZE'			=> '60'
+			'IMAGES'		 => '1', // All images
+			'IMAGE_FOLDER'	 => 'all', // All folders
+			'PHOTOS'		 => '1',
+			'HOMEPAGE'		 => '1',
+			'MYPAGE'		 => '1',
+			'ALLPAGES'		 => '0',
+			'RANDOM'		 => '1',
+			'TONE'			 => '0',
+			'SEPIA'			 => '30',
+			'SIZE'			 => '60'
 		);
 		return $FIB_DEFAULT[$key];
 	}
@@ -86,10 +86,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 			}
 		}
 	}
-	
+
 	/**
 	 * Get the chosen image folder
-	 * 
+	 *
 	 * @return string
 	 */
 	protected function getImageFolder() {
@@ -98,15 +98,15 @@ class FancyImagebarClass extends FancyImagebarModule {
 			$FIB_OPTIONS[$this->getTreeId()]['IMAGE_FOLDER'] = Filter::get('folder');
 			$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
 		}
-		
+
 		if ($this->options('image_folder') !== 'all') {
 			return $this->options('image_folder');
 		}
 	}
-	
+
 	/**
 	 * Should we only use images with type="photo" set?
-	 * 
+	 *
 	 * @return boolean
 	 */
 	protected function getPhotos() {
@@ -117,18 +117,18 @@ class FancyImagebarClass extends FancyImagebarModule {
 				$FIB_OPTIONS[$this->getTreeId()]['PHOTOS'] = '1';
 			} else {
 				$FIB_OPTIONS[$this->getTreeId()]['PHOTOS'] = '0';
-			}	
+			}
 			$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
 		}
-		
+
 		if ($this->options('photos')) {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * Get a list of all the media folders
-	 * 
+	 *
 	 * @global $WT_TREE
 	 * @return array
 	 */
@@ -138,8 +138,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$MEDIA_DIRECTORY = $WT_TREE->getPreference('MEDIA_DIRECTORY');
 		$folders = QueryMedia::folderList();
 		array_shift($folders);
-		
-		$folderlist = array();	
+
+		$folderlist = array();
 		$folderlist['all'] = I18N::translate('All');
 		foreach ($folders as $key => $value) {
 			if (count(glob(WT_DATA_DIR . $MEDIA_DIRECTORY . $value . '*')) > 0) {
@@ -152,38 +152,38 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 		return $folderlist;
 	}
-	
+
 	/**
 	 * Get the media info from the database
-	 * 
+	 *
 	 * @param type $LIMIT
 	 * @return array
 	 */
-	private function dbMedia($LIMIT = ''){
+	private function dbMedia($LIMIT = '') {
 		$sql = "SELECT SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id";
 		$args['tree_id'] = $this->getTreeId();
-		
+
 		if ($this->getImageFolder()) {
 			$sql .= " AND SUBSTRING_INDEX(m_filename, '/', 1) = :image_folder";
 			$args['image_folder'] = $this->getImageFolder();
 		}
-		
+
 		if ($this->getPhotos()) {
 			$sql .= " AND m_type = 'photo'";
 		}
-		
+
 		$sql .= " AND m_ext IN ('jpg', 'jpeg', 'png')" . $LIMIT;
 
 		$rows = Database::prepare($sql)->execute($args)->fetchAll();
 		return $rows;
 	}
-	
+
 	/**
 	 * Get a list of all the media xrefs
 	 *
 	 * @return list
 	 */
-	protected function getXrefs() {		
+	protected function getXrefs() {
 		$rows = $this->dbMedia();
 		$list = array();
 		foreach ($rows as $row) {
@@ -314,7 +314,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			}
 			$sql .= " AND m_id IN (" . implode(',', $images_sql) . ")";
 		}
-		
+
 		$rows = Database::prepare($sql)->execute()->fetchAll();
 		$list = array();
 		foreach ($rows as $row) {
@@ -326,19 +326,19 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 		return $list;
 	}
-	
+
 	/**
 	 * Get the fib_cache directory
-	 * 
+	 *
 	 * @return cache directory
 	 */
 	private function cacheDir() {
 		return WT_DATA_DIR . 'fib_cache/';
 	}
-	
+
 	/**
 	 * Get the filename of the cached image
-	 * 
+	 *
 	 * @param Media $mediaobject
 	 * @return filename
 	 */

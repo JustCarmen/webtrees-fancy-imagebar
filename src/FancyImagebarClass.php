@@ -67,6 +67,14 @@ class FancyImagebarClass extends FancyImagebarModule {
 			return($FIB_OPTIONS[$this->getTreeId()][$key]);
 		}
 	}
+	
+	private function setOptions($options) {
+		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
+		foreach ($options as $key => $value) {
+			$FIB_OPTIONS[$this->getTreeId()][strtoupper($key)] = $value;
+		}
+		$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));		
+	}
 
 	/**
 	 * Get the current tree id
@@ -94,10 +102,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	protected function getImageFolder() {
 		if (Filter::get('folder')) {
-			$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
-			$FIB_OPTIONS[$this->getTreeId()]['IMAGE_FOLDER'] = Filter::get('folder');
-			$FIB_OPTIONS[$this->getTreeId()]['IMAGES'] = '1'; // reset the image list
-			$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
+			$this->setOptions(array(
+				'image_folder' => Filter::get('folder'),
+				'images' => '1'
+			));
 		}
 
 		if ($this->options('image_folder') !== 'all') {
@@ -113,14 +121,13 @@ class FancyImagebarClass extends FancyImagebarModule {
 	protected function getPhotos() {
 		$status = Filter::get('photos');
 		if ($status) {
-			$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
 			if ($status === 'true') {
-				$FIB_OPTIONS[$this->getTreeId()]['PHOTOS'] = '1';
+				$options['photos'] = '1';
 			} else {
-				$FIB_OPTIONS[$this->getTreeId()]['PHOTOS'] = '0';
+				$options['photos'] = '0';
 			}
-			$FIB_OPTIONS[$this->getTreeId()]['IMAGES'] = '1'; // reset the image list
-			$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
+			$options['images'] = '1'; // reset the image list
+			$this->setOptions($options);
 		}
 
 		if ($this->options('photos')) {
@@ -190,6 +197,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$list = array();
 		foreach ($rows as $row) {
 			$list[] = $row->xref;
+		}
+		
+		if (count($list) === 0) {
+			$this->setOptions(array('images' => '0'));
 		}
 		return $list;
 	}

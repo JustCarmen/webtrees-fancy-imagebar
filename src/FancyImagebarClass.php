@@ -227,9 +227,9 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$data = array();
 		foreach ($rows as $row) {
 			$tree = Tree::findById($row->tree_id);
-			$media = Media::getInstance($row->xref, $tree);
+			$mediaobject = Media::getInstance($row->xref, $tree);
 			$data[] = array(
-				$this->displayImage($media)
+				$this->displayImage($mediaobject)
 			);
 		}
 		header('Content-type: application/json');
@@ -245,15 +245,15 @@ class FancyImagebarClass extends FancyImagebarModule {
 	/**
 	 * Display images in control panel
 	 *
-	 * @param type $media
+	 * @param type $mediaobject
 	 * @return type
 	 */
-	private function displayImage($media) {
-		if (file_exists($media->getServerFilename()) && getimagesize($media->getServerFilename()) && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
-			$image = $this->fancyThumb($media, 60, 60);
+	private function displayImage($mediaobject) {
+		if (file_exists($mediaobject->getServerFilename()) && getimagesize($mediaobject->getServerFilename()) && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
+			$image = $this->fancyThumb($mediaobject, 60, 60);
 			if ($this->options('images') == 1) {
 				$img_checked = ' checked="checked"';
-			} elseif (is_array($this->options('images')) && in_array($media->getXref(), $this->options('images'))) {
+			} elseif (is_array($this->options('images')) && in_array($mediaobject->getXref(), $this->options('images'))) {
 				$img_checked = ' checked="checked"';
 			} else {
 				$img_checked = "";
@@ -261,12 +261,12 @@ class FancyImagebarClass extends FancyImagebarModule {
 
 			// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar, so there is no need to keep the mimeType png).
 			ob_start(); imagejpeg($image, null, 100); $newImage = ob_get_clean();
-			return '<img src="data:image/jpeg;base64,' . base64_encode($newImage) . '" alt="' . $media->getXref() . '" title="' . strip_tags($media->getFullName()) . '"/>
-					<label class="checkbox"><input type="checkbox" value="' . $media->getXref() . '"' . $img_checked . '></label>';
+			return '<img src="data:image/jpeg;base64,' . base64_encode($newImage) . '" alt="' . $mediaobject->getXref() . '" title="' . strip_tags($mediaobject->getFullName()) . '"/>
+					<label class="checkbox"><input type="checkbox" value="' . $mediaobject->getXref() . '"' . $img_checked . '></label>';
 		} else {
 			// this image doesn't exist on the server or is not a valid image
-			$mime_type = str_replace('/', '-', $media->mimeType());
-			return '<div class="no-image"><i class="icon-mime-' . $mime_type . '" title="' . I18N::translate('The image “%s” doesn’t exist or is not a valid image', strip_tags($media->getFullName()) . ' (' . $media->getXref() . ')') . '"></i></div>
+			$mime_type = str_replace('/', '-', $mediaobject->mimeType());
+			return '<div class="no-image"><i class="icon-mime-' . $mime_type . '" title="' . I18N::translate('The image “%s” doesn’t exist or is not a valid image', strip_tags($mediaobject->getFullName()) . ' (' . $mediaobject->getXref() . ')') . '"></i></div>
 				<label class="checkbox"><input type="checkbox" value="" disabled="disabled"></label>';
 		}
 	}
@@ -329,9 +329,9 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$list = array();
 		foreach ($xrefs as $xref) {
 			$tree = Tree::findById($this->getTreeId());
-			$media = Media::getInstance($xref, $tree);
-			if ($media->canShow() && ($media->mimeType() == 'image/jpeg' || $media->mimeType() == 'image/png')) {
-				$list[] = $media;
+			$mediaobject = Media::getInstance($xref, $tree);
+			if ($mediaobject->canShow() && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
+				$list[] = $mediaobject;
 			}
 		}
 		return $list;

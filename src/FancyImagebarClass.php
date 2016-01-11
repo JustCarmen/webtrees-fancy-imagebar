@@ -508,8 +508,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function fancyImagebarSepia($fancyImagebar, $depth) {
 		imagetruecolortopalette($fancyImagebar, 1, 256);
-
-		for ($c = 0; $c < 256; $c++) {
+		$palletsize = imagecolorstotal($fancyImagebar);
+		for ($c = 0; $c < $palletsize; $c++) {
 			$col = imagecolorsforindex($fancyImagebar, $c);
 			$new_col = floor($col['red'] * 0.2125 + $col['green'] * 0.7154 + $col['blue'] * 0.0721);
 			if ($depth > 0) {

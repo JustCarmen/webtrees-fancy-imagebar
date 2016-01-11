@@ -96,6 +96,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		if (Filter::get('folder')) {
 			$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
 			$FIB_OPTIONS[$this->getTreeId()]['IMAGE_FOLDER'] = Filter::get('folder');
+			$FIB_OPTIONS[$this->getTreeId()]['IMAGES'] = '1'; // reset the image list
 			$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
 		}
 
@@ -118,6 +119,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			} else {
 				$FIB_OPTIONS[$this->getTreeId()]['PHOTOS'] = '0';
 			}
+			$FIB_OPTIONS[$this->getTreeId()]['IMAGES'] = '1'; // reset the image list
 			$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
 		}
 

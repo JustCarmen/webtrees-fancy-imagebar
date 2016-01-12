@@ -311,9 +311,12 @@ class FancyImagebarClass extends FancyImagebarModule {
 			$fancyImagebar = $this->fancyImageBarSepia($fancyImagebar, 0);
 		}
 		ob_start(); imagejpeg($fancyImagebar, null, 100); $NewFancyImageBar = ob_get_clean();
-		echo '<div id="fancy_imagebar">
+		$html = '<div id="fancy_imagebar" style="display:none">
 					<img alt="fancy_imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '">
 				</div>';
+
+		// output
+		return $html;
 	}
 
 	/**

@@ -44,8 +44,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 			'MYPAGE'			=> '1',
 			'ALLPAGES'			=> '0',
 			'RANDOM'			=> '1',
-			'TONE'				=> '0',
-			'SEPIA'				=> '30',
+			'TONE'				=> '2', // Colors
+			'SEPIA'				=> '30',// Example
 			'HEIGHT'			=> '60',
 			'SQUARE'			=> '1'
 		);

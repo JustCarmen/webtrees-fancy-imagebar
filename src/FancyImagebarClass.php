@@ -37,16 +37,17 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function setDefault($key) {
 		$FIB_DEFAULT = array(
-			'IMAGES'		 => '1', // All images
-			'IMAGE_FOLDER'	 => 'all', // All folders
-			'PHOTOS'		 => '1',
-			'HOMEPAGE'		 => '1',
-			'MYPAGE'		 => '1',
-			'ALLPAGES'		 => '0',
-			'RANDOM'		 => '1',
-			'TONE'			 => '0',
-			'SEPIA'			 => '30',
-			'SIZE'			 => '60'
+			'IMAGES'			=> '1', // All images
+			'IMAGE_FOLDER'		=> 'all', // All folders
+			'PHOTOS'			=> '1',
+			'HOMEPAGE'			=> '1',
+			'MYPAGE'			=> '1',
+			'ALLPAGES'			=> '0',
+			'RANDOM'			=> '1',
+			'TONE'				=> '0',
+			'SEPIA'				=> '30',
+			'HEIGHT'			=> '60',
+			'SQUARE'			=> '1'
 		);
 		return $FIB_DEFAULT[$key];
 	}
@@ -250,7 +251,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function displayImage($mediaobject) {
 		if (file_exists($mediaobject->getServerFilename()) && getimagesize($mediaobject->getServerFilename()) && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
-			$image = $this->fancyThumb($mediaobject, 60, 60);
+			$image = $this->fancyThumb($mediaobject, 60, '1');
 			if ($this->options('images') == 1) {
 				$img_checked = ' checked="checked"';
 			} elseif (is_array($this->options('images')) && in_array($mediaobject->getXref(), $this->options('images'))) {
@@ -277,26 +278,32 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return html
 	 */
 	protected function getFancyImagebar() {
-		$width = $height = $this->options('size');
 
 		$thumbnails = $this->getThumbnails();
 
 		if (count($thumbnails) === 0) {
 			return false;
 		}
-
-		// be sure the imagebar will be big enough for wider screens
-		$newArray = array();
-
-		// determine how many thumbs we need (based on a users screen of 2400px);
-		$fib_length = ceil(2400 / $this->options('size'));
-		while (count($newArray) <= $fib_length) {
-			$newArray = array_merge($newArray, $thumbnails);
+		
+		// fill up the srcImages array up to a total width of 2400px (for wider screens)
+		$srcImages = array();
+		$canvasWidth = 0;		
+		while ($canvasWidth < 2400) {
+			if ($this->options('random') === '1') {
+				// shuffle thumbnails before each repetition
+				shuffle($thumbnails);
+			}
+			
+			foreach ($thumbnails as $thumbnail) {
+				$canvasWidth = $canvasWidth + imagesx($thumbnail);
+				$srcImages[] = $thumbnail;
+				if ($canvasWidth >= 2400) {
+					break;
+				}
+			}
 		}
-		// reduce the new array to the desired length (as there might be too many elements in the new array
-		$images = array_slice($newArray, 0, $fib_length);
-
-		$fancyImagebar = $this->createFancyImagebar($images, $width, $height, $fib_length);
+				
+		$fancyImagebar = $this->createFancyImagebar($srcImages, $canvasWidth);
 		if ($this->options('tone') == 0) {
 			$fancyImagebar = $this->fancyImageBarSepia($fancyImagebar, $this->options('sepia'));
 		}
@@ -330,7 +337,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		foreach ($xrefs as $xref) {
 			$tree = Tree::findById($this->getTreeId());
 			$mediaobject = Media::getInstance($xref, $tree);
-			if ($mediaobject->canShow() && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
+			if ($mediaobject && $mediaobject->canShow() && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
 				$list[] = $mediaobject;
 			}
 		}
@@ -371,7 +378,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$mediaobjects = $this->fancyImagebarMedia();
 		foreach ($mediaobjects as $mediaobject) {
 			if (file_exists($mediaobject->getServerFilename())) {
-				$thumbnail = $this->fancyThumb($mediaobject);
+				$thumbnail = $this->fancyThumb($mediaobject, $this->options('height'), $this->options('square'));
 				if ($thumbnail) {
 					imagejpeg($thumbnail, $this->cacheFileName($mediaobject));
 				}
@@ -414,15 +421,11 @@ class FancyImagebarClass extends FancyImagebarModule {
 				if (is_file($cache_filename)) {
 					$thumbnails[] = imagecreatefromjpeg($cache_filename);
 				} else {
-					$thumbnail = $this->fancyThumb($mediaobject);
+					$thumbnail = $this->fancyThumb($mediaobject, $this->options('height'), $this->options('square'));
 					imagejpeg($thumbnail, $cache_filename);
 					$thumbnails[] = $thumbnail;
 				}
 			}
-		}
-
-		if ($this->options('random') === '1') {
-			shuffle($thumbnails);
 		}
 		return $thumbnails;
 	}
@@ -433,7 +436,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @param type $mediaobject
 	 * @return thumbnail
 	 */
-	private function fancyThumb(Media $mediaobject) {
+	private function fancyThumb(Media $mediaobject, $thumbheight, $square) {
 		$filename = $mediaobject->getServerFilename();
 		$type = $mediaobject->mimeType();
 
@@ -449,14 +452,18 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 
 		$ratio = $imagewidth / $imageheight;
-		$thumbwidth = $thumbheight = $this->options('size');
-
-		if ($thumbwidth / $thumbheight > $ratio) {
-			$new_height = $thumbwidth / $ratio;
-			$new_width = $thumbwidth;
+		if ($square) {
+			$thumbwidth = $thumbheight;
+			if ($ratio < 1) {
+				$new_height = $thumbwidth / $ratio;
+				$new_width = $thumbwidth;
+			} else {
+				$new_width = $thumbheight * $ratio;
+				$new_height = $thumbheight;
+			}
 		} else {
-			$new_width = $thumbheight * $ratio;
-			$new_height = $thumbheight;
+			$new_height = $thumbheight;	
+			$new_width = $thumbwidth = $thumbheight * $ratio;
 		}
 
 		// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
@@ -480,21 +487,18 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @param type $numberOfThumbs
 	 * @return Fancy Imagebar
 	 */
-	private function createFancyImagebar($srcImages, $thumbWidth, $thumbHeight, $numberOfThumbs) {
-		// defaults
-		$pxBetweenThumbs = 0;
-		$leftOffSet = $topOffSet = 0;
-		$canvasWidth = ($thumbWidth + $pxBetweenThumbs) * $numberOfThumbs;
-		$canvasHeight = $thumbHeight;
-
+	private function createFancyImagebar($srcImages, $canvasWidth) {
+		$canvasHeight = $this->options('height');
+		
 		// create the FancyImagebar canvas to put the thumbs on
 		$fancyImagebar = imagecreatetruecolor($canvasWidth, $canvasHeight);
-
-		foreach ($srcImages as $index => $thumb) {
-			$x = ($index % $numberOfThumbs) * ($thumbWidth + $pxBetweenThumbs) + $leftOffSet;
-			$y = floor($index / $numberOfThumbs) * ($thumbWidth + $pxBetweenThumbs) + $topOffSet;
-
-			imagecopy($fancyImagebar, $thumb, $x, $y, 0, 0, $thumbWidth, $thumbHeight);
+		
+		$pos = 0;
+		foreach ($srcImages as $thumb) {
+			$x = $pos;
+			$pos = $pos + imagesx($thumb);
+			
+			imagecopy($fancyImagebar, $thumb, $x, 0, 0, 0, imagesx($thumb), $canvasHeight);
 		}
 		return $fancyImagebar;
 	}

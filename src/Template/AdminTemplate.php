@@ -319,22 +319,31 @@ class AdminTemplate extends FancyImagebarClass {
 									<?php echo I18N::translate('Enter a value between 0 and 100'); ?>
 								</p>
 							</div>
-							<!-- CROPPING SIZE -->
-							<div class="form-group">
+							<!-- HEIGHT OF THE IMAGE BAR -->
+							<div class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
-									<?php echo I18N::translate('Cropped image size'); ?>
+									<?php echo I18N::translate('Height of the Fancy Imagebar'); ?>
 								</label>
 								<div class="row">
 									<div class="col-sm-2">
 										<input
 											class="form-control"
 											type="text"
-											name="NEW_FIB_OPTIONS[SIZE]"
+											name="NEW_FIB_OPTIONS[HEIGHT]"
 											size="3"
-											value="<?php echo $this->options('size'); ?>"
+											value="<?php echo $this->options('height'); ?>"
 											>
 									</div>
 									<div class="form-control-static">px</div>
+								</div>
+							</div>
+							<!-- CROP THUMBNAILS TO SQUARE -->
+							<div class="form-group form-group-sm">
+								<label class="control-label col-sm-3">
+									<?php echo I18N::translate('Use square thumbs'); ?>
+								</label>
+								<div class="col-sm-8">
+									<?php echo FunctionsEdit::editFieldYesNo('NEW_FIB_OPTIONS[SQUARE]', $this->options('square'), 'class="radio-inline"'); ?>
 								</div>
 							</div>
 						</div>

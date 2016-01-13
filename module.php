@@ -116,12 +116,12 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 		// We don't actually have a menu - this is just a convenient "hook" to execute code at the right time during page execution
 		global $controller, $ctype;
 
-		if (Auth::isSearchEngine() || !$this->module()->options('images') || Theme::theme()->themeId() === '_administration') {
+		if (Auth::isSearchEngine() || Theme::theme()->themeId() === '_administration') {
 			return null;
 		}
 
 		try {
-			if ($this->module()->options('allpages') || (WT_SCRIPT_NAME === 'index.php' && ($ctype == 'gedcom' && $this->module()->options('homepage') || ($ctype == 'user' && $this->module()->options('mypage'))))) {
+			if ($this->module()->options('images') > 0 && ($this->module()->options('allpages') || (WT_SCRIPT_NAME === 'index.php' && ($ctype == 'gedcom' && $this->module()->options('homepage') || ($ctype == 'user' && $this->module()->options('mypage')))))) {
 
 				// add js file to set a few theme depending styles
 				$parentclass = get_parent_class(Theme::theme());

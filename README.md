@@ -3,7 +3,7 @@ Fancy Imagebar
 
 Fancy Imagebar module for webtrees
 
-This module requires [webtrees 1.7.0](https://github.com/fisharebest/webtrees) or later. Download the latest stable release [here](https://github.com/JustCarmen/fancy_imagebar/releases/tag/1.7.0).
+This module requires [webtrees 1.7.0](https://github.com/fisharebest/webtrees) or later. Download the latest stable release [here](https://github.com/JustCarmen/fancy_imagebar/releases).
 
 Description
 -----------
@@ -11,17 +11,18 @@ The Fancy Imagebar is a nice looking imagebar between header and content of your
 
 You can set the images you want to show in the Fancy Imagebar at the Fancy Imagebar configuration page. However, there are a few restrictions:
 
-*   Only local ’jpg’ or ’png’ images which are set as type = ’photo’ can be used.
+*   Only local ’jpg’ or ’png’ images can be used.
 *   External images are not supported.
 *   It is not possible to keep transparency for png thumbnails in the Fancy Imagebar.
 
 On the Fancy Imagebar Configuration page you can set some other options too:
 
-*   Show Imagebar on Homepage and/or My Page
+*   Show Imagebar on Homepage, My Page or all pages
 *   Show random images (the sequence of the images in the Fancy Imagebar will change with every page refresh).
 *   Image tone: Sepia, Color or Black and White
 *   Amount of Sepia
-*   Image size.
+*   Height of the Fancy Imagebar
+*	Use square thumbs or proportional resized thumbs
 
 Installation, updating and translations
 ---------------------------------------

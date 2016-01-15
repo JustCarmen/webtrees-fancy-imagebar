@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
-"POT-Creation-Date: 2016-01-10 22:39+0100\n"
+"POT-Creation-Date: 2016-01-15 05:15+0100\n"
 "PO-Revision-Date: 2015-07-04 17:50+0200\n"
 "Last-Translator: Hermann Hartenthaler <hermann@hartenthaler,de>\n"
 "Language-Team: \n"
@@ -30,10 +30,6 @@ msgstr "Eine Bilderleiste mit kleinen Fotos, die zwischen dem Seitenkopf und dem
 msgid "Choose which images you want to show in the Fancy Imagebar"
 msgstr "Wählen Sie die Fotos aus, die in Fancy Imagebar angezeigt werden sollen"
 
-#: src/Template/AdminTemplate.php:325
-msgid "Cropped image size"
-msgstr "Größe der beschnittenen Fotos"
-
 #: src/Template/AdminTemplate.php:319
 msgid "Enter a value between 0 and 100"
 msgstr "Geben Sie einen Wert zwischen 0 und 100"
@@ -41,6 +37,11 @@ msgstr "Geben Sie einen Wert zwischen 0 und 100"
 #: module.php:59
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
+
+#: src/Template/AdminTemplate.php:325
+#, fuzzy
+msgid "Height of the Fancy Imagebar"
+msgstr "Anzeige der Fancy Imagebar"
 
 #: src/Template/AdminTemplate.php:214
 #, fuzzy
@@ -80,7 +81,7 @@ msgstr "Anzeige der Fancy Imagebar"
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Das Fancy Imagebar Modul respektiert die Privatsphären-Einstellungen!"
 
-#: src/FancyImagebarClass.php:256
+#: src/FancyImagebarClass.php:270
 #, php-format
 msgid "The image “%s” doesn’t exist or is not a valid image"
 msgstr ""
@@ -89,6 +90,10 @@ msgstr ""
 msgid "The settings are changed. You will loose your changes if you switch trees."
 msgstr "Die Einstellungen wurden geändert. Ihre Änderungen werden verloren gehen, wenn Sie den Stammbaum wechseln."
 
-#: src/Template/AdminTemplate.php:348
+#: src/Template/AdminTemplate.php:357
 msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
 msgstr "Die Einstellungen werden für alle Stammbäume zurückgesetzt . Sind Sie sicher?"
+
+#: src/Template/AdminTemplate.php:343
+msgid "Use square thumbs"
+msgstr ""

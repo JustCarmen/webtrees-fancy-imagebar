@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-01-10 22:39+0100\n"
+"POT-Creation-Date: 2016-01-15 05:15+0100\n"
 "PO-Revision-Date: 2015-08-13 15:53+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -29,10 +29,6 @@ msgstr "Un imagebar avec de petites images entre l'entête et le contenu."
 msgid "Choose which images you want to show in the Fancy Imagebar"
 msgstr "Choisissez les images que vous voulez afficher dans Fancy Imagebar"
 
-#: src/Template/AdminTemplate.php:325
-msgid "Cropped image size"
-msgstr "Taille de l'image recadrée "
-
 #: src/Template/AdminTemplate.php:319
 msgid "Enter a value between 0 and 100"
 msgstr "Entrez une valeur entre 0 et 100"
@@ -40,6 +36,11 @@ msgstr "Entrez une valeur entre 0 et 100"
 #: module.php:59
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
+
+#: src/Template/AdminTemplate.php:325
+#, fuzzy
+msgid "Height of the Fancy Imagebar"
+msgstr "Afficher Fancy Imagebar sur "
 
 #: src/Template/AdminTemplate.php:214
 #, fuzzy
@@ -79,7 +80,7 @@ msgstr "Afficher Fancy Imagebar sur "
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Le module Fancy Imagebar  respecte les paramètres de confidentialité ! "
 
-#: src/FancyImagebarClass.php:256
+#: src/FancyImagebarClass.php:270
 #, php-format
 msgid "The image “%s” doesn’t exist or is not a valid image"
 msgstr "L'image \"%s\" n'existe pas ou n'est pas une image valide "
@@ -88,6 +89,10 @@ msgstr "L'image \"%s\" n'existe pas ou n'est pas une image valide "
 msgid "The settings are changed. You will loose your changes if you switch trees."
 msgstr "Ces réglages sont modifiés. Vous perdrez vos modifications si vous passez sur les arbres."
 
-#: src/Template/AdminTemplate.php:348
+#: src/Template/AdminTemplate.php:357
 msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
 msgstr "Les réglages seront réinitialisés (pour tous les arbres). Êtes-vous sûr de vouloir faire cela?"
+
+#: src/Template/AdminTemplate.php:343
+msgid "Use square thumbs"
+msgstr ""

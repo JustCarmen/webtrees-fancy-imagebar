@@ -72,7 +72,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 					$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
 					$tree_id = Filter::postInteger('NEW_FIB_TREE');
 					$FIB_OPTIONS[$tree_id] = Filter::postArray('NEW_FIB_OPTIONS');
-					$images = empty(Filter::post('NEW_FIB_IMAGES')) ? '0' : explode("|", Filter::post('NEW_FIB_IMAGES'));
+					$tmp = Filter::post('NEW_FIB_IMAGES');
+					$images = empty($tmp) ? '0' : explode("|", Filter::post('NEW_FIB_IMAGES'));
 					$FIB_OPTIONS[$tree_id]['IMAGES'] = $images;
 					$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
 

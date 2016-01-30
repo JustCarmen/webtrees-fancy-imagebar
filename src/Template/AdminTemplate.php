@@ -171,25 +171,25 @@ class AdminTemplate extends FancyImagebarClass {
 	private function pageBody(PageController $controller) {
 		?>
 		<ol class="breadcrumb small">
-			<li><a href="admin.php"><?php echo I18N::translate('Control panel'); ?></a></li>
-			<li><a href="admin_modules.php"><?php echo I18N::translate('Module administration'); ?></a></li>
-			<li class="active"><?php echo $controller->getPageTitle(); ?></li>
+			<li><a href="admin.php"><?php echo I18N::translate('Control panel') ?></a></li>
+			<li><a href="admin_modules.php"><?php echo I18N::translate('Module administration') ?></a></li>
+			<li class="active"><?php echo $controller->getPageTitle() ?></li>
 		</ol>
-		<h2><?php echo $this->getTitle(); ?></h2>
-		<form class="form-horizontal" method="post" name="configform" action="<?php echo $this->getConfigLink(); ?>">
+		<h2><?php echo $this->getTitle() ?></h2>
+		<form class="form-horizontal" method="post" name="configform" action="<?php echo $this->getConfigLink() ?>">
 			<input type="hidden" name="save" value="1">
 			<div class="form-group">
-				<label class="control-label col-sm-1"><?php echo I18N::translate('Family tree'); ?></label>
+				<label class="control-label col-sm-1"><?php echo I18N::translate('Family tree') ?></label>
 				<div class="col-sm-3">
 					<select id="tree" name="NEW_FIB_TREE" id="NEW_FIB_TREE" class="form-control">
 						<?php foreach (Tree::getAll() as $tree): ?>
 							<?php if ($tree->getTreeId() === $this->getTreeId()): ?>
-								<option value="<?php echo $tree->getTreeId(); ?>" data-ged="<?php echo $tree->getNameHtml(); ?>" selected="selected">
-									<?php echo $tree->getTitleHtml(); ?>
+								<option value="<?php echo $tree->getTreeId(); ?>" data-ged="<?php echo $tree->getNameHtml() ?>" selected="selected">
+									<?php echo $tree->getTitleHtml() ?>
 								</option>
 							<?php else: ?>
-								<option value="<?php echo $tree->getTreeId(); ?>" data-ged="<?php echo $tree->getNameHtml(); ?>">
-									<?php echo $tree->getTitleHtml(); ?>
+								<option value="<?php echo $tree->getTreeId(); ?>" data-ged="<?php echo $tree->getNameHtml() ?>">
+									<?php echo $tree->getTitleHtml() ?>
 								</option>
 							<?php endif; ?>
 						<?php endforeach; ?>
@@ -201,7 +201,7 @@ class AdminTemplate extends FancyImagebarClass {
 					<div class="panel-heading">
 						<h4 class="panel-title">
 							<a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne">
-								<?php echo I18N::translate('Choose which images you want to show in the Fancy Imagebar'); ?>
+								<?php echo I18N::translate('Choose which images you want to show in the Fancy Imagebar') ?>
 							</a>
 						</h4>
 					</div>
@@ -211,30 +211,30 @@ class AdminTemplate extends FancyImagebarClass {
 								<button type="button" class="close" data-dismiss="alert" aria-label="' . I18N::translate('close') . '">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<p class="small"><?php echo I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated.'); ?></p>
-								<p class="small"><?php echo I18N::translate('Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.'); ?></p>
-								<p class="small"><?php echo I18N::translate('The Fancy Imagebar module respects privacy settings!'); ?></p>
+								<p class="small"><?php echo I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated.') ?></p>
+								<p class="small"><?php echo I18N::translate('Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.') ?></p>
+								<p class="small"><?php echo I18N::translate('The Fancy Imagebar module respects privacy settings!') ?></p>
 							</div>
 							<!-- MEDIA LIST -->
 							<?php $folders = $this->listMediaFolders(); ?>
 							<div id="medialist" class="form-group">
 								<label class="control-label col-sm-1">
-									<?php echo I18N::translate('Media folder'); ?>
+									<?php echo I18N::translate('Media folder') ?>
 								</label>
 								<div class="col-sm-3">
-									<?php echo FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[IMAGE_FOLDER]', $folders, null, $this->options('image_folder'), 'class="folderlist form-control"'); ?>
+									<?php echo FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[IMAGE_FOLDER]', $folders, null, $this->options('image_folder'), 'class="folderlist form-control"') ?>
 								</div>
 								<label class="checkbox-inline">
-									<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[PHOTOS]', $this->options('photos'), 'class="photos"') . I18N::translate('Only show images with type = “photo”'); ?>
+									<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[PHOTOS]', $this->options('photos'), 'class="photos"') . I18N::translate('Only show images with type = “photo”') ?>
 								</label>
 							</div>
 							<!-- SELECT ALL -->
 							<label class="checkbox-inline">
-								<?php echo FunctionsEdit::checkbox('select-all') . I18N::translate('select all'); ?>
+								<?php echo FunctionsEdit::checkbox('select-all') . I18N::translate('select all') ?>
 							</label>
 							<?php // The datatable will be dynamically filled with images from the database.  ?>
 							<!-- IMAGE LIST -->
-							<h3 id="no-images" class="hidden"><?php echo I18N::translate('No images to display for this tree'); ?></h3>
+							<h3 id="no-images" class="hidden"><?php echo I18N::translate('No images to display for this tree') ?></h3>
 							<?php
 							switch ($this->options('images')) {
 								case '0':
@@ -248,7 +248,7 @@ class AdminTemplate extends FancyImagebarClass {
 									break;
 							}
 							?>
-							<input id="imagelist" type="hidden" name="NEW_FIB_IMAGES" value = "<?php echo $imagelist; ?>">
+							<input id="imagelist" type="hidden" name="NEW_FIB_IMAGES" value = "<?php echo $imagelist ?>">
 							<table id="image_block" class="table">
 								<thead></thead>
 								<tbody></tbody>
@@ -269,42 +269,42 @@ class AdminTemplate extends FancyImagebarClass {
 							<div class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
 									<!-- FANCY IMAGEBAR -->
-									<?php echo I18N::translate('Show Fancy Imagebar on'); ?>
+									<?php echo I18N::translate('Show Fancy Imagebar on') ?>
 								</label>
 								<div class="checkbox col-sm-8">
 									<label>
-										<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[HOMEPAGE]', $this->options('homepage')) . I18N::translate('Home page'); ?>
+										<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[HOMEPAGE]', $this->options('homepage')) . I18N::translate('Home page') ?>
 									</label>
 									<label>
-										<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[MYPAGE]', $this->options('mypage')) . I18N::translate('My page'); ?>
+										<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[MYPAGE]', $this->options('mypage')) . I18N::translate('My page') ?>
 									</label>
 									<label>
-										<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[ALLPAGES]', $this->options('allpages')) . I18N::translate('All pages'); ?>
+										<?php echo FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[ALLPAGES]', $this->options('allpages')) . I18N::translate('All pages') ?>
 									</label>
 								</div>
 							</div>
 							<!-- RANDOM IMAGES -->
 							<div class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
-									<?php echo I18N::translate('Random images'); ?>
+									<?php echo I18N::translate('Random images') ?>
 								</label>
 								<div class="col-sm-8">
-									<?php echo FunctionsEdit::editFieldYesNo('NEW_FIB_OPTIONS[RANDOM]', $this->options('random'), 'class="radio-inline"'); ?>
+									<?php echo FunctionsEdit::editFieldYesNo('NEW_FIB_OPTIONS[RANDOM]', $this->options('random'), 'class="radio-inline"') ?>
 								</div>
 							</div>
 							<!-- IMAGE TONE -->
 							<div id="tone" class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
-									<?php echo I18N::translate('Images Tone'); ?>
+									<?php echo I18N::translate('Images Tone') ?>
 								</label>
 								<div class="col-sm-2">
-									<?php echo FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[TONE]', array('Sepia', 'Black and White', 'Colors'), null, $this->options('tone'), 'class="form-control"'); ?>
+									<?php echo FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[TONE]', array('Sepia', 'Black and White', 'Colors'), null, $this->options('tone'), 'class="form-control"') ?>
 								</div>
 							</div>
 							<!-- SEPIA -->
 							<div id="sepia" class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
-									<?php echo I18N::translate('Amount of sepia'); ?>
+									<?php echo I18N::translate('Amount of sepia') ?>
 								</label>
 								<div class="col-sm-2">
 									<input
@@ -312,17 +312,17 @@ class AdminTemplate extends FancyImagebarClass {
 										type="text"
 										name="NEW_FIB_OPTIONS[SEPIA]"
 										size="3"
-										value="<?php echo $this->options('sepia'); ?>"
+										value="<?php echo $this->options('sepia') ?>"
 										>
 								</div>
 								<p class="col-sm-offset-3 col-sm-8 small text-muted">
-									<?php echo I18N::translate('Enter a value between 0 and 100'); ?>
+									<?php echo I18N::translate('Enter a value between 0 and 100') ?>
 								</p>
 							</div>
 							<!-- HEIGHT OF THE IMAGE BAR -->
 							<div class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
-									<?php echo I18N::translate('Height of the Fancy Imagebar'); ?>
+									<?php echo I18N::translate('Height of the Fancy Imagebar') ?>
 								</label>
 								<div class="row">
 									<div class="col-sm-2">
@@ -331,7 +331,7 @@ class AdminTemplate extends FancyImagebarClass {
 											type="text"
 											name="NEW_FIB_OPTIONS[HEIGHT]"
 											size="3"
-											value="<?php echo $this->options('height'); ?>"
+											value="<?php echo $this->options('height') ?>"
 											>
 									</div>
 									<div class="form-control-static">px</div>
@@ -340,10 +340,10 @@ class AdminTemplate extends FancyImagebarClass {
 							<!-- CROP THUMBNAILS TO SQUARE -->
 							<div class="form-group form-group-sm">
 								<label class="control-label col-sm-3">
-									<?php echo I18N::translate('Use square thumbs'); ?>
+									<?php echo I18N::translate('Use square thumbs') ?>
 								</label>
 								<div class="col-sm-8">
-									<?php echo FunctionsEdit::editFieldYesNo('NEW_FIB_OPTIONS[SQUARE]', $this->options('square'), 'class="radio-inline"'); ?>
+									<?php echo FunctionsEdit::editFieldYesNo('NEW_FIB_OPTIONS[SQUARE]', $this->options('square'), 'class="radio-inline"') ?>
 								</div>
 							</div>
 						</div>
@@ -352,12 +352,12 @@ class AdminTemplate extends FancyImagebarClass {
 			</div>
 			<button class="btn btn-primary" type="submit">
 				<i class="fa fa-check"></i>
-				<?php echo I18N::translate('save'); ?>
+				<?php echo I18N::translate('save') ?>
 			</button>
-			<button class="btn btn-primary" type="reset" onclick="if (confirm('<?php echo I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?'); ?>'))
-								window.location.href = 'module.php?mod=<?php echo $this->getName(); ?>&amp;mod_action=admin_reset';">
+			<button class="btn btn-primary" type="reset" onclick="if (confirm('<?php echo I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?') ?>'))
+								window.location.href = 'module.php?mod=<?php echo $this->getName() ?>&amp;mod_action=admin_reset';">
 				<i class="fa fa-recycle"></i>
-				<?php echo I18N::translate('reset'); ?>
+				<?php echo I18N::translate('reset') ?>
 			</button>
 		</form>
 		<?php

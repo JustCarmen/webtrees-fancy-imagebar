@@ -395,7 +395,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 	protected function emptyCache() {
 		foreach (glob($this->cacheDir() . '*') as $cache_file) {
 			if (is_file($cache_file)) {
-				$tree_id = intval(explode('-', basename($cache_file))[0]);
+				$tmp = explode('-', basename($cache_file));
+				$tree_id = intval($tmp[0]);
 				if ($tree_id === $this->getTreeId()) {
 					unlink($cache_file);
 				}

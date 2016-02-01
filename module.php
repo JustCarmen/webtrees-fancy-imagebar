@@ -17,7 +17,6 @@
 namespace JustCarmen\WebtreesAddOns\FancyImagebar;
 
 use Composer\Autoload\ClassLoader;
-use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\Controller\BaseController;
 use Fisharebest\Webtrees\Database;
 use Fisharebest\Webtrees\Filter;
@@ -115,15 +114,15 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 	// Implement ModuleMenuInterface
 	public function getMenu() {
 		// We don't actually have a menu - this is just a convenient "hook" to execute code at the right time during page execution
-		global $controller, $ctype;
-
-		if (Auth::isSearchEngine() || Theme::theme()->themeId() === '_administration') {
+		global $controller;
+		
+		// Check if the Fancy Imagebar is implemented in a (custom) theme
+		if (method_exists(Theme::theme(), 'fancyImagebar')) {
 			return null;
 		}
 
 		try {
-			if ($this->module()->options('images') > 0 && ($this->module()->options('allpages') || (WT_SCRIPT_NAME === 'index.php' && ($ctype == 'gedcom' && $this->module()->options('homepage') || ($ctype == 'user' && $this->module()->options('mypage')))))) {
-
+			if ($this->module()->loadFancyImagebar()) {
 				// add js file to set a few theme depending styles
 				$parentclass = get_parent_class(Theme::theme());
 				$parentclassname = explode('\\', $parentclass);
@@ -145,7 +144,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 				// put the fancy imagebar in the right position
 				echo $this->module()->getFancyImagebar();
 				$controller->addInlineJavaScript('
-					jQuery("main").before(jQuery("#fancy_imagebar").show());
+					jQuery("main").before(jQuery("#fancy-imagebar").show());
 				');
 			}
 		} catch (\ErrorException $ex) {

@@ -16,12 +16,14 @@
  */
 namespace JustCarmen\WebtreesAddOns\FancyImagebar;
 
+use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\Database;
 use Fisharebest\Webtrees\File;
 use Fisharebest\Webtrees\Filter;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Media;
 use Fisharebest\Webtrees\Query\QueryMedia;
+use Fisharebest\Webtrees\Theme;
 use Fisharebest\Webtrees\Tree;
 
 /**
@@ -68,13 +70,13 @@ class FancyImagebarClass extends FancyImagebarModule {
 			return($FIB_OPTIONS[$this->getTreeId()][$key]);
 		}
 	}
-	
+
 	private function setOptions($options) {
 		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
 		foreach ($options as $key => $value) {
 			$FIB_OPTIONS[$this->getTreeId()][strtoupper($key)] = $value;
 		}
-		$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));		
+		$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
 	}
 
 	/**
@@ -199,7 +201,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		foreach ($rows as $row) {
 			$list[] = $row->xref;
 		}
-		
+
 		if (count($list) === 0) {
 			$this->setOptions(array('images' => '0'));
 		}
@@ -273,27 +275,52 @@ class FancyImagebarClass extends FancyImagebarModule {
 	}
 
 	/**
+	 * Conditionally load the Fancy Imagebar
+	 * This class maybe called directly from a theme
+	 *
+	 * @global type $ctype
+	 * @return boolean
+	 */
+	public function loadFancyImagebar() {
+		global $ctype;
+
+		if (Auth::isSearchEngine() || Theme::theme()->themeId() === '_administration') {
+			return false;
+		}
+
+		$images = $this->options('images');
+		$all_pages = $this->options('allpages');
+		$homepage = $this->options('homepage');
+		$mypage = $this->options('mypage');
+
+		if ($images > 0 && ($all_pages || ($ctype == 'gedcom' && $homepage) || ($ctype == 'user' && $mypage))) {
+			return true;
+		}
+	}
+
+	/**
 	 * Get the Fancy Imagebar with chosen images and options
+	 * This class may be called directly from a theme
 	 *
 	 * @return html
 	 */
-	protected function getFancyImagebar() {
+	public function getFancyImagebar() {
 
 		$thumbnails = $this->getThumbnails();
 
 		if (count($thumbnails) === 0) {
 			return false;
 		}
-		
+
 		// fill up the srcImages array up to a total width of 2400px (for wider screens)
 		$srcImages = array();
-		$canvasWidth = 0;		
+		$canvasWidth = 0;
 		while ($canvasWidth < 2400) {
 			if ($this->options('random') === '1') {
 				// shuffle thumbnails before each repetition
 				shuffle($thumbnails);
 			}
-			
+
 			foreach ($thumbnails as $thumbnail) {
 				$canvasWidth = $canvasWidth + imagesx($thumbnail);
 				$srcImages[] = $thumbnail;
@@ -302,7 +329,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 				}
 			}
 		}
-				
+
 		$fancyImagebar = $this->createFancyImagebar($srcImages, $canvasWidth);
 		if ($this->options('tone') == 0) {
 			$fancyImagebar = $this->fancyImageBarSepia($fancyImagebar, $this->options('sepia'));
@@ -310,9 +337,16 @@ class FancyImagebarClass extends FancyImagebarModule {
 		if ($this->options('tone') == 1) {
 			$fancyImagebar = $this->fancyImageBarSepia($fancyImagebar, 0);
 		}
+		
+		// if the Fancy Imagebar is implemented in a theme we don't need to hide the imagebar on load.
+		if (method_exists(Theme::theme(), 'fancyImagebar')) {
+			$style = "";
+		} else {
+			$style = ' style="display:none"';
+		}
 		ob_start(); imagejpeg($fancyImagebar, null, 100); $NewFancyImageBar = ob_get_clean();
-		$html = '<div id="fancy_imagebar" style="display:none">
-					<img alt="fancy_imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '">
+		$html = '<div id="fancy-imagebar"' . $style . '>
+					<img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '">
 				</div>';
 
 		// output
@@ -326,7 +360,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function fancyImagebarMedia() {
 		$images = $this->options('images');
-		
+
 		if ($images === '1') {
 			$rows = $this->dbMedia();
 			foreach ($rows as $row) {
@@ -335,7 +369,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		} else {
 			$xrefs = $this->options('images');
 		}
-		
+
 		$list = array();
 		foreach ($xrefs as $xref) {
 			$tree = Tree::findById($this->getTreeId());
@@ -466,7 +500,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 				$new_height = $thumbheight;
 			}
 		} else {
-			$new_height = $thumbheight;	
+			$new_height = $thumbheight;
 			$new_width = $thumbwidth = $thumbheight * $ratio;
 		}
 
@@ -493,15 +527,15 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function createFancyImagebar($srcImages, $canvasWidth) {
 		$canvasHeight = $this->options('height');
-		
+
 		// create the FancyImagebar canvas to put the thumbs on
 		$fancyImagebar = imagecreatetruecolor($canvasWidth, $canvasHeight);
-		
+
 		$pos = 0;
 		foreach ($srcImages as $thumb) {
 			$x = $pos;
 			$pos = $pos + imagesx($thumb);
-			
+
 			imagecopy($fancyImagebar, $thumb, $x, 0, 0, 0, imagesx($thumb), $canvasHeight);
 		}
 		return $fancyImagebar;

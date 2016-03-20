@@ -68,11 +68,11 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 		switch ($mod_action) {
 			case 'admin_config':
 				if (Filter::postBool('save')) {
-					$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
-					$tree_id = Filter::postInteger('NEW_FIB_TREE');
-					$FIB_OPTIONS[$tree_id] = Filter::postArray('NEW_FIB_OPTIONS');
-					$tmp = Filter::post('NEW_FIB_IMAGES');
-					$images = empty($tmp) ? '0' : explode("|", Filter::post('NEW_FIB_IMAGES'));
+					$FIB_OPTIONS					 = unserialize($this->getSetting('FIB_OPTIONS'));
+					$tree_id						 = Filter::postInteger('NEW_FIB_TREE');
+					$FIB_OPTIONS[$tree_id]			 = Filter::postArray('NEW_FIB_OPTIONS');
+					$tmp							 = Filter::post('NEW_FIB_IMAGES');
+					$images							 = empty($tmp) ? '0' : explode("|", Filter::post('NEW_FIB_IMAGES'));
 					$FIB_OPTIONS[$tree_id]['IMAGES'] = $images;
 					$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
 
@@ -86,14 +86,14 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 
 					Log::addConfigurationLog($this->getTitle() . ' config updated');
 				}
-				$template = new AdminTemplate;
+				$template	 = new AdminTemplate;
 				return $template->pageContent();
 			case 'load_json':
 				return $this->module()->loadJson();
 			case 'admin_reset':
 				Database::prepare("DELETE FROM `##module_setting` WHERE setting_name LIKE 'FIB%'")->execute();
 				Log::addConfigurationLog($this->getTitle() . ' reset to default values');
-				$template = new AdminTemplate;
+				$template	 = new AdminTemplate;
 				return $template->pageContent();
 			default:
 				http_response_code(404);
@@ -115,7 +115,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 	public function getMenu() {
 		// We don't actually have a menu - this is just a convenient "hook" to execute code at the right time during page execution
 		global $controller;
-		
+
 		// Check if the Fancy Imagebar is implemented in a (custom) theme
 		if (method_exists(Theme::theme(), 'fancyImagebar')) {
 			return null;
@@ -124,15 +124,15 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 		try {
 			if ($this->module()->loadFancyImagebar()) {
 				// add js file to set a few theme depending styles
-				$parentclass = get_parent_class(Theme::theme());
+				$parentclass	 = get_parent_class(Theme::theme());
 				$parentclassname = explode('\\', $parentclass);
 				if (end($parentclassname) === 'AbstractTheme') {
-					$theme = Theme::theme()->themeId();
-					$childtheme = '';
+					$theme		 = Theme::theme()->themeId();
+					$childtheme	 = '';
 				} else {
 					$parenttheme = new $parentclass;
-					$theme = $parenttheme->themeId();
-					$childtheme = Theme::theme()->themeId();
+					$theme		 = $parenttheme->themeId();
+					$childtheme	 = Theme::theme()->themeId();
 				}
 
 				$controller->addInlineJavascript('

@@ -238,13 +238,13 @@ class AdminTemplate extends FancyImagebarClass {
 							<?php
 							switch ($this->options('images')) {
 								case '0':
-									$imagelist = "";
+									$imagelist	 = "";
 									break;
 								case '1':
-									$imagelist = implode("|", $this->getXrefs());
+									$imagelist	 = implode("|", $this->getXrefs());
 									break;
 								default:
-									$imagelist = implode("|", $this->options('images'));
+									$imagelist	 = implode("|", $this->options('images'));
 									break;
 							}
 							?>
@@ -355,7 +355,7 @@ class AdminTemplate extends FancyImagebarClass {
 				<?php echo I18N::translate('save') ?>
 			</button>
 			<button class="btn btn-primary" type="reset" onclick="if (confirm('<?php echo I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?') ?>'))
-								window.location.href = 'module.php?mod=<?php echo $this->getName() ?>&amp;mod_action=admin_reset';">
+						window.location.href = 'module.php?mod=<?php echo $this->getName() ?>&amp;mod_action=admin_reset';">
 				<i class="fa fa-recycle"></i>
 				<?php echo I18N::translate('reset') ?>
 			</button>

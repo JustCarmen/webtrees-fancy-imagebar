@@ -39,17 +39,17 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function setDefault($key) {
 		$FIB_DEFAULT = array(
-			'IMAGES'			=> '1', // All images
-			'IMAGE_FOLDER'		=> 'all', // All folders
-			'PHOTOS'			=> '1',
-			'HOMEPAGE'			=> '1',
-			'MYPAGE'			=> '1',
-			'ALLPAGES'			=> '0',
-			'RANDOM'			=> '1',
-			'TONE'				=> '2', // Colors
-			'SEPIA'				=> '30',// Example
-			'HEIGHT'			=> '60',
-			'SQUARE'			=> '1'
+			'IMAGES'		 => '1', // All images
+			'IMAGE_FOLDER'	 => 'all', // All folders
+			'PHOTOS'		 => '1',
+			'HOMEPAGE'		 => '1',
+			'MYPAGE'		 => '1',
+			'ALLPAGES'		 => '0',
+			'RANDOM'		 => '1',
+			'TONE'			 => '2', // Colors
+			'SEPIA'			 => '30', // Example
+			'HEIGHT'		 => '60',
+			'SQUARE'		 => '1'
 		);
 		return $FIB_DEFAULT[$key];
 	}
@@ -62,7 +62,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	protected function options($k) {
 		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
-		$key = strtoupper($k);
+		$key		 = strtoupper($k);
 
 		if (empty($FIB_OPTIONS[$this->getTreeId()]) || (is_array($FIB_OPTIONS[$this->getTreeId()]) && !array_key_exists($key, $FIB_OPTIONS[$this->getTreeId()]))) {
 			return $this->setDefault($key);
@@ -106,8 +106,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 	protected function getImageFolder() {
 		if (Filter::get('folder')) {
 			$this->setOptions(array(
-				'image_folder' => Filter::get('folder'),
-				'images' => '1'
+				'image_folder'	 => Filter::get('folder'),
+				'images'		 => '1'
 			));
 		}
 
@@ -148,11 +148,11 @@ class FancyImagebarClass extends FancyImagebarModule {
 		global $WT_TREE;
 
 		$MEDIA_DIRECTORY = $WT_TREE->getPreference('MEDIA_DIRECTORY');
-		$folders = QueryMedia::folderList();
+		$folders		 = QueryMedia::folderList();
 		array_shift($folders);
 
-		$folderlist = array();
-		$folderlist['all'] = I18N::translate('All');
+		$folderlist			 = array();
+		$folderlist['all']	 = I18N::translate('All');
 		foreach ($folders as $key => $value) {
 			if (count(glob(WT_DATA_DIR . $MEDIA_DIRECTORY . $value . '*')) > 0) {
 				$folder = array_filter(explode("/", $value));
@@ -172,7 +172,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return array
 	 */
 	private function dbMedia($LIMIT = '') {
-		$sql = "SELECT SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id";
+		$sql			 = "SELECT SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id";
 		$args['tree_id'] = $this->getTreeId();
 
 		if ($this->getImageFolder()) {
@@ -196,8 +196,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return list
 	 */
 	protected function getXrefs() {
-		$rows = $this->dbMedia();
-		$list = array();
+		$rows	 = $this->dbMedia();
+		$list	 = array();
 		foreach ($rows as $row) {
 			$list[] = $row->xref;
 		}
@@ -213,8 +213,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 *
 	 */
 	protected function loadJson() {
-		$start = Filter::getInteger('start');
-		$length = Filter::getInteger('length');
+		$start	 = Filter::getInteger('start');
+		$length	 = Filter::getInteger('length');
 
 		if ($length > 0) {
 			$LIMIT = " LIMIT " . $start . ',' . $length;
@@ -225,13 +225,13 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$rows = $this->dbMedia($LIMIT);
 
 		// Total filtered/unfiltered rows
-		$recordsTotal = $recordsFiltered = Database::prepare("SELECT FOUND_ROWS()")->fetchOne();
+		$recordsTotal	 = $recordsFiltered = Database::prepare("SELECT FOUND_ROWS()")->fetchOne();
 
 		$data = array();
 		foreach ($rows as $row) {
-			$tree = Tree::findById($row->tree_id);
+			$tree		 = Tree::findById($row->tree_id);
 			$mediaobject = Media::getInstance($row->xref, $tree);
-			$data[] = array(
+			$data[]		 = array(
 				$this->displayImage($mediaobject)
 			);
 		}
@@ -288,10 +288,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 			return false;
 		}
 
-		$images = $this->options('images');
-		$all_pages = $this->options('allpages');
-		$homepage = $this->options('homepage');
-		$mypage = $this->options('mypage');
+		$images		 = $this->options('images');
+		$all_pages	 = $this->options('allpages');
+		$homepage	 = $this->options('homepage');
+		$mypage		 = $this->options('mypage');
 
 		if ($images > 0 && ($all_pages || ($ctype == 'gedcom' && $homepage) || ($ctype == 'user' && $mypage))) {
 			return true;
@@ -313,7 +313,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 
 		// fill up the srcImages array up to a total width of 2400px (for wider screens)
-		$srcImages = array();
+		$srcImages	 = array();
 		$canvasWidth = 0;
 		while ($canvasWidth < 2400) {
 			if ($this->options('random') === '1') {
@@ -337,15 +337,15 @@ class FancyImagebarClass extends FancyImagebarModule {
 		if ($this->options('tone') == 1) {
 			$fancyImagebar = $this->fancyImageBarSepia($fancyImagebar, 0);
 		}
-		
+
 		// if the Fancy Imagebar is implemented in a theme we don't need to hide the imagebar on load.
 		if (method_exists(Theme::theme(), 'fancyImagebar')) {
 			$style = "";
 		} else {
 			$style = ' style="display:none"';
 		}
-		ob_start(); imagejpeg($fancyImagebar, null, 100); $NewFancyImageBar = ob_get_clean();
-		$html = '<div id="fancy-imagebar"' . $style . '>
+		ob_start(); imagejpeg($fancyImagebar, null, 100); $NewFancyImageBar	 = ob_get_clean();
+		$html				 = '<div id="fancy-imagebar"' . $style . '>
 					<img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '">
 				</div>';
 
@@ -372,7 +372,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 
 		$list = array();
 		foreach ($xrefs as $xref) {
-			$tree = Tree::findById($this->getTreeId());
+			$tree		 = Tree::findById($this->getTreeId());
 			$mediaobject = Media::getInstance($xref, $tree);
 			if ($mediaobject && $mediaobject->canShow() && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
 				$list[] = $mediaobject;
@@ -429,7 +429,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	protected function emptyCache() {
 		foreach (glob($this->cacheDir() . '*') as $cache_file) {
 			if (is_file($cache_file)) {
-				$tmp = explode('-', basename($cache_file));
+				$tmp	 = explode('-', basename($cache_file));
 				$tree_id = intval($tmp[0]);
 				if ($tree_id === $this->getTreeId()) {
 					unlink($cache_file);
@@ -459,9 +459,9 @@ class FancyImagebarClass extends FancyImagebarModule {
 				if (is_file($cache_filename)) {
 					$thumbnails[] = imagecreatefromjpeg($cache_filename);
 				} else {
-					$thumbnail = $this->fancyThumb($mediaobject, $this->options('height'), $this->options('square'));
+					$thumbnail		 = $this->fancyThumb($mediaobject, $this->options('height'), $this->options('square'));
 					imagejpeg($thumbnail, $cache_filename);
-					$thumbnails[] = $thumbnail;
+					$thumbnails[]	 = $thumbnail;
 				}
 			}
 		}
@@ -475,17 +475,17 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return thumbnail
 	 */
 	private function fancyThumb(Media $mediaobject, $thumbheight, $square) {
-		$filename = $mediaobject->getServerFilename();
-		$type = $mediaobject->mimeType();
+		$filename	 = $mediaobject->getServerFilename();
+		$type		 = $mediaobject->mimeType();
 
 		//getting the image dimensions
 		list($imagewidth, $imageheight) = getimagesize($filename);
 		switch ($type) {
 			case 'image/jpeg':
-				$image = imagecreatefromjpeg($filename);
+				$image	 = imagecreatefromjpeg($filename);
 				break;
 			case 'image/png':
-				$image = imagecreatefrompng($filename);
+				$image	 = imagecreatefrompng($filename);
 				break;
 		}
 
@@ -493,15 +493,15 @@ class FancyImagebarClass extends FancyImagebarModule {
 		if ($square) {
 			$thumbwidth = $thumbheight;
 			if ($ratio < 1) {
-				$new_height = $thumbwidth / $ratio;
-				$new_width = $thumbwidth;
+				$new_height	 = $thumbwidth / $ratio;
+				$new_width	 = $thumbwidth;
 			} else {
-				$new_width = $thumbheight * $ratio;
-				$new_height = $thumbheight;
+				$new_width	 = $thumbheight * $ratio;
+				$new_height	 = $thumbheight;
 			}
 		} else {
-			$new_height = $thumbheight;
-			$new_width = $thumbwidth = $thumbheight * $ratio;
+			$new_height	 = $thumbheight;
+			$new_width	 = $thumbwidth	 = $thumbheight * $ratio;
 		}
 
 		// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
@@ -533,7 +533,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 
 		$pos = 0;
 		foreach ($srcImages as $thumb) {
-			$x = $pos;
+			$x	 = $pos;
 			$pos = $pos + imagesx($thumb);
 
 			imagecopy($fancyImagebar, $thumb, $x, 0, 0, 0, imagesx($thumb), $canvasHeight);
@@ -552,16 +552,16 @@ class FancyImagebarClass extends FancyImagebarModule {
 		imagetruecolortopalette($fancyImagebar, 1, 256);
 		$palletsize = imagecolorstotal($fancyImagebar);
 		for ($c = 0; $c < $palletsize; $c++) {
-			$col = imagecolorsforindex($fancyImagebar, $c);
+			$col	 = imagecolorsforindex($fancyImagebar, $c);
 			$new_col = floor($col['red'] * 0.2125 + $col['green'] * 0.7154 + $col['blue'] * 0.0721);
 			if ($depth > 0) {
-				$r = $new_col + $depth;
-				$g = floor($new_col + $depth / 1.86);
-				$b = floor($new_col + $depth / -3.48);
+				$r	 = $new_col + $depth;
+				$g	 = floor($new_col + $depth / 1.86);
+				$b	 = floor($new_col + $depth / -3.48);
 			} else {
-				$r = $new_col;
-				$g = $new_col;
-				$b = $new_col;
+				$r	 = $new_col;
+				$g	 = $new_col;
+				$b	 = $new_col;
 			}
 			imagecolorset($fancyImagebar, $c, max(0, min(255, $r)), max(0, min(255, $g)), max(0, min(255, $b)));
 		}

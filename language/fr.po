@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-01-15 05:15+0100\n"
+"POT-Creation-Date: 2016-03-20 22:27+0100\n"
 "PO-Revision-Date: 2015-08-13 15:53+0200\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -21,7 +21,8 @@ msgstr "Toutes les pages"
 msgid "Amount of sepia"
 msgstr "Quantité de sépia"
 
-#: module.php:64
+#. I18N: Description of the module
+#: module.php:65
 msgid "An imagebar with small images between header and content."
 msgstr "Un imagebar avec de petites images entre l'entête et le contenu."
 
@@ -33,7 +34,8 @@ msgstr "Choisissez les images que vous voulez afficher dans Fancy Imagebar"
 msgid "Enter a value between 0 and 100"
 msgstr "Entrez une valeur entre 0 et 100"
 
-#: module.php:59
+#. I18N: Name of the module
+#: module.php:60
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
 
@@ -80,7 +82,7 @@ msgstr "Afficher Fancy Imagebar sur "
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Le module Fancy Imagebar  respecte les paramètres de confidentialité ! "
 
-#: src/FancyImagebarClass.php:270
+#: src/FancyImagebarClass.php:272
 #, php-format
 msgid "The image “%s” doesn’t exist or is not a valid image"
 msgstr "L'image \"%s\" n'existe pas ou n'est pas une image valide "
@@ -96,3 +98,7 @@ msgstr "Les réglages seront réinitialisés (pour tous les arbres). Êtes-vous 
 #: src/Template/AdminTemplate.php:343
 msgid "Use square thumbs"
 msgstr ""
+
+#, fuzzy
+#~ msgid "My page"
+#~ msgstr "Toutes les pages"

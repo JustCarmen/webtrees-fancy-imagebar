@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
-"POT-Creation-Date: 2016-01-15 05:15+0100\n"
+"POT-Creation-Date: 2016-03-20 22:27+0100\n"
 "PO-Revision-Date: 2016-01-15 05:24+0100\n"
 "Last-Translator: Carmen Pijpers <carmen@justcarmen.nl>\n"
 "Language-Team: \n"
@@ -22,7 +22,8 @@ msgstr "Alle pagina's"
 msgid "Amount of sepia"
 msgstr "Hoeveelheid sepia"
 
-#: module.php:64
+#. I18N: Description of the module
+#: module.php:65
 msgid "An imagebar with small images between header and content."
 msgstr "Een afbeeldingenbalk met kleine afbeeldingen tussen header en inhoud."
 
@@ -34,7 +35,8 @@ msgstr "Kies welke afbeeldingen u wilt tonen in de Fancy Imagebar"
 msgid "Enter a value between 0 and 100"
 msgstr "Voer een waarde tussen 0 en 100 in"
 
-#: module.php:59
+#. I18N: Name of the module
+#: module.php:60
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
 
@@ -78,7 +80,7 @@ msgstr "Toon de Fancy Imagebar op"
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "De Fancy Imagebar module respecteert privacy instellingen!"
 
-#: src/FancyImagebarClass.php:270
+#: src/FancyImagebarClass.php:272
 #, php-format
 msgid "The image “%s” doesn’t exist or is not a valid image"
 msgstr "De afbeelding “%s” bestaat niet of is geen geldige afbeelding"
@@ -94,3 +96,7 @@ msgstr "De instellingen worden teruggezet naar de standaardinstellingen (voor al
 #: src/Template/AdminTemplate.php:343
 msgid "Use square thumbs"
 msgstr "Gebruik vierkante miniatuurplaatjes"
+
+#, fuzzy
+#~ msgid "My page"
+#~ msgstr "Alle pagina's"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
-"POT-Creation-Date: 2016-01-15 05:15+0100\n"
+"POT-Creation-Date: 2016-03-20 22:27+0100\n"
 "PO-Revision-Date: 2015-07-04 14:20+0200\n"
 "Last-Translator: Carmen Pijpers <carmen@justcarmen.nl>\n"
 "Language-Team: \n"
@@ -9,7 +9,7 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.6\n"
+"X-Generator: Poedit 1.8.7\n"
 "X-Poedit-Basepath: ..\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
@@ -24,7 +24,8 @@ msgstr ""
 msgid "Amount of sepia"
 msgstr ""
 
-#: module.php:64
+#. I18N: Description of the module
+#: module.php:65
 msgid "An imagebar with small images between header and content."
 msgstr ""
 
@@ -36,7 +37,8 @@ msgstr ""
 msgid "Enter a value between 0 and 100"
 msgstr ""
 
-#: module.php:59
+#. I18N: Name of the module
+#: module.php:60
 msgid "Fancy Imagebar"
 msgstr ""
 
@@ -80,7 +82,7 @@ msgstr ""
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr ""
 
-#: src/FancyImagebarClass.php:270
+#: src/FancyImagebarClass.php:272
 #, php-format
 msgid "The image “%s” doesn’t exist or is not a valid image"
 msgstr ""

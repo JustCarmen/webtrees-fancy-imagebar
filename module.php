@@ -28,6 +28,8 @@ use Fisharebest\Webtrees\Module\ModuleMenuInterface;
 use Fisharebest\Webtrees\Theme;
 use JustCarmen\WebtreesAddOns\FancyImagebar\Template\AdminTemplate;
 
+define('FIB_VERSION', '1.7.4');
+
 class FancyImagebarModule extends AbstractModule implements ModuleConfigInterface, ModuleMenuInterface {
 
 	/** @var string location of the Fancy imagebar module files */
@@ -60,7 +62,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 
 	// Extend Module
 	public function getDescription() {
-		return /* I18N: Description of the module */ I18N::translate('An imagebar with small images between header and content.');
+		return /* I18N: Description of the module */ I18N::translate('An imagebar with small images between header and content.') . '<br><span class="small text-muted">' . I18N::translate('Version') . ' ' . FIB_VERSION . ' | by JustCarmen | <a href="http://www.justcarmen.nl/fancy-modules/fancy-imagebar/">' . I18N::translate('Show details') . '</a></span>';
 	}
 
 	// Extend ModuleConfigInterface

@@ -453,6 +453,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 
 		$mediaobjects = $this->fancyImagebarMedia();
+		$thumbnails = array();
 		foreach ($mediaobjects as $mediaobject) {
 			if (file_exists($mediaobject->getServerFilename())) {
 				$cache_filename = $this->cacheFileName($mediaobject);
@@ -460,8 +461,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 					$thumbnails[] = imagecreatefromjpeg($cache_filename);
 				} else {
 					$thumbnail		 = $this->fancyThumb($mediaobject, $this->options('height'), $this->options('square'));
-					imagejpeg($thumbnail, $cache_filename);
-					$thumbnails[]	 = $thumbnail;
+					if ($thumbnail) {
+						imagejpeg($thumbnail, $cache_filename);
+						$thumbnails[]	 = $thumbnail;
+					}
 				}
 			}
 		}

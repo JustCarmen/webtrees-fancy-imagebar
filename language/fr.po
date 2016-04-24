@@ -46,7 +46,7 @@ msgstr "Afficher Fancy Imagebar sur "
 
 #: src/Template/AdminTemplate.php:214
 #, fuzzy
-msgid "Here you can choose which images should be shown in the Fancy Imagebar. If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated."
+msgid "Here you can choose which images should be shown in the Fancy Imagebar. If there are fewer images chosen than needed to fill up the entire Fancy Imagebar, the images will be repeated."
 msgstr "Ici vous pouvez choisir les images qui devraient être présentées dans Fancy Imagebar. Décochez les images que vous ne voulez pas montrer. Si il ya moins d'images choisies que nécessaires pour remplir l'ensemble de Fancy Imagebar, les images seront répétées."
 
 #: src/Template/AdminTemplate.php:298
@@ -88,7 +88,8 @@ msgid "The image “%s” doesn’t exist or is not a valid image"
 msgstr "L'image \"%s\" n'existe pas ou n'est pas une image valide "
 
 #: src/Template/AdminTemplate.php:121
-msgid "The settings are changed. You will loose your changes if you switch trees."
+#, fuzzy
+msgid "The settings are changed. You will lose your changes if you switch trees."
 msgstr "Ces réglages sont modifiés. Vous perdrez vos modifications si vous passez sur les arbres."
 
 #: src/Template/AdminTemplate.php:357

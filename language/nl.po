@@ -2,16 +2,16 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
 "POT-Creation-Date: 2016-03-20 22:27+0100\n"
-"PO-Revision-Date: 2016-01-15 05:24+0100\n"
+"PO-Revision-Date: 2016-04-24 10:52+0000\n"
 "Last-Translator: Carmen Pijpers <carmen@justcarmen.nl>\n"
-"Language-Team: \n"
+"Language-Team: Dutch <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/nl/>\n"
 "Language: nl\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"X-Generator: Poedit 1.8.6\n"
+"Plural-Forms: nplurals=2; plural=n != 1;\n"
+"X-Generator: Weblate 2.5\n"
 "X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
 #: src/Template/AdminTemplate.php:282
@@ -54,7 +54,7 @@ msgstr "Kleurtoon afbeeldingen"
 
 #: src/Template/AdminTemplate.php:237
 msgid "No images to display for this tree"
-msgstr "Voor deze stamboom kunnen geen afbeeldingen worden weergegeven."
+msgstr "Voor deze stamboom kunnen geen afbeeldingen worden weergegeven"
 
 #: src/Template/AdminTemplate.php:215
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already."

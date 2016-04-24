@@ -24,8 +24,12 @@ On the Fancy Imagebar Configuration page you can set some other options too:
 *   Height of the Fancy Imagebar
 *	Use square thumbs or proportional resized thumbs
 
-Installation, updating and translations
----------------------------------------
+Translations
+------------
+You can help to translate this module. Updates to translations should be made at https://translate.webtrees.net/projects/justcarmen/. Changes made there will be pushed to the git repository periodically and will be available on the development version of the module. They will be included in the next release of this module.
+
+Installation & upgrading
+------------------------
 For more information about these subjects go to the [JustCarmen help pages][1].
 
 Bugs and feature requests

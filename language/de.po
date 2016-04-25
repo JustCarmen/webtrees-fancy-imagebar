@@ -86,7 +86,8 @@ msgid "The image “%s” doesn’t exist or is not a valid image"
 msgstr "Das Bild “%s” existiert nicht oder ist kein gültiges Bild."
 
 #: src/Template/AdminTemplate.php:121
-msgid "The settings are changed. You will loose your changes if you switch trees."
+#, fuzzy
+msgid "The settings are changed. You will lose your changes if you switch trees."
 msgstr "Die Einstellungen wurden geändert. Ihre Änderungen werden verloren gehen, wenn Sie den Stammbaum wechseln."
 
 #: src/Template/AdminTemplate.php:357

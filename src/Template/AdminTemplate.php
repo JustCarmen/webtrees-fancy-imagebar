@@ -118,7 +118,7 @@ class AdminTemplate extends FancyImagebarClass {
 
 			var current = jQuery("#tree option:selected");
 			jQuery("#tree").change(function() {
-				if (formChanged == false || (formChanged == true && confirm("' . I18N::translate('The settings are changed. You will loose your changes if you switch trees.') . '"))) {
+				if (formChanged == false || (formChanged == true && confirm("' . I18N::translate('The settings are changed. You will lose your changes if you switch trees.') . '"))) {
 					var ged = jQuery("option:selected", this).data("ged");
 					var treeName = jQuery("option:selected", this).text();
 					jQuery.get("module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged, function(data) {
@@ -211,7 +211,7 @@ class AdminTemplate extends FancyImagebarClass {
 								<button type="button" class="close" data-dismiss="alert" aria-label="' . I18N::translate('close') . '">
 									<span aria-hidden="true">&times;</span>
 								</button>
-								<p class="small"><?php echo I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. If there are less images choosen then needed to fill up the entire Fancy Imagebar, the images will be repeated.') ?></p>
+								<p class="small"><?php echo I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. If there are fewer images chosen than needed to fill up the entire Fancy Imagebar, the images will be repeated.') ?></p>
 								<p class="small"><?php echo I18N::translate('Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.') ?></p>
 								<p class="small"><?php echo I18N::translate('The Fancy Imagebar module respects privacy settings!') ?></p>
 							</div>

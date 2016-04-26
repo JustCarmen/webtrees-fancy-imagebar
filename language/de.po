@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
 "POT-Creation-Date: 2016-04-25 06:52+0200\n"
-"PO-Revision-Date: 2016-04-24 19:50+0000\n"
+"PO-Revision-Date: 2016-04-30 18:23+0000\n"
 "Last-Translator: Martin Pannier <der@bauschaffen.de>\n"
 "Language-Team: German <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/de/>\n"
 "Language: de\n"
@@ -45,9 +45,8 @@ msgid "Height of the Fancy Imagebar"
 msgstr "Höhe der Fancy Imagebar"
 
 #: src/Template/AdminTemplate.php:214
-#, fuzzy
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If there are fewer images chosen than needed to fill up the entire Fancy Imagebar, the images will be repeated."
-msgstr "Hier können Sie auswählen, welche Bilder in der Fancy Imagebar angezeigt werden sollen. Deaktivieren Sie diejenigen Bilder, die Sie nicht anzeigen wollen. Werden weniger Bilder ausgewählt, als zur Füllung der ganzen Bildleiste benötig, werden die Bilder wiederholt."
+msgstr "Hier können Sie auswählen, welche Bilder in der Fancy Imagebar angezeigt werden sollen. Deaktivieren Sie diejenigen Bilder, die Sie nicht anzeigen wollen. Werden weniger Bilder ausgewählt, als zur Füllung der ganzen Bildleiste benötigt, werden die Bilder wiederholt."
 
 #: src/Template/AdminTemplate.php:298
 msgid "Images Tone"

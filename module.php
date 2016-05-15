@@ -28,7 +28,7 @@ use Fisharebest\Webtrees\Module\ModuleMenuInterface;
 use Fisharebest\Webtrees\Theme;
 use JustCarmen\WebtreesAddOns\FancyImagebar\Template\AdminTemplate;
 
-define('FIB_VERSION', '1.7.4');
+define('FIB_VERSION', '1.7.5-dev');
 
 class FancyImagebarModule extends AbstractModule implements ModuleConfigInterface, ModuleMenuInterface {
 
@@ -42,7 +42,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 
 		// register the namespaces
 		$loader = new ClassLoader();
-		$loader->addPsr4('JustCarmen\\WebtreesAddOns\\FancyImagebar\\', $this->directory . '/src');
+		$loader->addPsr4('JustCarmen\\WebtreesAddOns\\FancyImagebar\\', $this->directory . '/app');
 		$loader->register();
 	}
 

@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
 "POT-Creation-Date: 2016-04-25 06:52+0200\n"
-"PO-Revision-Date: 2015-07-04 14:20+0200\n"
-"Last-Translator: Automatically generated\n"
-"Language-Team: none\n"
+"PO-Revision-Date: 2016-06-18 17:06+0000\n"
+"Last-Translator: Chris Theron <tronsmit@gmail.com>\n"
+"Language-Team: Afrikaans <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/af/>\n"
 "Language: af\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Poedit 1.8.7\n"
+"X-Generator: Weblate 2.5\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
@@ -18,83 +18,83 @@ msgstr ""
 
 #: src/Template/AdminTemplate.php:282
 msgid "All pages"
-msgstr ""
+msgstr "Alle bladsye"
 
 #: src/Template/AdminTemplate.php:307
 msgid "Amount of sepia"
-msgstr ""
+msgstr "Hoeveelheid sepia"
 
 #. I18N: Description of the module
 #: module.php:65
 msgid "An imagebar with small images between header and content."
-msgstr ""
+msgstr "’n Beeldbalk met klein beelde tussen die voorstuk en inhoud."
 
 #: src/Template/AdminTemplate.php:204
 msgid "Choose which images you want to show in the Fancy Imagebar"
-msgstr ""
+msgstr "Kies watter beelde jy in die Fancy Imagebar wil vertoon"
 
 #: src/Template/AdminTemplate.php:319
 msgid "Enter a value between 0 and 100"
-msgstr ""
+msgstr "Voer ’n waarde tussen 0 en 100 in"
 
 #. I18N: Name of the module
 #: module.php:60
 msgid "Fancy Imagebar"
-msgstr ""
+msgstr "Fancy Imagebar"
 
 #: src/Template/AdminTemplate.php:325
 msgid "Height of the Fancy Imagebar"
-msgstr ""
+msgstr "Hoogte van die Fancy Imagebar"
 
 #: src/Template/AdminTemplate.php:214
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If there are fewer images chosen than needed to fill up the entire Fancy Imagebar, the images will be repeated."
-msgstr ""
+msgstr "Hier kan jy kies watter beelde in die Fancy IMagebar vertoon moet word. As daar minder beelde is as wat nodig is om die volledige Famcy Imagebar vol te maak, sal die beelde herhaal word."
 
 #: src/Template/AdminTemplate.php:298
 msgid "Images Tone"
-msgstr ""
+msgstr "Kleurtoon van beelde"
 
 #: src/Template/AdminTemplate.php:237
 msgid "No images to display for this tree"
-msgstr ""
+msgstr "Daar is geen beelde vir hierdie stamboom nie"
 
 #: src/Template/AdminTemplate.php:215
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already."
-msgstr ""
+msgstr "Slegs lokale “jpg” of “png” beelde word ondersteun deur hierdie module. Eksterne beelde word nie ondersteun nie. Dit is nie moontlik om die deurskynheid van png miniature te behou nie. Deurskynende png-miniature verkry ’n swart agtergrond in die Fancy Imagebar. Die beelde beelde in hierdie tabel het alreeds die regte spesifikasies."
 
 #: src/Template/AdminTemplate.php:228
 msgid "Only show images with type = “photo”"
-msgstr ""
+msgstr "Vertoon slegs beelde met die tipe=“foto”"
 
 #: src/Template/AdminTemplate.php:84 src/Template/AdminTemplate.php:128
 msgid "Options for"
-msgstr ""
+msgstr "Opsies vir"
 
 #: src/Template/AdminTemplate.php:289
 msgid "Random images"
-msgstr ""
+msgstr "Willekeurige beelde"
 
 #: src/Template/AdminTemplate.php:272
 msgid "Show Fancy Imagebar on"
-msgstr ""
+msgstr "Vertoon die Fancy Imagebar op"
 
 #: src/Template/AdminTemplate.php:216
 msgid "The Fancy Imagebar module respects privacy settings!"
-msgstr ""
+msgstr "Die Fancy Imagebar respekteer privaatheidinstellinge!"
 
 #: src/FancyImagebarClass.php:272
 #, php-format
 msgid "The image “%s” doesn’t exist or is not a valid image"
-msgstr ""
+msgstr "Die beeld “%s” bestaan nie of is nie ’n geldige beeld nie"
 
 #: src/Template/AdminTemplate.php:121
 msgid "The settings are changed. You will lose your changes if you switch trees."
-msgstr ""
+msgstr "Die instellings is verander. Jy sal jou veranderinge verloor as jy na ’n ander stamboom oorskakel."
 
 #: src/Template/AdminTemplate.php:357
 msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
-msgstr ""
+msgstr "Die instellings sal na die verstekwaardes (vir all stambome) ingestel word. Is jy seker dat jy dit wil doen?"
 
 #: src/Template/AdminTemplate.php:343
 msgid "Use square thumbs"
-msgstr ""
+msgstr "Gebruik vierkantige miniature"

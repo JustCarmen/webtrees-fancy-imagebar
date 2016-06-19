@@ -287,14 +287,16 @@ class FancyImagebarClass extends FancyImagebarModule {
 		if (Auth::isSearchEngine() || Theme::theme()->themeId() === '_administration') {
 			return false;
 		}
+		
+		if ($this->fancyImagebarMedia()) {
+			$images		 = $this->options('images');
+			$all_pages	 = $this->options('allpages');
+			$homepage	 = $this->options('homepage');
+			$mypage		 = $this->options('mypage');
 
-		$images		 = $this->options('images');
-		$all_pages	 = $this->options('allpages');
-		$homepage	 = $this->options('homepage');
-		$mypage		 = $this->options('mypage');
-
-		if ($images > 0 && ($all_pages || ($ctype == 'gedcom' && $homepage) || ($ctype == 'user' && $mypage))) {
-			return true;
+			if ($images > 0 && ($all_pages || ($ctype == 'gedcom' && $homepage) || ($ctype == 'user' && $mypage))) {
+				return true;
+			}
 		}
 	}
 
@@ -360,7 +362,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function fancyImagebarMedia() {
 		$images = $this->options('images');
-
+		
+		$xrefs = array();
 		if ($images === '1') {
 			$rows = $this->dbMedia();
 			foreach ($rows as $row) {

@@ -39,7 +39,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function setDefault($key) {
 		$FIB_DEFAULT = array(
-			'IMAGES'		 => '1', // All images
+			'IMAGES'		 => array(), // All images
 			'IMAGE_FOLDER'	 => 'all', // All folders
 			'PHOTOS'		 => '1',
 			'HOMEPAGE'		 => '1',
@@ -203,7 +203,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 
 		if (count($list) === 0) {
-			$this->setOptions(array('images' => '0'));
+			$this->setOptions(array('images[0]' => ''));
 		}
 		return $list;
 	}
@@ -287,16 +287,13 @@ class FancyImagebarClass extends FancyImagebarModule {
 		if (Auth::isSearchEngine() || Theme::theme()->themeId() === '_administration') {
 			return false;
 		}
-		
-		if ($this->fancyImagebarMedia()) {
-			$images		 = $this->options('images');
-			$all_pages	 = $this->options('allpages');
-			$homepage	 = $this->options('homepage');
-			$mypage		 = $this->options('mypage');
 
-			if ($images > 0 && ($all_pages || ($ctype == 'gedcom' && $homepage) || ($ctype == 'user' && $mypage))) {
-				return true;
-			}
+		$all_pages	 = $this->options('allpages');
+		$homepage	 = $this->options('homepage');
+		$mypage		 = $this->options('mypage');
+
+		if ($all_pages || ($ctype == 'gedcom' && $homepage) || ($ctype == 'user' && $mypage)) {
+			return true;
 		}
 	}
 
@@ -362,15 +359,14 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function fancyImagebarMedia() {
 		$images = $this->options('images');
-		
-		$xrefs = array();
-		if ($images === '1') {
+
+		if (empty($images)) {
 			$rows = $this->dbMedia();
 			foreach ($rows as $row) {
 				$xrefs[] = $row->xref;
 			}
 		} else {
-			$xrefs = $this->options('images');
+			$xrefs = $images;
 		}
 
 		$list = array();

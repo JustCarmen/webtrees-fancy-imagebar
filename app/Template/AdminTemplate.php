@@ -236,16 +236,11 @@ class AdminTemplate extends FancyImagebarClass {
 							<!-- IMAGE LIST -->
 							<h3 id="no-images" class="hidden"><?php echo I18N::translate('No images to display for this tree') ?></h3>
 							<?php
-							switch ($this->options('images')) {
-								case '0':
-									$imagelist	 = "";
-									break;
-								case '1':
-									$imagelist	 = implode("|", $this->getXrefs());
-									break;
-								default:
-									$imagelist	 = implode("|", $this->options('images'));
-									break;
+							if (empty($this->options('images'))) {
+								// we have not used the configuration page yet so use the default (list all images)
+								$imagelist	 = implode("|", $this->getXrefs());
+							} else {
+								$imagelist	 = implode("|", $this->options('images'));
 							}
 							?>
 							<input id="imagelist" type="hidden" name="NEW_FIB_IMAGES" value = "<?php echo $imagelist ?>">

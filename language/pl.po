@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
-"POT-Creation-Date: 2016-04-25 06:52+0200\n"
+"POT-Creation-Date: 2016-07-08 09:30+0200\n"
 "PO-Revision-Date: 2016-05-05 12:32+0000\n"
 "Last-Translator: Łukasz Wileński <lukas.the.best@poczta.fm>\n"
 "Language-Team: Polish <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/pl/>\n"
@@ -16,85 +16,85 @@ msgstr ""
 "X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: src/Template/AdminTemplate.php:282
+#: app/Template/AdminTemplate.php:282
 msgid "All pages"
 msgstr "Wszystkie strony"
 
-#: src/Template/AdminTemplate.php:307
+#: app/Template/AdminTemplate.php:307
 msgid "Amount of sepia"
 msgstr "Wielkość sepii"
 
 #. I18N: Description of the module
-#: module.php:65
+#: module.php:66
 msgid "An imagebar with small images between header and content."
 msgstr "Pasek złożony z małych zdjęć między nagłówkiem a treścią."
 
-#: src/Template/AdminTemplate.php:204
+#: app/Template/AdminTemplate.php:204
 msgid "Choose which images you want to show in the Fancy Imagebar"
 msgstr "Wybierz zdjęcia, które mają zostać pokazane w pasku zdjęć"
 
-#: src/Template/AdminTemplate.php:319
+#: app/Template/AdminTemplate.php:319
 msgid "Enter a value between 0 and 100"
 msgstr "Wprowadź wartość pomiędzy 0 a 100"
 
 #. I18N: Name of the module
-#: module.php:60
+#: module.php:61
 msgid "Fancy Imagebar"
 msgstr "Ozdobny pasek zdjęć"
 
-#: src/Template/AdminTemplate.php:325
+#: app/Template/AdminTemplate.php:325
 msgid "Height of the Fancy Imagebar"
 msgstr "Wysokość paska zdjęć"
 
-#: src/Template/AdminTemplate.php:214
+#: app/Template/AdminTemplate.php:214
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If there are fewer images chosen than needed to fill up the entire Fancy Imagebar, the images will be repeated."
 msgstr "W tym miejscu można wybrać które zdjęcia powinny zostać pokazane w pasku zdjęć. Jeśli zostanie wybranych tylko kilka zdjęć będą się one powtarzać aby wypełnić całą szerokość strony."
 
-#: src/Template/AdminTemplate.php:298
+#: app/Template/AdminTemplate.php:298
 msgid "Images Tone"
 msgstr "Ton zdjęć"
 
-#: src/Template/AdminTemplate.php:237
+#: app/Template/AdminTemplate.php:237
 msgid "No images to display for this tree"
 msgstr "Brak zdjęć do wyświetlenia w danym drzewie"
 
-#: src/Template/AdminTemplate.php:215
+#: app/Template/AdminTemplate.php:215
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already."
 msgstr "Uwaga: tylko lokalne obrazy z rozszerzeniem „jpg” lub „png” są obsługiwane przez ten moduł. Obrazy zewnętrzne nie są obsługiwane. Nie jest możliwe, aby zachować przezroczystość miniatury w formacie „png” w pasku zdjęć. Przezroczyste miniaturki otrzymają czarne tło. Obrazy pokazane w tej tabeli mają już odpowiednie specyfikacje."
 
-#: src/Template/AdminTemplate.php:228
+#: app/Template/AdminTemplate.php:228
 msgid "Only show images with type = “photo”"
 msgstr "Pokaż tylko obrazy z typem = „zdjęcie”"
 
-#: src/Template/AdminTemplate.php:84 src/Template/AdminTemplate.php:128
+#: app/Template/AdminTemplate.php:84 app/Template/AdminTemplate.php:128
 msgid "Options for"
 msgstr "Opcje dla"
 
-#: src/Template/AdminTemplate.php:289
+#: app/Template/AdminTemplate.php:289
 msgid "Random images"
 msgstr "Losowe zdjęcia"
 
-#: src/Template/AdminTemplate.php:272
+#: app/Template/AdminTemplate.php:272
 msgid "Show Fancy Imagebar on"
 msgstr "Pokaż pasek zdjęć na"
 
-#: src/Template/AdminTemplate.php:216
+#: app/Template/AdminTemplate.php:216
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Moduł paska zdjęć przestrzega ustawień prywatności!"
 
-#: src/FancyImagebarClass.php:272
+#: app/FancyImagebarClass.php:272
 #, php-format
 msgid "The image “%s” doesn’t exist or is not a valid image"
 msgstr "Obraz „%s” nie istnieje lub nie jest prawidłowym obrazem"
 
-#: src/Template/AdminTemplate.php:121
+#: app/Template/AdminTemplate.php:121
 msgid "The settings are changed. You will lose your changes if you switch trees."
 msgstr "Ustawienia zostały zmienione. Zmiany zostaną utracone po zmianie drzewa."
 
-#: src/Template/AdminTemplate.php:357
+#: app/Template/AdminTemplate.php:357
 msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
 msgstr "Ustawienia zostaną zresetowane do wartości domyślnych (dla wszystkich drzew). Czy na pewno chcesz to zrobić?"
 
-#: src/Template/AdminTemplate.php:343
+#: app/Template/AdminTemplate.php:343
 msgid "Use square thumbs"
 msgstr "Użyj kwadratowych miniaturek"

@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2016-03-20 22:27+0100\n"
+"POT-Creation-Date: 2016-07-08 09:30+0200\n"
 "PO-Revision-Date: 2016-06-23 20:53+0000\n"
 "Last-Translator: Michael <mike_jpr@outlook.com>\n"
 "Language-Team: French <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/fr/>\n"
@@ -13,86 +13,86 @@ msgstr ""
 "X-Generator: Weblate 2.5\n"
 "X-Poedit-Basepath: .\n"
 
-#: src/Template/AdminTemplate.php:282
+#: app/Template/AdminTemplate.php:282
 msgid "All pages"
 msgstr "Toutes les pages"
 
-#: src/Template/AdminTemplate.php:307
+#: app/Template/AdminTemplate.php:307
 msgid "Amount of sepia"
 msgstr "Quantité de sépia"
 
 #. I18N: Description of the module
-#: module.php:65
+#: module.php:66
 msgid "An imagebar with small images between header and content."
 msgstr "Une barre d'image avec de petites images entre l'en-tête et le contenu."
 
-#: src/Template/AdminTemplate.php:204
+#: app/Template/AdminTemplate.php:204
 msgid "Choose which images you want to show in the Fancy Imagebar"
 msgstr "Choisissez les images que vous voulez afficher dans Fancy Imagebar"
 
-#: src/Template/AdminTemplate.php:319
+#: app/Template/AdminTemplate.php:319
 msgid "Enter a value between 0 and 100"
 msgstr "Entrez une valeur entre 0 et 100"
 
 #. I18N: Name of the module
-#: module.php:60
+#: module.php:61
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
 
-#: src/Template/AdminTemplate.php:325
+#: app/Template/AdminTemplate.php:325
 msgid "Height of the Fancy Imagebar"
 msgstr "Hauteur de Fancy Imagebar"
 
-#: src/Template/AdminTemplate.php:214
+#: app/Template/AdminTemplate.php:214
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If there are fewer images chosen than needed to fill up the entire Fancy Imagebar, the images will be repeated."
 msgstr "Ici vous pouvez choisir les images qui devraient être présentées dans Fancy Imagebar. Décochez les images que vous ne voulez pas montrer. S'il y a moins d'images choisies que nécessaires pour remplir l'ensemble de Fancy Imagebar, les images seront répétées."
 
-#: src/Template/AdminTemplate.php:298
+#: app/Template/AdminTemplate.php:298
 msgid "Images Tone"
 msgstr "Couleur des images"
 
-#: src/Template/AdminTemplate.php:237
+#: app/Template/AdminTemplate.php:237
 msgid "No images to display for this tree"
 msgstr "Aucune image à afficher pour cet arbre"
 
-#: src/Template/AdminTemplate.php:215
+#: app/Template/AdminTemplate.php:215
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already."
 msgstr "Remarque : Seules les images locales .jpg ou .png réglées en tant que type = photo sont prises en charge par ce module. Les images externes ne sont pas prises en charge. Il est impossible de maintenir la transparence pour les vignettes PNG dans Fancy Imagebar. Les vignettes PNG transparentes auront un fond noir dans Fancy Imagebar. Les images présentées dans ce tableau répondent déjà au cahier des charges."
 
-#: src/Template/AdminTemplate.php:228
+#: app/Template/AdminTemplate.php:228
 msgid "Only show images with type = “photo”"
 msgstr "Afficher uniquement les images de type = photo"
 
-#: src/Template/AdminTemplate.php:84 src/Template/AdminTemplate.php:128
+#: app/Template/AdminTemplate.php:84 app/Template/AdminTemplate.php:128
 msgid "Options for"
 msgstr "Paramètres pour"
 
-#: src/Template/AdminTemplate.php:289
+#: app/Template/AdminTemplate.php:289
 msgid "Random images"
 msgstr "Images aléatoires"
 
-#: src/Template/AdminTemplate.php:272
+#: app/Template/AdminTemplate.php:272
 msgid "Show Fancy Imagebar on"
 msgstr "Afficher Fancy Imagebar sur"
 
-#: src/Template/AdminTemplate.php:216
+#: app/Template/AdminTemplate.php:216
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Le module Fancy Imagebar respecte les paramètres de confidentialité !"
 
-#: src/FancyImagebarClass.php:272
+#: app/FancyImagebarClass.php:272
 #, php-format
 msgid "The image “%s” doesn’t exist or is not a valid image"
 msgstr "L'image \"%s\" n'existe pas ou n'est pas une image valide."
 
-#: src/Template/AdminTemplate.php:121
+#: app/Template/AdminTemplate.php:121
 msgid "The settings are changed. You will lose your changes if you switch trees."
 msgstr "Les paramètres ont été modifiés. Vos modifications seront perdues si vous changer d'arbre généalogique."
 
-#: src/Template/AdminTemplate.php:357
+#: app/Template/AdminTemplate.php:357
 msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
 msgstr "Les paramètres seront réinitialisés (pour tous les arbres). Êtes-vous sûr de vouloir faire ça ?"
 
-#: src/Template/AdminTemplate.php:343
+#: app/Template/AdminTemplate.php:343
 msgid "Use square thumbs"
 msgstr "Utiliser les vignettes carrées ?"
 

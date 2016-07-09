@@ -359,7 +359,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function fancyImagebarMedia() {
 		$images = $this->options('images');
-
+		
+		$xrefs = array();
 		if (empty($images)) {
 			$rows = $this->dbMedia();
 			foreach ($rows as $row) {

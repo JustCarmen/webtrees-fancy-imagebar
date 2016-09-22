@@ -264,7 +264,9 @@ class FancyImagebarClass extends FancyImagebarModule {
 
 			// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar, so there is no need to keep the mimeType png).
 			ob_start(); imagejpeg($image, null, 100); $newImage = ob_get_clean();
-			return '<img src="data:image/jpeg;base64,' . base64_encode($newImage) . '" alt="' . $mediaobject->getXref() . '" title="' . strip_tags($mediaobject->getFullName()) . '"/>
+			return '<a href="#" onclick="window.open(\'addmedia.php?action=editmedia&amp;pid=' . $mediaobject->getXref() . '&ged=' . Filter::escapeJs($mediaobject->getTree()->getName()) . '\', \'_blank\', edit_window_specs);return false;">
+						<img src="data:image/jpeg;base64,' . base64_encode($newImage) . '" alt="' . $mediaobject->getXref() . '" title="' . strip_tags($mediaobject->getFullName()) . '"/>
+					</a>
 					<label class="checkbox"><input type="checkbox" value="' . $mediaobject->getXref() . '"' . $img_checked . '></label>';
 		} else {
 			// this image doesn't exist on the server or is not a valid image

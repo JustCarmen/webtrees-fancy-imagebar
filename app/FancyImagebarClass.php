@@ -439,6 +439,29 @@ class FancyImagebarClass extends FancyImagebarModule {
 	}
 
 	/**
+	 * load image from file
+	 * return false if image could not be loaded
+	 * 
+	 * @param type $file
+	 * @return boolean
+	 */
+	function loadImage ($file) {
+		$size = getimagesize($file);
+		switch($size["mime"]){
+			case "image/jpeg":
+				$image = imagecreatefromjpeg($file);
+				break;
+			case "image/png":
+				$image = imagecreatefrompng($file);
+				break;
+			default: 
+				$image = false;
+				break;
+		}
+		return $image;
+	}
+
+	/**
 	 * Get the thumbnails from cache or (re)create them.
 	 * Check the filetime of the original image with the filetime stored in the cached image filename
 	 * Only recreate a thumbnail if the filetime differs: the original image has been changed.
@@ -458,12 +481,15 @@ class FancyImagebarClass extends FancyImagebarModule {
 			if (file_exists($mediaobject->getServerFilename())) {
 				$cache_filename = $this->cacheFileName($mediaobject);
 				if (is_file($cache_filename)) {
-					$thumbnails[] = imagecreatefromjpeg($cache_filename);
+					$thumbnail = $this->loadImage($cache_filename);
+					if ($thumbnail) {
+						$thumbnails[] = $thumbnail;
+					}
 				} else {
-					$thumbnail		 = $this->fancyThumb($mediaobject, $this->options('height'), $this->options('square'));
+					$thumbnail = $this->fancyThumb($mediaobject, $this->options('height'), $this->options('square'));
 					if ($thumbnail) {
 						imagejpeg($thumbnail, $cache_filename);
-						$thumbnails[]	 = $thumbnail;
+						$thumbnails[] = $thumbnail;
 					}
 				}
 			}
@@ -481,42 +507,36 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$filename	 = $mediaobject->getServerFilename();
 		$type		 = $mediaobject->mimeType();
 
-		//getting the image dimensions
-		list($imagewidth, $imageheight) = getimagesize($filename);
-		switch ($type) {
-			case 'image/jpeg':
-				$image	 = imagecreatefromjpeg($filename);
-				break;
-			case 'image/png':
-				$image	 = imagecreatefrompng($filename);
-				break;
-		}
-
-		$ratio = $imagewidth / $imageheight;
-		if ($square) {
-			$thumbwidth = $thumbheight;
-			if ($ratio < 1) {
-				$new_height	 = $thumbwidth / $ratio;
-				$new_width	 = $thumbwidth;
+		$image = $this->loadImage($filename);		
+		if ($image) {
+			list($imagewidth, $imageheight) = getimagesize($filename);
+			$ratio = $imagewidth / $imageheight;
+			if ($square) {
+				$thumbwidth = $thumbheight;
+				if ($ratio < 1) {
+					$new_height	 = $thumbwidth / $ratio;
+					$new_width	 = $thumbwidth;
+				} else {
+					$new_width	 = $thumbheight * $ratio;
+					$new_height	 = $thumbheight;
+				}
 			} else {
-				$new_width	 = $thumbheight * $ratio;
 				$new_height	 = $thumbheight;
+				$new_width	 = $thumbwidth	 = $thumbheight * $ratio;
 			}
-		} else {
-			$new_height	 = $thumbheight;
-			$new_width	 = $thumbwidth	 = $thumbheight * $ratio;
+
+			// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
+			$new_image = imagecreatetruecolor(round($new_width), round($new_height));
+			imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $imagewidth, $imageheight);
+
+			$thumb = imagecreatetruecolor($thumbwidth, $thumbheight);
+			imagecopyresampled($thumb, $new_image, 0, 0, 0, 0, $thumbwidth, $thumbheight, $thumbwidth, $thumbheight);
+
+			imagedestroy($new_image);
+			imagedestroy($image);
+			
+			return $thumb;
 		}
-
-		// transparent png files are not possible in the Fancy Imagebar, so no extra code needed.
-		$new_image = imagecreatetruecolor(round($new_width), round($new_height));
-		imagecopyresampled($new_image, $image, 0, 0, 0, 0, $new_width, $new_height, $imagewidth, $imageheight);
-
-		$thumb = imagecreatetruecolor($thumbwidth, $thumbheight);
-		imagecopyresampled($thumb, $new_image, 0, 0, 0, 0, $thumbwidth, $thumbheight, $thumbwidth, $thumbheight);
-
-		imagedestroy($new_image);
-		imagedestroy($image);
-		return $thumb;
 	}
 
 	/**

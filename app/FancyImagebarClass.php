@@ -107,7 +107,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		if (Filter::get('folder')) {
 			$this->setOptions(array(
 				'image_folder'	 => Filter::get('folder'),
-				'images'		 => '1'
+				'images'		 => array() // reset the image list
 			));
 		}
 
@@ -129,7 +129,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			} else {
 				$options['photos'] = '0';
 			}
-			$options['images'] = '1'; // reset the image list
+			$options['images'] = array(); // reset the image list
 			$this->setOptions($options);
 		}
 

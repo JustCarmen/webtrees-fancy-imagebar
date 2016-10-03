@@ -238,9 +238,9 @@ class AdminTemplate extends FancyImagebarClass {
 							<?php
 							if (empty($this->options('images'))) {
 								// we have not used the configuration page yet so use the default (list all images)
-								$imagelist	 = implode("|", $this->getXrefs());
+								$imagelist = implode("|", $this->getXrefs());
 							} else {
-								$imagelist	 = implode("|", $this->options('images'));
+								$imagelist = implode("|", $this->options('images'));
 							}
 							?>
 							<input id="imagelist" type="hidden" name="NEW_FIB_IMAGES" value = "<?php echo $imagelist ?>">
@@ -350,7 +350,7 @@ class AdminTemplate extends FancyImagebarClass {
 				<?php echo I18N::translate('save') ?>
 			</button>
 			<button class="btn btn-primary" type="reset" onclick="if (confirm('<?php echo I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?') ?>'))
-						window.location.href = 'module.php?mod=<?php echo $this->getName() ?>&amp;mod_action=admin_reset';">
+								window.location.href = 'module.php?mod=<?php echo $this->getName() ?>&amp;mod_action=admin_reset';">
 				<i class="fa fa-recycle"></i>
 				<?php echo I18N::translate('reset') ?>
 			</button>

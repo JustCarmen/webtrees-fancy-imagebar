@@ -345,13 +345,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 		} else {
 			$style = ' style="display:none"';
 		}
-		ob_start(); imagejpeg($fancyImagebar, null, 100); $NewFancyImageBar	 = ob_get_clean();
-		$html				 = '<div id="fancy-imagebar"' . $style . '>
-					<img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '">
-				</div>';
 
 		// output
-		return $html;
+		ob_start(); imagejpeg($fancyImagebar, null, 100); $NewFancyImageBar = ob_get_clean();
+		return '<div id="fancy-imagebar"' . $style . '><img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '"></div>';
 	}
 
 	/**
@@ -361,7 +358,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function fancyImagebarMedia() {
 		$images = $this->options('images');
-		
+
 		$xrefs = array();
 		if (empty($images)) {
 			$rows = $this->dbMedia();
@@ -443,21 +440,21 @@ class FancyImagebarClass extends FancyImagebarModule {
 	/**
 	 * load image from file
 	 * return false if image could not be loaded
-	 * 
+	 *
 	 * @param type $file
 	 * @return boolean
 	 */
-	function loadImage ($file) {
+	function loadImage($file) {
 		$size = getimagesize($file);
-		switch($size["mime"]){
+		switch ($size["mime"]) {
 			case "image/jpeg":
-				$image = imagecreatefromjpeg($file);
+				$image	 = imagecreatefromjpeg($file);
 				break;
 			case "image/png":
-				$image = imagecreatefrompng($file);
+				$image	 = imagecreatefrompng($file);
 				break;
-			default: 
-				$image = false;
+			default:
+				$image	 = false;
 				break;
 		}
 		return $image;
@@ -477,8 +474,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 			File::mkdir($cache_dir);
 		}
 
-		$mediaobjects = $this->fancyImagebarMedia();
-		$thumbnails = array();
+		$mediaobjects	 = $this->fancyImagebarMedia();
+		$thumbnails		 = array();
 		foreach ($mediaobjects as $mediaobject) {
 			if (file_exists($mediaobject->getServerFilename())) {
 				$cache_filename = $this->cacheFileName($mediaobject);
@@ -509,7 +506,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$filename	 = $mediaobject->getServerFilename();
 		$type		 = $mediaobject->mimeType();
 
-		$image = $this->loadImage($filename);		
+		$image = $this->loadImage($filename);
 		if ($image) {
 			list($imagewidth, $imageheight) = getimagesize($filename);
 			$ratio = $imagewidth / $imageheight;
@@ -536,7 +533,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 
 			imagedestroy($new_image);
 			imagedestroy($image);
-			
+
 			return $thumb;
 		}
 	}

@@ -2,15 +2,15 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
 "POT-Creation-Date: 2016-07-08 09:30+0200\n"
-"PO-Revision-Date: 2016-07-09 17:00+0000\n"
-"Last-Translator: Jamie Jaconelli <jamie@jaconelli.dk>\n"
+"PO-Revision-Date: 2016-10-03 19:28+0000\n"
+"Last-Translator: Patrick Kongshammer <patrickkongshammer@gmail.com>\n"
 "Language-Team: Danish <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/da/>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.5\n"
+"X-Generator: Weblate 2.8\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
@@ -22,7 +22,7 @@ msgstr "Alle sider"
 
 #: app/Template/AdminTemplate.php:307
 msgid "Amount of sepia"
-msgstr "Sepia nummer"
+msgstr "Mængde af sepia"
 
 #. I18N: Description of the module
 #: module.php:66
@@ -31,7 +31,7 @@ msgstr "Et billedgalleri med små billeder vist mellem menubar og indhold."
 
 #: app/Template/AdminTemplate.php:204
 msgid "Choose which images you want to show in the Fancy Imagebar"
-msgstr "Udvælg de billeder som du ønsker skal vises i Fancy Imagebar"
+msgstr "Udvælg de billeder som du ønsker skal vises i Fancy Billedgalleri"
 
 #: app/Template/AdminTemplate.php:319
 msgid "Enter a value between 0 and 100"
@@ -56,11 +56,11 @@ msgstr "Billede Tone"
 
 #: app/Template/AdminTemplate.php:237
 msgid "No images to display for this tree"
-msgstr "Er ingen billeder at vise fra dette træ"
+msgstr "Ingen billeder at vise fra dette træ"
 
 #: app/Template/AdminTemplate.php:215
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already."
-msgstr "Bemærk: Kun lokale \"jpg\" eller \"png\" billeder kan bruges i dette modul. Eksterne billeder kan ikke bruges. Det er ikke muligt at bevare transparante png miniature i baren. Disse vil blive vist med en stort baggrund. Billederne her har allerede de korrekte specifikationer."
+msgstr "Bemærk: Kun lokale \"jpg\" eller \"png\" billeder kan bruges i dette modul. Eksterne billeder kan ikke bruges. Det er ikke muligt at bevare transparente png-miniaturer i baren. Disse vil blive vist med en sort baggrund. Billederne her har allerede de korrekte specifikationer."
 
 #: app/Template/AdminTemplate.php:228
 msgid "Only show images with type = “photo”"
@@ -85,16 +85,16 @@ msgstr "Modulet respekterer privatindstillingerne!"
 #: app/FancyImagebarClass.php:272
 #, php-format
 msgid "The image “%s” doesn’t exist or is not a valid image"
-msgstr "Billedet “%s” findes ikke eller er ikke valid"
+msgstr "Billedet “%s” findes ikke eller er ikke et gyldigt billede"
 
 #: app/Template/AdminTemplate.php:121
 msgid "The settings are changed. You will lose your changes if you switch trees."
-msgstr "Indstillingerne er  ændret. Du vil miste dine ændringer hvis du skifter træ."
+msgstr "Indstillingerne er ændret. Du vil miste dine ændringer hvis du skifter træ."
 
 #: app/Template/AdminTemplate.php:357
 msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
-msgstr "Indstillingerne vil blive nulstillet for alle træer til standard. Er du sikker på du vil gøre det?"
+msgstr "Indstillingerne vil blive nulstillet til standard for alle træer. Er du sikker på du vil gøre det?"
 
 #: app/Template/AdminTemplate.php:343
 msgid "Use square thumbs"
-msgstr "Brug lodrette miniaturer"
+msgstr "Brug firkantede miniaturer"

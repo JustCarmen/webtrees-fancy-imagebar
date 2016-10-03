@@ -181,7 +181,7 @@ class AdminTemplate extends FancyImagebarClass {
 			<div class="form-group">
 				<label class="control-label col-sm-1"><?php echo I18N::translate('Family tree') ?></label>
 				<div class="col-sm-3">
-					<select id="tree" name="NEW_FIB_TREE" id="NEW_FIB_TREE" class="form-control">
+					<select id="tree" name="NEW_FIB_TREE" class="form-control">
 						<?php foreach (Tree::getAll() as $tree): ?>
 							<?php if ($tree->getTreeId() === $this->getTreeId()): ?>
 								<option value="<?php echo $tree->getTreeId(); ?>" data-ged="<?php echo $tree->getNameHtml() ?>" selected="selected">

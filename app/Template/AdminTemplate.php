@@ -117,13 +117,19 @@ class AdminTemplate extends FancyImagebarClass {
 			jQuery("#panel2").on("change", "input, select", function(){
 				formChanged = true;
 			});
+			
+			function getImageList() {
+				var ged = jQuery("option:selected", "#tree").data("ged");
+				var folder = jQuery("option:selected", ".folderlist").val();
+				var photos = jQuery(".photos").is(":checked")
+				return "module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged + "&folder=" + folder + "&photos=" + photos;
+			}
 
 			var current = jQuery("#tree option:selected");
 			jQuery("#tree").change(function() {
-				if (formChanged == false || (formChanged == true && confirm("' . I18N::translate('The settings are changed. You will lose your changes if you switch trees.') . '"))) {
-					var ged = jQuery("option:selected", this).data("ged");
+				if (formChanged == false || (formChanged == true && confirm("' . I18N::translate('The settings are changed. You will lose your changes if you switch trees.') . '"))) {					
 					var treeName = jQuery("option:selected", this).text();
-					jQuery.get("module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged, function(data) {
+					jQuery.get(getImageList(), function(data) {
 						 jQuery(".folderlist").replaceWith(jQuery(data).find(".folderlist"));
 						 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
 						 jQuery("#options").replaceWith(jQuery(data).find("#options"));
@@ -140,9 +146,7 @@ class AdminTemplate extends FancyImagebarClass {
 
 			// folder select
 			jQuery("form").on("change", ".folderlist", function(){
-				var ged = jQuery("option:selected", "#tree").data("ged");
-				var folder = jQuery("option:selected", this).val();
-				jQuery.get("module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged + "&folder=" + folder, function(data) {
+				jQuery.get(getImageList(), function(data) {
 					 jQuery(".folderlist").replaceWith(jQuery(data).find(".folderlist"));
 					 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
 					 formChanged = false;
@@ -152,8 +156,7 @@ class AdminTemplate extends FancyImagebarClass {
 
 			// select files with or without type = "photo"
 			jQuery("form").on("click", ".photos", function(){
-				var ged = jQuery("option:selected", "#tree").data("ged");
-				jQuery.get("module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged + "&photos=" + jQuery(this).is(":checked"), function(data) {
+				jQuery.get(getImageList(), function(data) {
 					 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
 					 formChanged = false;
 					 oTable.fnDraw();

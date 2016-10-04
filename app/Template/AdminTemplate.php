@@ -164,11 +164,18 @@ class AdminTemplate extends FancyImagebarClass {
 			});
 
 			// extra options for Sepia Tone
-			if(jQuery("#tone select").val() == 0) jQuery("#sepia").show();
-			else jQuery("#sepia").hide();
+			if(jQuery("#tone select").val() == 0) {
+				jQuery("#sepia").show();
+			} else {
+				jQuery("#sepia").hide();
+			}
+			
 			jQuery("#tone select").change(function() {
-				if(jQuery(this).val() == 0) jQuery("#sepia").fadeIn(500);
-				else jQuery("#sepia").fadeOut(500);
+				if(jQuery(this).val() == 0) {
+					jQuery("#sepia").fadeIn(500);
+				} else {
+					jQuery("#sepia").fadeOut(500);
+				}
 			});
 		');
 	}

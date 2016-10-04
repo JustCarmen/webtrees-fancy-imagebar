@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
 "POT-Creation-Date: 2016-07-08 09:30+0200\n"
-"PO-Revision-Date: 2016-10-03 19:28+0000\n"
-"Last-Translator: Patrick Kongshammer <patrickkongshammer@gmail.com>\n"
+"PO-Revision-Date: 2016-10-04 03:39+0000\n"
+"Last-Translator: Jamie Jaconelli <jamie@jaconelli.dk>\n"
 "Language-Team: Danish <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/da/>\n"
 "Language: da\n"
 "MIME-Version: 1.0\n"
@@ -31,7 +31,7 @@ msgstr "Et billedgalleri med små billeder vist mellem menubar og indhold."
 
 #: app/Template/AdminTemplate.php:204
 msgid "Choose which images you want to show in the Fancy Imagebar"
-msgstr "Udvælg de billeder som du ønsker skal vises i Fancy Billedgalleri"
+msgstr "Udvælg de billeder som du ønsker skal vises i Fancy Imagebar"
 
 #: app/Template/AdminTemplate.php:319
 msgid "Enter a value between 0 and 100"
@@ -97,4 +97,4 @@ msgstr "Indstillingerne vil blive nulstillet til standard for alle træer. Er du
 
 #: app/Template/AdminTemplate.php:343
 msgid "Use square thumbs"
-msgstr "Brug firkantede miniaturer"
+msgstr "Brug lodrette miniaturer"

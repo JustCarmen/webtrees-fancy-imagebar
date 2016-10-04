@@ -87,16 +87,18 @@ class AdminTemplate extends FancyImagebarClass {
 			jQuery(oTable).on("change", "input[type=checkbox]",function() {
 				var images = jQuery("#imagelist").val().split("|")
 				if(this.checked){
-					if(jQuery.inArray(jQuery(this).val(), images) == -1) {
-						images.push(jQuery(this).val());
-					}
+					images.push(jQuery(this).val());
 				 } else {
-					 if(jQuery.inArray(jQuery(this).val(), images) > -1){
-						var index = images.indexOf(jQuery(this).val());
-					 	images.splice(index, 1 );
-					 }
+					var index = images.indexOf(jQuery(this).val());
+					images.splice(index, 1 );
 				 }
+				 
+				 // remove empty values from array
+				 images = images.filter(function(e){return e});
+				 
+				 // turn array into a string
 				 jQuery("#imagelist").val(images.join("|"));
+				 	 
 				 formChanged = true;
 			});
 

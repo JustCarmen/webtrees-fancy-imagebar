@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
 "POT-Creation-Date: 2016-07-08 09:30+0200\n"
-"PO-Revision-Date: 2016-12-09 18:11+0000\n"
+"PO-Revision-Date: 2016-12-09 21:14+0000\n"
 "Last-Translator: Gyönyör János <gyj@centrum.sk>\n"
 "Language-Team: Hungarian <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/hu/>\n"
 "Language: hu\n"
@@ -60,7 +60,7 @@ msgstr "A családfának nincsenek megjeleníthető képei"
 
 #: app/Template/AdminTemplate.php:215
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already."
-msgstr "Megjegyzés: A modul csak a helyi “jpg” vagy “png” formátumú képeket támogatja. Távoli képek nincsenek támogatva. A png bélyegképek áttetszősége a Fancy képsávon belül elveszik. Az áttetsző png bélyegképek a Fancy képsávon belül fekete hátteret kapnak. A kéőek  atáblán belül a már beállított értékekkel jelennek meg."
+msgstr "Megjegyzés: A modul csak a helyi “jpg” vagy “png” formátumú képeket támogatja. Távoli képek nincsenek támogatva. A png bélyegképek áttetszősége a Fancy képsávon belül elveszik. Az áttetsző png bélyegképek a Fancy képsávon belül fekete hátteret kapnak. A képek  a táblán belül a már beállított értékekkel jelennek meg."
 
 #: app/Template/AdminTemplate.php:228
 msgid "Only show images with type = “photo”"
@@ -85,7 +85,7 @@ msgstr "A Fancy képsáv modul figyelembe veszi az adatvédelmi beállításokat
 #: app/FancyImagebarClass.php:272
 #, php-format
 msgid "The image “%s” doesn’t exist or is not a valid image"
-msgstr "A “%s 1” kép nem létezik vagy nem érvénytelen képformájú"
+msgstr "A “%s” kép nem létezik vagy nem érvénytelen képformájú"
 
 #: app/Template/AdminTemplate.php:121
 msgid "The settings are changed. You will lose your changes if you switch trees."
@@ -97,4 +97,4 @@ msgstr "A beállítások az alapértelmezettre állítása (az összes családf�
 
 #: app/Template/AdminTemplate.php:343
 msgid "Use square thumbs"
-msgstr "Négyzetképek"
+msgstr "Négyzetkép használat"

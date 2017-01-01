@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
 "POT-Creation-Date: 2016-12-26 16:42+0100\n"
-"PO-Revision-Date: 2016-04-30 18:23+0000\n"
+"PO-Revision-Date: 2017-01-01 19:17+0000\n"
 "Last-Translator: Martin Pannier <der@bauschaffen.de>\n"
 "Language-Team: German <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/de/>\n"
 "Language: de\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.5\n"
+"X-Generator: Weblate 2.10\n"
 "X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 
@@ -62,7 +62,7 @@ msgstr "Hinweis: Von diesem Modul werden nur lokale JPEG- oder PNG-Bilder unters
 
 #: app/Template/AdminTemplate.php:240
 msgid "Only show images with type = “photo”"
-msgstr "Nur Bilder mit dem Typ \"Foto\" anzeigen?"
+msgstr "Nur Bilder mit dem Typ \"Foto\" anzeigen"
 
 #: app/Template/AdminTemplate.php:84 app/Template/AdminTemplate.php:136
 msgid "Options for"
@@ -91,8 +91,8 @@ msgstr "Die Einstellungen wurden geändert. Ihre Änderungen werden verloren geh
 
 #: app/Template/AdminTemplate.php:364
 msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
-msgstr "Die Einstellungen werden für alle Stammbäume zurückgesetzt . Sind Sie sicher?"
+msgstr "Die Einstellungen werden für alle Stammbäume auf die Standardwerte zurückgesetzt. Sind Sie sicher, dass Sie dies tun wollen?"
 
 #: app/Template/AdminTemplate.php:350
 msgid "Use square thumbs"
-msgstr "Quadratische Vorschaubilder nutzen?"
+msgstr "Quadratische Vorschaubilder verwenden"

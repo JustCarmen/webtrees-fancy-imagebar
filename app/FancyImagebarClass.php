@@ -87,14 +87,12 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	protected function getTreeId() {
 		global $WT_TREE;
-
-		if ($WT_TREE) {
-			$tree = $WT_TREE->findByName(Filter::get('ged'));
-			if ($tree) {
-				return $tree->getTreeId();
-			} else {
-				return $WT_TREE->getTreeId();
-			}
+		
+		$tree = Tree::findByName(Filter::get('ged'));
+		if ($tree) {
+			return $tree->getTreeId();
+		} else {
+			return $WT_TREE->getTreeId();
 		}
 	}
 

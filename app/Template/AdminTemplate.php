@@ -246,7 +246,6 @@ class AdminTemplate extends FancyImagebarClass {
 							</label>
 							<?php // The datatable will be dynamically filled with images from the database.  ?>
 							<!-- IMAGE LIST -->
-							<h3 id="no-images" class="hidden"><?php echo I18N::translate('No images to display for this tree') ?></h3>
 							<?php
 							if (empty($this->options('images'))) {
 								// we have not used the configuration page yet so use the default (list all images)

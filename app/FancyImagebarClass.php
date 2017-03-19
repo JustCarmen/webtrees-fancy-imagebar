@@ -250,8 +250,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return type
 	 */
 	private function displayImage($mediaobject) {
-		if (file_exists($mediaobject->getServerFilename()) && getimagesize($mediaobject->getServerFilename()) && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
-			$image = $this->fancyThumb($mediaobject, 60, '1');
+		$image = $this->fancyThumb($mediaobject, 60, '1');
+		if ($image) {
 			if ($this->options('images') == 1) {
 				$img_checked = ' checked="checked"';
 			} elseif (is_array($this->options('images')) && in_array($mediaobject->getXref(), $this->options('images'))) {

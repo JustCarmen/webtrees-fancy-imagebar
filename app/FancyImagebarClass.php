@@ -284,7 +284,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	public function loadFancyImagebar() {
 		global $ctype;
 
-		if (Auth::isSearchEngine() || Theme::theme()->themeId() === '_administration') {
+		if (Theme::theme()->themeId() === '_administration') {
 			return false;
 		}
 

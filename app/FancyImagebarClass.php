@@ -260,17 +260,29 @@ class FancyImagebarClass extends FancyImagebarModule {
 				$img_checked = "";
 			}
 
-			// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar, so there is no need to keep the mimeType png).
+			// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar,
+			// so there is no need to keep the mimeType png).
+			// We can't use the cache folder for direct output since the data folder is a protected folder.
 			ob_start(); imagejpeg($image, null, 100); $newImage = ob_get_clean();
-			return '<a href="#" onclick="window.open(\'addmedia.php?action=editmedia&amp;pid=' . $mediaobject->getXref() . '&ged=' . Filter::escapeJs($mediaobject->getTree()->getName()) . '\', \'_blank\', edit_window_specs);return false;">
-						<img src="data:image/jpeg;base64,' . base64_encode($newImage) . '" alt="' . $mediaobject->getXref() . '" title="' . strip_tags($mediaobject->getFullName()) . '"/>
-					</a>
-					<label class="checkbox"><input type="checkbox" value="' . $mediaobject->getXref() . '"' . $img_checked . '></label>';
+
+			return
+				'<img src="data:image/jpeg;base64,' . base64_encode($newImage) . '" ' .
+				'alt="' . $mediaobject->getXref() . '" title="' . strip_tags($mediaobject->getFullName()) . '"/>' .
+				'<div class="checkbox">' .
+				'<label><input type="checkbox" value="' . $mediaobject->getXref() . '"' . $img_checked . '></label>' .
+				'</div>';
 		} else {
 			// this image doesn't exist on the server or is not a valid image
 			$mime_type = str_replace('/', '-', $mediaobject->mimeType());
-			return '<div class="no-image"><i class="icon-mime-' . $mime_type . '" title="' . I18N::translate('The image “%s” doesn’t exist or is not a valid image', strip_tags($mediaobject->getFullName()) . ' (' . $mediaobject->getXref() . ')') . '"></i></div>
-				<label class="checkbox"><input type="checkbox" value="" disabled="disabled"></label>';
+			$image_title = strip_tags($mediaobject->getFullName()) . ' (' . $mediaobject->getXref() . ')';
+			return 
+				'<div class="no-image">' .
+				'<i class="icon-mime-' . $mime_type . '" ' .
+				'title="' . I18N::translate('The image “%s” doesn’t exist or is not a valid image', $image_title) . '">' .
+				'</i></div>' .
+				'<div class="checkbox">' .
+				'<label><input type="checkbox" value="" disabled="disabled"></label>' .
+				'</div>';
 		}
 	}
 

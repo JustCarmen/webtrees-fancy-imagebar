@@ -56,7 +56,7 @@ class AdminTemplate extends FancyImagebarClass {
 				processing: true,
 				serverSide: true,
 				ajax: "module.php?mod=' . $this->getName() . '&mod_action=load_json",
-				' . I18N::datatablesI18N(array(10, 20, 50, 100, 500, 1000, -1)) . ',
+				' . I18N::datatablesI18N([10, 20, 50, 100, 500, 1000, -1]) . ',
 				autoWidth: false,
 				filter: false,
 				pageLength: 10,
@@ -304,7 +304,7 @@ class AdminTemplate extends FancyImagebarClass {
 									<?= I18N::translate('Images Tone') ?>
 								</label>
 								<div class="col-sm-2">
-									<?= FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[TONE]', array('Sepia', 'Black and White', 'Colors'), null, $this->options('tone'), 'class="form-control"') ?>
+									<?= FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[TONE]', ['Sepia', 'Black and White', 'Colors'], null, $this->options('tone'), 'class="form-control"') ?>
 								</div>
 							</div>
 							<!-- SEPIA -->

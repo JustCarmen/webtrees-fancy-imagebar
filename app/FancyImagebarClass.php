@@ -38,8 +38,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return string
 	 */
 	private function setDefault($key) {
-		$FIB_DEFAULT = array(
-			'IMAGES'		 => array(), // All images
+		$FIB_DEFAULT = [
+			'IMAGES'		 => [], // All images
 			'IMAGE_FOLDER'	 => 'all', // All folders
 			'PHOTOS'		 => '1',
 			'HOMEPAGE'		 => '1',
@@ -50,7 +50,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			'SEPIA'			 => '30', // Example
 			'HEIGHT'		 => '60',
 			'SQUARE'		 => '1'
-		);
+		];
 		return $FIB_DEFAULT[$key];
 	}
 
@@ -103,10 +103,10 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	protected function getImageFolder() {
 		if (Filter::get('folder')) {
-			$this->setOptions(array(
+			$this->setOptions([
 				'image_folder'	 => Filter::get('folder'),
-				'images'		 => array() // reset the image list
-			));
+				'images'		 => [] // reset the image list
+			]);
 		}
 
 		if ($this->options('image_folder') !== 'all') {
@@ -127,7 +127,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			} else {
 				$options['photos'] = '0';
 			}
-			$options['images'] = array(); // reset the image list
+			$options['images'] = []; // reset the image list
 			$this->setOptions($options);
 		}
 
@@ -149,7 +149,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$folders		 = QueryMedia::folderList();
 		array_shift($folders);
 
-		$folderlist			 = array();
+		$folderlist			 = [];
 		$folderlist['all']	 = I18N::translate('All');
 		foreach ($folders as $key => $value) {
 			if (count(glob(WT_DATA_DIR . $MEDIA_DIRECTORY . $value . '*')) > 0) {
@@ -195,13 +195,13 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	protected function getXrefs() {
 		$rows	 = $this->dbMedia();
-		$list	 = array();
+		$list	 = [];
 		foreach ($rows as $row) {
 			$list[] = $row->xref;
 		}
 
 		if (count($list) === 0) {
-			$this->setOptions(array('images[0]' => ''));
+			$this->setOptions(['images[0]' => '']);
 		}
 		return $list;
 	}
@@ -225,21 +225,21 @@ class FancyImagebarClass extends FancyImagebarModule {
 		// Total filtered/unfiltered rows
 		$recordsTotal	 = $recordsFiltered = Database::prepare("SELECT FOUND_ROWS()")->fetchOne();
 
-		$data = array();
+		$data = [];
 		foreach ($rows as $row) {
 			$tree		 = Tree::findById($row->tree_id);
 			$mediaobject = Media::getInstance($row->xref, $tree);
-			$data[]		 = array(
+			$data[]		 = [
 				$this->displayImage($mediaobject)
-			);
+			];
 		}
 		header('Content-type: application/json');
-		echo json_encode(array(// See http://www.datatables.net/usage/server-side
+		echo json_encode([// See http://www.datatables.net/usage/server-side
 			'draw'				 => Filter::getInteger('draw'), // String, but always an integer
 			'recordsTotal'		 => $recordsTotal,
 			'recordsFiltered'	 => $recordsFiltered,
 			'data'				 => $data
-		));
+		]);
 		exit;
 	}
 
@@ -324,7 +324,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 
 		// fill up the srcImages array up to a total width of 2400px (for wider screens)
-		$srcImages	 = array();
+		$srcImages	 = [];
 		$canvasWidth = 0;
 		while ($canvasWidth < 2400) {
 			if ($this->options('random') === '1') {
@@ -369,7 +369,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	private function fancyImagebarMedia() {
 		$images = $this->options('images');
 
-		$xrefs = array();
+		$xrefs = [];
 		if (empty($images)) {
 			$rows = $this->dbMedia();
 			foreach ($rows as $row) {
@@ -379,7 +379,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			$xrefs = $images;
 		}
 
-		$list = array();
+		$list = [];
 		foreach ($xrefs as $xref) {
 			$tree		 = Tree::findById($this->getTreeId());
 			$mediaobject = Media::getInstance($xref, $tree);
@@ -485,7 +485,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		}
 
 		$mediaobjects	 = $this->fancyImagebarMedia();
-		$thumbnails		 = array();
+		$thumbnails		 = [];
 		foreach ($mediaobjects as $mediaobject) {
 			if (file_exists($mediaobject->getServerFilename())) {
 				$cache_filename = $this->cacheFileName($mediaobject);

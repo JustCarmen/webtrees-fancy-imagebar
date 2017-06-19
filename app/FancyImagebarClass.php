@@ -455,19 +455,21 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return boolean
 	 */
 	function loadImage($file) {
-		$size = getimagesize($file);
-		switch ($size["mime"]) {
-			case "image/jpeg":
-				$image	 = imagecreatefromjpeg($file);
-				break;
-			case "image/png":
-				$image	 = imagecreatefrompng($file);
-				break;
-			default:
-				$image	 = false;
-				break;
+		if (file_exists($file)) {
+			$size = getimagesize($file);
+			switch ($size["mime"]) {
+				case "image/jpeg":
+					$image	 = imagecreatefromjpeg($file);
+					break;
+				case "image/png":
+					$image	 = imagecreatefrompng($file);
+					break;
+				default:
+					$image	 = false;
+					break;
+			}
+			return $image;
 		}
-		return $image;
 	}
 
 	/**

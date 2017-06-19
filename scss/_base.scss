@@ -1,0 +1,31 @@
+.fancy-imagebar {
+	clear: both;
+	overflow: hidden;
+	
+	.theme-clouds & {
+		@include fib-divider(#79c, 1px, 2px);
+	}
+
+	.theme-colors & {
+		border-bottom: 1px solid #2a2b2d;
+	}
+	
+	.theme-fab & {
+		border: #a9a9a9 1px solid;
+		border-radius: 3px;
+		padding: 0;
+	}
+	
+	.theme-minimal & {
+		border-bottom: 2px solid #aaa;
+	}
+	
+	.theme-webtrees & {
+		@include fib-divider(#81a9cb, 2px, 3px);		
+	}
+	
+	.theme-xenea & {
+		@include fib-divider(#0073cf, 2px, 3px);
+	}
+}
+

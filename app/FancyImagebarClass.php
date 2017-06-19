@@ -15,7 +15,6 @@
  */
 namespace JustCarmen\WebtreesAddOns\FancyImagebar;
 
-use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\Database;
 use Fisharebest\Webtrees\File;
 use Fisharebest\Webtrees\Filter;
@@ -60,7 +59,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return type
 	 */
 	protected function options($k) {
-		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
+		$FIB_OPTIONS = unserialize($this->getPreference('FIB_OPTIONS'));
 		$key		 = strtoupper($k);
 
 		if (empty($FIB_OPTIONS[$this->getTreeId()]) || (is_array($FIB_OPTIONS[$this->getTreeId()]) && !array_key_exists($key, $FIB_OPTIONS[$this->getTreeId()]))) {
@@ -71,11 +70,11 @@ class FancyImagebarClass extends FancyImagebarModule {
 	}
 
 	private function setOptions($options) {
-		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
+		$FIB_OPTIONS = unserialize($this->getPreference('FIB_OPTIONS'));
 		foreach ($options as $key => $value) {
 			$FIB_OPTIONS[$this->getTreeId()][strtoupper($key)] = $value;
 		}
-		$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
+		$this->setPreference('FIB_OPTIONS', serialize($FIB_OPTIONS));
 	}
 
 	/**
@@ -355,9 +354,16 @@ class FancyImagebarClass extends FancyImagebarModule {
 			$style = ' style="display:none"';
 		}
 
+		// set the class
+		if (Theme::theme()->themeId() === 'fab') {
+			$class = 'fancy-imagebar container';
+		} else {
+			$class = 'fancy-imagebar';
+		}
+
 		// output
 		ob_start(); imagejpeg($fancyImagebar, null, 100); $NewFancyImageBar = ob_get_clean();
-		return '<div id="fancy-imagebar"' . $style . '><img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '"></div>';
+		return '<div class="' . $class . '"' . $style . '><img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($NewFancyImageBar) . '"><div class="fancy-imagebar-divider"></div></div>';
 	}
 
 	/**

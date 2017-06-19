@@ -70,12 +70,12 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 		switch ($mod_action) {
 			case 'admin_config':
 				if (Filter::postBool('save')) {
-					$FIB_OPTIONS					 = unserialize($this->getSetting('FIB_OPTIONS'));
+					$FIB_OPTIONS					 = unserialize($this->getPreference('FIB_OPTIONS'));
 					$tree_id						 = Filter::postInteger('NEW_FIB_TREE');
 					$FIB_OPTIONS[$tree_id]			 = Filter::postArray('NEW_FIB_OPTIONS');
 					$images							 = explode("|", Filter::post('NEW_FIB_IMAGES'));
 					$FIB_OPTIONS[$tree_id]['IMAGES'] = $images;
-					$this->setSetting('FIB_OPTIONS', serialize($FIB_OPTIONS));
+					$this->setPreference('FIB_OPTIONS', serialize($FIB_OPTIONS));
 
 					if ($images) {
 						// now (re)create the image cache
@@ -118,34 +118,31 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 		global $controller;
 
 		// Check if the Fancy Imagebar is implemented in a (custom) theme
+		// Quicker loading through theme. Include styling.
 		if (method_exists(Theme::theme(), 'fancyImagebar')) {
 			return null;
 		}
 
 		try {
 			if ($this->module()->loadFancyImagebar()) {
-				// add js file to set a few theme depending styles
-				$parentclass	 = get_parent_class(Theme::theme());
-				$parentclassname = explode('\\', $parentclass);
-				if (end($parentclassname) === 'AbstractTheme') {
-					$theme		 = Theme::theme()->themeId();
-					$childtheme	 = '';
-				} else {
-					$parenttheme = new $parentclass;
-					$theme		 = $parenttheme->themeId();
-					$childtheme	 = Theme::theme()->themeId();
-				}
-
+				// load the stylesheet
 				$controller->addInlineJavascript('
-					var $theme		= "' . $theme . '";
-					var $childtheme = "' . $childtheme . '";
+					if (document.createStyleSheet) {
+						document.createStyleSheet("' . $this->css() . '"); // For Internet Explorer
+					} else {
+						$("head").append(\'<link rel="stylesheet" type="text/css" href="' . $this->css() . '">\');
+					}
 				', BaseController::JS_PRIORITY_HIGH);
-				$controller->addExternalJavascript($this->directory . '/js/style.js');
+
+				// set the theme class on the body
+				$controller->addInlineJavascript('
+					jQuery("body").addClass("theme-' . Theme::theme()->themeId() . '");
+				', BaseController::JS_PRIORITY_HIGH);
 
 				// put the fancy imagebar in the right position
 				echo $this->module()->getFancyImagebar();
 				$controller->addInlineJavaScript('
-					jQuery("main").before(jQuery("#fancy-imagebar").show());
+					jQuery("main").before(jQuery(".fancy-imagebar").show());
 				');
 			}
 		} catch (\ErrorException $ex) {
@@ -153,6 +150,15 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 		}
 
 		return null;
+	}
+
+	/**
+	 * URL for our style sheet.
+	 *
+	 * @return string
+	 */
+	public function css() {
+		return WT_STATIC_URL . WT_MODULES_DIR . $this->getName() . '/css/style.css';
 	}
 
 }

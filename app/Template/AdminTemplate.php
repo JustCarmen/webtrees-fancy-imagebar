@@ -16,6 +16,7 @@
 namespace JustCarmen\WebtreesAddOns\FancyImagebar\Template;
 
 use Fisharebest\Webtrees\Auth;
+use Fisharebest\Webtrees\Bootstrap4;
 use Fisharebest\Webtrees\Controller\PageController;
 use Fisharebest\Webtrees\Functions\FunctionsEdit;
 use Fisharebest\Webtrees\I18N;
@@ -36,7 +37,7 @@ class AdminTemplate extends FancyImagebarClass {
 			->restrictAccess(Auth::isAdmin())
 			->setPageTitle($this->getTitle())
 			->pageHeader()
-			->addExternalJavascript(WT_JQUERY_DATATABLES_JS_URL)
+			->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL)
 			->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL);
 
 		$controller->addInlineJavascript('
@@ -80,7 +81,7 @@ class AdminTemplate extends FancyImagebarClass {
 
 			// dynamic title
 			var treeName = jQuery("#tree option:selected").text();
-			jQuery("#panel2 .panel-title a").text("' . I18N::translate('Options for') . '" + treeName);
+			jQuery("#card-options-header a").text("' . I18N::translate('Options for') . ' " + treeName);
 
 			var formChanged = false;
 			jQuery(oTable).on("change", "input[type=checkbox]",function() {
@@ -113,14 +114,14 @@ class AdminTemplate extends FancyImagebarClass {
 			});
 
 			// detect changes on other form elements
-			jQuery("#panel2").on("change", "input, select", function(){
+			jQuery("#card-options-header").on("change", "input, select", function(){
 				formChanged = true;
 			});
 			
 			function getImageList() {
-				var ged = jQuery("option:selected", "#tree").data("ged");
-				var folder = jQuery("option:selected", ".folderlist").val();
-				var photos = jQuery(".photos").is(":checked")
+				var ged = jQuery("option:selected", "#tree").val();
+				var folder = jQuery("option:selected", "#folderlist").val();
+				var photos = jQuery("#photos").is(":checked")
 				return "module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged + "&folder=" + folder + "&photos=" + photos;
 			}
 
@@ -129,10 +130,10 @@ class AdminTemplate extends FancyImagebarClass {
 				if (formChanged == false || (formChanged == true && confirm("' . I18N::translate('The settings are changed. You will lose your changes if you switch trees.') . '"))) {					
 					var treeName = jQuery("option:selected", this).text();
 					jQuery.get(getImageList(), function(data) {
-						 jQuery(".folderlist").replaceWith(jQuery(data).find(".folderlist"));
+						 jQuery("#folderlist").replaceWith(jQuery(data).find("#folderlist"));
 						 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
 						 jQuery("#options").replaceWith(jQuery(data).find("#options"));
-						 jQuery("#panel2 .panel-title a").text("' . I18N::translate('Options for') . '" + treeName);
+						 jQuery("#card-options-header a").text("' . I18N::translate('Options for') . ' " + treeName);
 						 oTable.fnDraw();
 					});
 					formChanged = false;
@@ -144,9 +145,9 @@ class AdminTemplate extends FancyImagebarClass {
 			})
 
 			// folder select
-			jQuery("form").on("change", ".folderlist", function(){
+			jQuery("form").on("change", "#folderlist", function(){
 				jQuery.get(getImageList(), function(data) {
-					 jQuery(".folderlist").replaceWith(jQuery(data).find(".folderlist"));
+					 jQuery("#folderlist").replaceWith(jQuery(data).find("#folderlist"));
 					 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
 					 formChanged = false;
 					 oTable.fnDraw();
@@ -154,7 +155,7 @@ class AdminTemplate extends FancyImagebarClass {
 			});
 
 			// select files with or without type = "photo"
-			jQuery("form").on("click", ".photos", function(){
+			jQuery("form").on("click", "#photos", function(){
 				jQuery.get(getImageList(), function(data) {
 					 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
 					 formChanged = false;
@@ -180,44 +181,34 @@ class AdminTemplate extends FancyImagebarClass {
 	}
 
 	private function pageBody(PageController $controller) {
+		global $WT_TREE;
+		
+		echo Bootstrap4::breadcrumbs([
+			'admin.php'			 => I18N::translate('Control panel'),
+			'admin_modules.php'	 => I18N::translate('Module administration'),
+			], $controller->getPageTitle());
 		?>
-		<ol class="breadcrumb small">
-			<li><a href="admin.php"><?= I18N::translate('Control panel') ?></a></li>
-			<li><a href="admin_modules.php"><?= I18N::translate('Module administration') ?></a></li>
-			<li class="active"><?= $controller->getPageTitle() ?></li>
-		</ol>
-		<h2><?= $this->getTitle() ?></h2>
+
+		<h1><?= $controller->getPageTitle() ?></h1>
 		<form class="form-horizontal" method="post" name="configform" action="<?= $this->getConfigLink() ?>">
 			<input type="hidden" name="save" value="1">
-			<div class="form-group">
-				<label class="control-label col-sm-1"><?= I18N::translate('Family tree') ?></label>
-				<div class="col-sm-3">
-					<select id="tree" name="NEW_FIB_TREE" class="form-control">
-						<?php foreach (Tree::getAll() as $tree): ?>
-							<?php if ($tree->getTreeId() === $this->getTreeId()): ?>
-								<option value="<?= $tree->getTreeId(); ?>" data-ged="<?= $tree->getNameHtml() ?>" selected="selected">
-									<?= $tree->getTitleHtml() ?>
-								</option>
-							<?php else: ?>
-								<option value="<?= $tree->getTreeId(); ?>" data-ged="<?= $tree->getNameHtml() ?>">
-									<?= $tree->getTitleHtml() ?>
-								</option>
-							<?php endif; ?>
-						<?php endforeach; ?>
-					</select>
+			<div class="row form-group mt-3">
+				<label class="col-form-label col-sm-1"><?= I18N::translate('Family tree') ?></label>
+				<div class="col-sm-4">
+					<?= Bootstrap4::select(Tree::getNameList(), $WT_TREE->getName(), ['id' => 'tree', 'name' => 'NEW_FIB_TREE']) ?>
 				</div>
 			</div>
-			<div class="panel-group" id="accordion">
-				<div class="panel panel-default" id="panel1">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-target="#collapseOne" href="#collapseOne">
+			<div id="accordion" role="tablist" aria-multiselectable="true">
+				<div class="card">
+					<div class="card-header" role="tab" id="card-imagelist-header">
+						<h5 class="mb-0">
+							<a data-toggle="collapse" data-parent="#accordion" href="#card-imagelist-content" aria-expanded="true" aria-controls="card-imagelist-content">
 								<?= I18N::translate('Choose which images you want to show in the Fancy Imagebar') ?>
 							</a>
-						</h4>
+						</h5>
 					</div>
-					<div id="collapseOne" class="panel-collapse collapse in">
-						<div class="panel-body">
+					<div id="card-imagelist-content" class="collapse show" role="tabpanel" aria-labelledby="card-imagelist-header">
+						<div class="card-block">
 							<div class="alert alert-info alert-dismissible" role="alert">
 								<button type="button" class="close" data-dismiss="alert" aria-label="' . I18N::translate('close') . '">
 									<span aria-hidden="true">&times;</span>
@@ -228,22 +219,20 @@ class AdminTemplate extends FancyImagebarClass {
 							</div>
 							<!-- MEDIA LIST -->
 							<?php $folders = $this->listMediaFolders(); ?>
-							<div id="medialist" class="form-group">
-								<label class="control-label col-sm-1">
+							<div id="medialist" class="row form-group">
+								<label class="col-form-label col-sm-2">
 									<?= I18N::translate('Media folder') ?>
 								</label>
-								<div class="col-sm-3">
-									<?= FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[IMAGE_FOLDER]', $folders, null, $this->options('image_folder'), 'class="folderlist form-control"') ?>
+								<div class="col-sm-4">
+									<?= Bootstrap4::select($folders, $this->options('image_folder'), ['id' => 'folderlist', 'name' => 'NEW_FIB_OPTIONS[IMAGE_FOLDER]']) ?>
+									<?= Bootstrap4::checkbox(I18N::translate('Only show images with type = “photo”'), false, ['id' => 'photos', 'name' => 'NEW_FIB_OPTIONS[PHOTOS]', 'checked' => $this->options('photos')]) ?>
 								</div>
-								<label class="checkbox-inline">
-									<?= FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[PHOTOS]', $this->options('photos'), 'class="photos"') . I18N::translate('Only show images with type = “photo”') ?>
-								</label>
+								<!-- SELECT ALL -->
+								<div class="col-sm-6 text-right">								
+									<?= Bootstrap4::checkbox(I18N::translate('select all'), true, ['name' => 'select-all']) ?>
+								</div>
 							</div>
-							<!-- SELECT ALL -->
-							<label class="checkbox-inline">
-								<?= FunctionsEdit::checkbox('select-all') . I18N::translate('select all') ?>
-							</label>
-							<?php // The datatable will be dynamically filled with images from the database.  ?>
+							<?php // The datatable will be dynamically filled with images from the database.   ?>
 							<!-- IMAGE LIST -->
 							<?php
 							if (empty($this->options('images'))) {
@@ -254,61 +243,55 @@ class AdminTemplate extends FancyImagebarClass {
 							}
 							?>
 							<input id="imagelist" type="hidden" name="NEW_FIB_IMAGES" value = "<?= $imagelist ?>">
-							<table id="image_block" class="table">
+							<table id="image_block" class="table table-sm">
 								<thead></thead>
 								<tbody></tbody>
 							</table>
 						</div>
 					</div>
 				</div>
-				<div class="panel panel-default" id="panel2">
-					<div class="panel-heading">
-						<h4 class="panel-title">
-							<a data-toggle="collapse" data-target="#collapseTwo" href="#collapseTwo" class="collapsed">
+				<div class="card">
+					<div class="card-header" role="tab" id="card-options-header">
+						<h5 class="mb-0">
+							<a data-toggle="collapse" data-parent="#accordion" href="#card-options-content" aria-expanded="true" aria-controls="card-options-content">
 								<!-- Dynamic text here -->
 							</a>
-						</h4>
+						</h5>
 					</div>
-					<div id="collapseTwo" class="panel-collapse collapse">
-						<div id="options" class="panel-body">
-							<div class="form-group form-group-sm">
-								<label class="control-label col-sm-3">
-									<!-- FANCY IMAGEBAR -->
+					<div id="card-options-content" class="collapse" role="tabpanel" aria-labelledby="card-options-header">
+						<div class="card-block">
+							<!-- FANCY IMAGEBAR -->
+							<div class="row form-group">
+								<label class="col-form-label col-sm-4">									
 									<?= I18N::translate('Show Fancy Imagebar on') ?>
 								</label>
-								<div class="checkbox col-sm-8">
-									<label>
-										<?= FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[HOMEPAGE]', $this->options('homepage')) . I18N::translate('Home page') ?>
-									</label>
-									<label>
-										<?= FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[MYPAGE]', $this->options('mypage')) . I18N::translate('My page') ?>
-									</label>
-									<label>
-										<?= FunctionsEdit::twoStateCheckbox('NEW_FIB_OPTIONS[ALLPAGES]', $this->options('allpages')) . I18N::translate('All pages') ?>
-									</label>
+								<div class="col-sm-8">
+									<?= Bootstrap4::checkbox(I18N::translate('Home page'), true, ['name' => 'NEW_FIB_OPTIONS[HOMEPAGE]', 'checked' => $this->options('homepage')]) ?>
+									<?= Bootstrap4::checkbox(I18N::translate('My page'), true, ['name' => 'NEW_FIB_OPTIONS[MYPAGE]', 'checked' => $this->options('mypage')]) ?>
+									<?= Bootstrap4::checkbox(I18N::translate('All pages'), true, ['name' => 'NEW_FIB_OPTIONS[ALLPAGES]', 'checked' => $this->options('allpages')]) ?>
 								</div>
 							</div>
 							<!-- RANDOM IMAGES -->
-							<div class="form-group form-group-sm">
-								<label class="control-label col-sm-3">
+							<div class="row form-group">
+								<label class="col-form-label col-sm-4">	
 									<?= I18N::translate('Random images') ?>
 								</label>
 								<div class="col-sm-8">
-									<?= FunctionsEdit::editFieldYesNo('NEW_FIB_OPTIONS[RANDOM]', $this->options('random'), 'class="radio-inline"') ?>
+									<?= Bootstrap4::radioButtons('NEW_FIB_OPTIONS[RANDOM]', FunctionsEdit::optionsNoYes(), $this->options('random'), true) ?>
 								</div>
 							</div>
 							<!-- IMAGE TONE -->
-							<div id="tone" class="form-group form-group-sm">
-								<label class="control-label col-sm-3">
+							<div id="tone" class="row form-group">
+								<label class="col-form-label col-sm-4">
 									<?= I18N::translate('Images Tone') ?>
 								</label>
 								<div class="col-sm-2">
-									<?= FunctionsEdit::selectEditControl('NEW_FIB_OPTIONS[TONE]', ['Sepia', 'Black and White', 'Colors'], null, $this->options('tone'), 'class="form-control"') ?>
+									<?= Bootstrap4::select(array('Sepia', 'Black and White', 'Colors'), $this->options('tone'), ['name' => 'NEW_FIB_OPTIONS[TONE]']) ?>
 								</div>
 							</div>
 							<!-- SEPIA -->
-							<div id="sepia" class="form-group form-group-sm">
-								<label class="control-label col-sm-3">
+							<div id="sepia" class="row form-group">
+								<label class="col-form-label col-sm-4">
 									<?= I18N::translate('Amount of sepia') ?>
 								</label>
 								<div class="col-sm-2">
@@ -320,50 +303,50 @@ class AdminTemplate extends FancyImagebarClass {
 										value="<?= $this->options('sepia') ?>"
 										>
 								</div>
-								<p class="col-sm-offset-3 col-sm-8 small text-muted">
+								<p class="offset-sm-3 col-sm-8 small text-muted">
 									<?= I18N::translate('Enter a value between 0 and 100') ?>
 								</p>
 							</div>
 							<!-- HEIGHT OF THE IMAGE BAR -->
-							<div class="form-group form-group-sm">
-								<label class="control-label col-sm-3">
+							<div class="row form-group">
+								<label class="col-form-label col-sm-4">
 									<?= I18N::translate('Height of the Fancy Imagebar') ?>
 								</label>
-								<div class="row">
-									<div class="col-sm-2">
-										<input
-											class="form-control"
-											type="text"
-											name="NEW_FIB_OPTIONS[HEIGHT]"
-											size="3"
-											value="<?= $this->options('height') ?>"
-											>
-									</div>
-									<div class="form-control-static">px</div>
+								<div class="col-sm-2">
+									<input
+										class="form-control"
+										type="text"
+										name="NEW_FIB_OPTIONS[HEIGHT]"
+										size="3"
+										value="<?= $this->options('height') ?>"
+										>
 								</div>
+								<div class="form-control-static">px</div>
 							</div>
 							<!-- CROP THUMBNAILS TO SQUARE -->
-							<div class="form-group form-group-sm">
-								<label class="control-label col-sm-3">
+							<div class="row form-group">
+								<label class="col-form-label col-sm-4">
 									<?= I18N::translate('Use square thumbs') ?>
 								</label>
 								<div class="col-sm-8">
-									<?= FunctionsEdit::editFieldYesNo('NEW_FIB_OPTIONS[SQUARE]', $this->options('square'), 'class="radio-inline"') ?>
+									<?= Bootstrap4::radioButtons('NEW_FIB_OPTIONS[SQUARE]', FunctionsEdit::optionsNoYes(), $this->options('square'), true) ?>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
-			<button class="btn btn-primary" type="submit">
-				<i class="fa fa-check"></i>
-				<?= I18N::translate('save') ?>
-			</button>
-			<button class="btn btn-primary" type="reset" onclick="if (confirm('<?= I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?') ?>'))
-						window.location.href = 'module.php?mod=<?= $this->getName() ?>&amp;mod_action=admin_reset';">
-				<i class="fa fa-recycle"></i>
-				<?= I18N::translate('reset') ?>
-			</button>
+			<div class="mt-3">
+				<button class="btn btn-primary" type="submit">
+					<i class="fa fa-check"></i>
+					<?= I18N::translate('save') ?>
+				</button>
+				<button class="btn btn-primary" type="reset" onclick="if (confirm('<?= I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?') ?>'))
+							window.location.href = 'module.php?mod=<?= $this->getName() ?>&amp;mod_action=admin_reset';">
+					<i class="fa fa-recycle"></i>
+					<?= I18N::translate('reset') ?>
+				</button>
+			</div>
 		</form>
 		<?php
 	}

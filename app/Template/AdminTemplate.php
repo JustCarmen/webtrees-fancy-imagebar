@@ -51,7 +51,7 @@ class AdminTemplate extends FancyImagebarClass {
 			}
 			include_css("' . $this->directory . '/css/style.css");
 
-			var oTable=jQuery("#image_block").dataTable( {
+			var oTable=$("#image_block").dataTable( {
 				dom: \'<p<"dt-clear">il>t<r>\',
 				processing: true,
 				serverSide: true,
@@ -68,28 +68,28 @@ class AdminTemplate extends FancyImagebarClass {
 					{}
 				],
 				fnDrawCallback: function() {
-					var images = jQuery("#imagelist").val().split("|");
-					jQuery("input[type=checkbox]", this).each(function(){
-							if(jQuery.inArray(jQuery(this).val(), images) > -1){
-									jQuery(this).prop("checked", true);
+					var images = $("#imagelist").val().split("|");
+					$("input[type=checkbox]", this).each(function(){
+							if($.inArray($(this).val(), images) > -1){
+									$(this).prop("checked", true);
 							} else {
-									jQuery(this).prop("checked", false);
+									$(this).prop("checked", false);
 							}
 					});
 				}
 			});
 
 			// dynamic title
-			var treeName = jQuery("#tree option:selected").text();
-			jQuery("#card-options-header a").text("' . I18N::translate('Options for') . ' " + treeName);
+			var treeName = $("#tree option:selected").text();
+			$("#card-options-header a").text("' . I18N::translate('Options for') . ' " + treeName);
 
 			var formChanged = false;
-			jQuery(oTable).on("change", "input[type=checkbox]",function() {
-				var images = jQuery("#imagelist").val().split("|")
+			$(oTable).on("change", "input[type=checkbox]",function() {
+				var images = $("#imagelist").val().split("|")
 				if(this.checked){
-					images.push(jQuery(this).val());
+					images.push($(this).val());
 				 } else {
-					var index = images.indexOf(jQuery(this).val());
+					var index = images.indexOf($(this).val());
 					images.splice(index, 1 );
 				 }
 				 
@@ -97,84 +97,84 @@ class AdminTemplate extends FancyImagebarClass {
 				 images = images.filter(function(e){return e});
 				 
 				 // turn array into a string
-				 jQuery("#imagelist").val(images.join("|"));
+				 $("#imagelist").val(images.join("|"));
 				 	 
 				 formChanged = true;
 			});
 
-			jQuery("input[name=select-all]").click(function(){
-				if (jQuery(this).is(":checked") == true) {
-					jQuery("#imagelist").val("' . implode("|", $this->getXrefs()) . '");
+			$("input[name=select-all]").click(function(){
+				if ($(this).is(":checked") == true) {
+					$("#imagelist").val("' . implode("|", $this->getXrefs()) . '");
 					oTable.find(":checkbox").prop("checked", true);
 				} else {
-					jQuery("#imagelist").val("");
+					$("#imagelist").val("");
 					oTable.find(":checkbox").prop("checked", false);
 				}
 				formChanged = true;
 			});
 
 			// detect changes on other form elements
-			jQuery("#card-options-header").on("change", "input, select", function(){
+			$("#card-options-header").on("change", "input, select", function(){
 				formChanged = true;
 			});
 			
 			function getImageList() {
-				var ged = jQuery("option:selected", "#tree").val();
-				var folder = jQuery("option:selected", "#folderlist").val();
-				var photos = jQuery("#photos").is(":checked")
+				var ged = $("option:selected", "#tree").val();
+				var folder = $("option:selected", "#folderlist").val();
+				var photos = $("#photos").is(":checked")
 				return "module.php?mod=' . $this->getName() . '&mod_action=admin_config&ged=" + ged + "&folder=" + folder + "&photos=" + photos;
 			}
 
-			var current = jQuery("#tree option:selected");
-			jQuery("#tree").change(function() {
+			var current = $("#tree option:selected");
+			$("#tree").change(function() {
 				if (formChanged == false || (formChanged == true && confirm("' . I18N::translate('The settings are changed. You will lose your changes if you switch trees.') . '"))) {					
-					var treeName = jQuery("option:selected", this).text();
-					jQuery.get(getImageList(), function(data) {
-						 jQuery("#folderlist").replaceWith(jQuery(data).find("#folderlist"));
-						 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
-						 jQuery("#options").replaceWith(jQuery(data).find("#options"));
-						 jQuery("#card-options-header a").text("' . I18N::translate('Options for') . ' " + treeName);
+					var treeName = $("option:selected", this).text();
+					$.get(getImageList(), function(data) {
+						 $("#folderlist").replaceWith($(data).find("#folderlist"));
+						 $("#imagelist").replaceWith($(data).find("#imagelist"));
+						 $("#options").replaceWith($(data).find("#options"));
+						 $("#card-options-header a").text("' . I18N::translate('Options for') . ' " + treeName);
 						 oTable.fnDraw();
 					});
 					formChanged = false;
-					current = jQuery("option:selected", this);
+					current = $("option:selected", this);
 				}
 				else {
-					jQuery(current).prop("selected", true);
+					$(current).prop("selected", true);
 				}
 			})
 
 			// folder select
-			jQuery("form").on("change", "#folderlist", function(){
-				jQuery.get(getImageList(), function(data) {
-					 jQuery("#folderlist").replaceWith(jQuery(data).find("#folderlist"));
-					 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
+			$("form").on("change", "#folderlist", function(){
+				$.get(getImageList(), function(data) {
+					 $("#folderlist").replaceWith($(data).find("#folderlist"));
+					 $("#imagelist").replaceWith($(data).find("#imagelist"));
 					 formChanged = false;
 					 oTable.fnDraw();
 				});
 			});
 
 			// select files with or without type = "photo"
-			jQuery("form").on("click", "#photos", function(){
-				jQuery.get(getImageList(), function(data) {
-					 jQuery("#imagelist").replaceWith(jQuery(data).find("#imagelist"));
+			$("form").on("click", "#photos", function(){
+				$.get(getImageList(), function(data) {
+					 $("#imagelist").replaceWith($(data).find("#imagelist"));
 					 formChanged = false;
 					 oTable.fnDraw();
 				});
 			});
 
 			// extra options for Sepia Tone
-			if(jQuery("#tone select").val() == 0) {
-				jQuery("#sepia").show();
+			if($("#tone select").val() == 0) {
+				$("#sepia").show();
 			} else {
-				jQuery("#sepia").hide();
+				$("#sepia").hide();
 			}
 			
-			jQuery("#tone select").change(function() {
-				if(jQuery(this).val() == 0) {
-					jQuery("#sepia").fadeIn(500);
+			$("#tone select").change(function() {
+				if($(this).val() == 0) {
+					$("#sepia").fadeIn(500);
 				} else {
-					jQuery("#sepia").fadeOut(500);
+					$("#sepia").fadeOut(500);
 				}
 			});
 		');

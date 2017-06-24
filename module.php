@@ -136,13 +136,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 
         // set the theme class on the body
         $controller->addInlineJavascript('
-          jQuery("body").addClass("theme-' . Theme::theme()->themeId() . '");
+          $("body").addClass("theme-' . Theme::theme()->themeId() . '");
         ', BaseController::JS_PRIORITY_HIGH);
 
         // put the fancy imagebar in the right position
         echo $this->module()->getFancyImagebar();
         $controller->addInlineJavaScript('
-					jQuery("main").before(jQuery(".fancy-imagebar").show());
+					$("main").before($(".fancy-imagebar").show());
 				');
       }
     } catch (\ErrorException $ex) {

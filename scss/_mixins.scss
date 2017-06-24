@@ -2,11 +2,11 @@
 // Fancy Imagebar divider
 // =============================================================================
 @mixin fib-divider($bg-color, $height, $margin) {
-	margin-top: $margin;
-	.fancy-imagebar-divider {
-		background-color: $bg-color;
-		height: $height;
-		margin-top: $margin;
-	}
+  margin-top: $margin;
+  .fancy-imagebar-divider {
+    background-color: $bg-color;
+    height: $height;
+    margin-top: $margin;
+  }
 }
 

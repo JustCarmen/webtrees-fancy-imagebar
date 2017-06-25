@@ -18,15 +18,16 @@
   text-decoration: none;
 }
 .card-header a:after {
-  float: right;
   font-family: "FontAwesome";
-  color: grey;
   content: "\f078";
+  color: #808080;
+  float: right;
 }
 [dir=rtl] .card-header a:after {
   float: left;
 }
 .card-header a.collapsed:after {
+  font-family: "FontAwesome";
   content: "\f054";
 }
 [dir=rtl] .card-header a.collapsed:after {

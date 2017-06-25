@@ -7,14 +7,11 @@
   }
 
   a:after {
-    @include jc-direction(float, right);
-    @include fontawesome;
-    color: grey;
-    content: $chevron-down;
+		@include jc-icon($chevron-down, null, $gray, right)
   }
 
   a.collapsed:after {
-    @include jc-direction(content, $chevron-right, $chevron-left);
+    @include jc-icon($chevron-right, $chevron-left);
   }
 
 }

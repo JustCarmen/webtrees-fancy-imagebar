@@ -18,6 +18,7 @@ namespace JustCarmen\WebtreesAddOns\FancyImagebar\Template;
 use Fisharebest\Webtrees\Auth;
 use Fisharebest\Webtrees\Bootstrap4;
 use Fisharebest\Webtrees\Controller\PageController;
+use Fisharebest\Webtrees\Filter;
 use Fisharebest\Webtrees\Functions\FunctionsEdit;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
@@ -183,6 +184,7 @@ class AdminTemplate extends FancyImagebarClass {
 
     <h1><?= $controller->getPageTitle() ?></h1>
     <form class="form-horizontal" method="post" name="configform" action="<?= $this->getConfigLink() ?>">
+      <?= Filter::getCsrf() ?>
       <input type="hidden" name="save" value="1">
       <div class="row form-group mt-3">
         <label class="col-form-label col-sm-1"><?= I18N::translate('Family tree') ?></label>
@@ -258,9 +260,9 @@ class AdminTemplate extends FancyImagebarClass {
                   <?= I18N::translate('Show Fancy Imagebar on') ?>
                 </label>
                 <div class="col-sm-8">
-                  <?= Bootstrap4::checkbox(I18N::translate('Home page'), true, ['name' => 'NEW_FIB_OPTIONS[HOMEPAGE]', 'checked' => $this->options('homepage')]) ?>
-                  <?= Bootstrap4::checkbox(I18N::translate('My page'), true, ['name' => 'NEW_FIB_OPTIONS[MYPAGE]', 'checked' => $this->options('mypage')]) ?>
-                  <?= Bootstrap4::checkbox(I18N::translate('All pages'), true, ['name' => 'NEW_FIB_OPTIONS[ALLPAGES]', 'checked' => $this->options('allpages')]) ?>
+                  <?= Bootstrap4::checkbox(I18N::translate('Home page'), true, ['name' => 'NEW_FIB_OPTIONS[HOMEPAGE]', 'checked' => (bool) $this->options('homepage')]) ?>
+                  <?= Bootstrap4::checkbox(I18N::translate('My page'), true, ['name' => 'NEW_FIB_OPTIONS[MYPAGE]', 'checked' => (bool) $this->options('mypage')]) ?>
+                  <?= Bootstrap4::checkbox(I18N::translate('All pages'), true, ['name' => 'NEW_FIB_OPTIONS[ALLPAGES]', 'checked' => (bool) $this->options('allpages')]) ?>
                 </div>
               </div>
               <!-- RANDOM IMAGES -->

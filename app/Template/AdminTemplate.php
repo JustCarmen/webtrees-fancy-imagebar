@@ -107,7 +107,7 @@ class AdminTemplate extends FancyImagebarClass {
 			});
 
 			// detect changes on other form elements
-			$("#card-options-header").on("change", "input, select", function(){
+			$("#card-options-content").on("change", "input, select", function(){
 				formChanged = true;
 			});
 			
@@ -253,7 +253,7 @@ class AdminTemplate extends FancyImagebarClass {
             </h5>
           </div>
           <div id="card-options-content" class="collapse" role="tabpanel" aria-labelledby="card-options-header">
-            <div class="card-block">
+            <div id="options" class="card-block">
               <!-- FANCY IMAGEBAR -->
               <div class="row form-group">
                 <label class="col-form-label col-sm-4">

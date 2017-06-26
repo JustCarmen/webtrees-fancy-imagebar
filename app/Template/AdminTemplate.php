@@ -40,7 +40,7 @@ class AdminTemplate extends FancyImagebarClass {
         ->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL)
         ->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL);
 
-		echo $this->includeCss();
+    echo $this->includeCss();
 
     $controller->addInlineJavascript('
 			var oTable=$("#image_block").dataTable( {
@@ -334,7 +334,7 @@ class AdminTemplate extends FancyImagebarClass {
           <?= I18N::translate('save') ?>
         </button>
         <button class="btn btn-primary" type="reset" onclick="if (confirm('<?= I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?') ?>'))
-                          window.location.href = 'module.php?mod=<?= $this->getName() ?>&amp;mod_action=admin_reset';">
+              window.location.href = 'module.php?mod=<?= $this->getName() ?>&amp;mod_action=admin_reset';">
           <i class="fa fa-recycle"></i>
           <?= I18N::translate('reset') ?>
         </button>

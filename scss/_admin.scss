@@ -7,7 +7,7 @@
   }
 
   a:after {
-		@include jc-icon($chevron-down, null, $gray, right)
+    @include jc-icon($chevron-down, null, $gray, right)
   }
 
   a.collapsed:after {

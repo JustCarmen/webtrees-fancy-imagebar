@@ -70,22 +70,22 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
     switch ($mod_action) {
       case 'admin_config':
         if (Filter::postBool('save') && Filter::checkCsrf()) {
-          $FIB_OPTIONS                     = unserialize($this->getPreference('FIB_OPTIONS'));
-          $tree                            = Tree::findByName(Filter::post('NEW_FIB_TREE'));
-          $tree_id                         = $tree->getTreeId();
-          $FIB_OPTIONS[$tree_id]           = Filter::postArray('NEW_FIB_OPTIONS');
+          $FIB_OPTIONS           = unserialize($this->getPreference('FIB_OPTIONS'));
+          $tree                  = Tree::findByName(Filter::post('NEW_FIB_TREE'));
+          $tree_id               = $tree->getTreeId();
+          $FIB_OPTIONS[$tree_id] = Filter::postArray('NEW_FIB_OPTIONS');
 
           // unchecked checkboxes have not been posted
           if (!array_key_exists('HOMEPAGE', $FIB_OPTIONS[$tree_id])) {
             $FIB_OPTIONS[$tree_id]['HOMEPAGE'] = 0;
           }
-           if (!array_key_exists('MYPAGE', $FIB_OPTIONS[$tree_id])) {
+          if (!array_key_exists('MYPAGE', $FIB_OPTIONS[$tree_id])) {
             $FIB_OPTIONS[$tree_id]['MYPAGE'] = 0;
           }
-           if (!array_key_exists('ALLPAGES', $FIB_OPTIONS[$tree_id])) {
+          if (!array_key_exists('ALLPAGES', $FIB_OPTIONS[$tree_id])) {
             $FIB_OPTIONS[$tree_id]['ALLPAGES'] = 0;
           }
-          
+
           $images                          = explode("|", Filter::post('NEW_FIB_IMAGES'));
           $FIB_OPTIONS[$tree_id]['IMAGES'] = $images;
           $this->setPreference('FIB_OPTIONS', serialize($FIB_OPTIONS));

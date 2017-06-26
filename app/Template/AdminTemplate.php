@@ -280,7 +280,7 @@ class AdminTemplate extends FancyImagebarClass {
                   <?= I18N::translate('Images Tone') ?>
                 </label>
                 <div class="col-sm-2">
-                  <?= Bootstrap4::select(['Sepia', 'Black and White', 'Colors'], $this->options('tone'), ['name' => 'NEW_FIB_OPTIONS[TONE]']) ?>
+                  <?= Bootstrap4::select([I18N::translate('Sepia'), I18N::translate('Black and White'), I18N::translate('Colors')], $this->options('tone'), ['name' => 'NEW_FIB_OPTIONS[TONE]']) ?>
                 </div>
               </div>
               <!-- SEPIA -->

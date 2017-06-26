@@ -40,17 +40,9 @@ class AdminTemplate extends FancyImagebarClass {
         ->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL)
         ->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL);
 
-    $controller->addInlineJavascript('
-			function include_css(css_file) {
-				var html_doc = document.getElementsByTagName("head")[0];
-				var css = document.createElement("link");
-				css.setAttribute("rel", "stylesheet");
-				css.setAttribute("type", "text/css");
-				css.setAttribute("href", css_file);
-				html_doc.appendChild(css);
-			}
-			include_css("' . $this->directory . '/css/style.css");
+		echo $this->includeCss();
 
+    $controller->addInlineJavascript('
 			var oTable=$("#image_block").dataTable( {
 				dom: \'<p<"dt-clear">il>t<r>\',
 				processing: true,

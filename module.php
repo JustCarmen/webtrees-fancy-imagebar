@@ -16,7 +16,6 @@
 namespace JustCarmen\WebtreesAddOns\FancyImagebar;
 
 use Composer\Autoload\ClassLoader;
-use Fisharebest\Webtrees\Controller\BaseController;
 use Fisharebest\Webtrees\Database;
 use Fisharebest\Webtrees\Filter;
 use Fisharebest\Webtrees\I18N;
@@ -125,19 +124,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 
     try {
       if ($this->module()->loadFancyImagebar()) {
-        // load the stylesheet
-        $controller->addInlineJavascript('
-          if (document.createStyleSheet) {
-            document.createStyleSheet("' . $this->css() . '"); // For Internet Explorer
-          } else {
-            $("head").append(\'<link rel="stylesheet" type="text/css" href="' . $this->css() . '">\');
-          }
-		', BaseController::JS_PRIORITY_HIGH);
 
-        // set the theme class on the body
-        $controller->addInlineJavascript('
-          $("body").addClass("theme-' . Theme::theme()->themeId() . '");
-        ', BaseController::JS_PRIORITY_HIGH);
+				echo $this->includeCss();
 
         // put the fancy imagebar in the right position
         echo $this->module()->getFancyImagebar();
@@ -152,14 +140,33 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
     return null;
   }
 
-  /**
-   * URL for our style sheet.
-   *
-   * @return string
-   */
-  public function css() {
-    return WT_STATIC_URL . WT_MODULES_DIR . $this->getName() . '/css/style.css';
-  }
+   /**
+	 * Default Fancy script used in all Fancy modules with css
+	 *
+	 * Use plain javascript to include the stylesheet(s) in the header and set the theme class on the body
+	 * Use a theme class on the body to simply reference it by css
+	 *
+	 * The code to place the stylesheet in the header renders quicker than the default webtrees solution
+	 * because we do not have to wait until the page is fully loaded
+	 *
+	 * Replace all classnames on the body to prevent double theme classes set by multiple fancy modules
+	 *
+	 * @return javascript
+	 */
+	protected function includeCss() {
+		return
+			'<script>
+				var newSheet=document.createElement("link");
+				newSheet.setAttribute("rel","stylesheet");
+				newSheet.setAttribute("type","text/css");
+				newSheet.setAttribute("href","' . $this->directory . '/css/style.css");
+				document.getElementsByTagName("head")[0].appendChild(newSheet);
+
+				window.addEventListener("load", function () {
+						document.body.className = "wt-global theme-' . Theme::theme()->themeId() . '";
+				}, false);
+			</script>';
+	}
 
 }
 

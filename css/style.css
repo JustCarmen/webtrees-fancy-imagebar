@@ -12,72 +12,68 @@
 * You should have received a copy of the GNU General Public License
 * along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-.card-header a:hover,
-.card-header a:focus,
-.card-header a:active {
+.fancy-imagebar-admin .card-header a:hover,
+.fancy-imagebar-admin .card-header a:focus,
+.fancy-imagebar-admin .card-header a:active {
   text-decoration: none;
 }
-.card-header a:after {
+.fancy-imagebar-admin .card-header a:after {
   font-family: "FontAwesome";
   content: "\f078";
   color: #808080;
   float: right;
 }
-[dir=rtl] .card-header a:after {
+[dir=rtl] .fancy-imagebar-admin .card-header a:after {
   float: left;
 }
-.card-header a.collapsed:after {
+.fancy-imagebar-admin .card-header a.collapsed:after {
   font-family: "FontAwesome";
   content: "\f054";
 }
-[dir=rtl] .card-header a.collapsed:after {
+[dir=rtl] .fancy-imagebar-admin .card-header a.collapsed:after {
   content: "\f053";
 }
-
-.table {
+.fancy-imagebar-admin .table {
   border-top: 1px solid #ddd;
   border-bottom: 1px solid #ddd;
 }
-.table thead {
+.fancy-imagebar-admin .table thead {
   display: none;
 }
-.table > tbody > tr > td {
+.fancy-imagebar-admin .table > tbody > tr > td {
   border: none;
 }
-
-#image_block_wrapper {
+.fancy-imagebar-admin #image_block_wrapper {
   display: block;
 }
-#image_block_wrapper .dt-clear {
+.fancy-imagebar-admin #image_block_wrapper .dt-clear {
   clear: both;
 }
-.dataTables_info,
-.dataTables_paginate {
+.fancy-imagebar-admin .dataTables_info,
+.fancy-imagebar-admin .dataTables_paginate {
   float: right;
 }
-[dir=rtl] .dataTables_info, [dir=rtl]
-.dataTables_paginate {
+[dir=rtl] .fancy-imagebar-admin .dataTables_info, [dir=rtl]
+.fancy-imagebar-admin .dataTables_paginate {
   float: left;
 }
-
-.dataTables_length {
+.fancy-imagebar-admin .dataTables_length {
   display: flex;
 }
-.dataTables_length label {
+.fancy-imagebar-admin .dataTables_length label {
   padding-top: 0.5rem;
   padding-bottom: 0.5rem;
   display: inline-block;
 }
-
-#image_block {
+.fancy-imagebar-admin #image_block {
   margin-bottom: 15px !important;
 }
-#image_block tr {
+.fancy-imagebar-admin #image_block tr {
   float: left;
   padding: 15px;
   text-align: center;
 }
-[dir=rtl] #image_block tr {
+[dir=rtl] .fancy-imagebar-admin #image_block tr {
   float: right;
 }
 
@@ -85,37 +81,37 @@
   clear: both;
   overflow: hidden;
 }
-.theme-clouds .fancy-imagebar {
+.fancy-imagebar.theme-clouds {
   margin-top: 2px;
 }
-.theme-clouds .fancy-imagebar .fancy-imagebar-divider {
+.fancy-imagebar.theme-clouds .fancy-imagebar-divider {
   background-color: #79c;
   height: 1px;
   margin-top: 2px;
 }
-.theme-colors .fancy-imagebar {
+.fancy-imagebar.theme-colors {
   border-bottom: 1px solid #2a2b2d;
 }
-.theme-fab .fancy-imagebar {
+.fancy-imagebar.theme-fab {
   border: #a9a9a9 1px solid;
   border-radius: 3px;
   padding: 0;
 }
-.theme-minimal .fancy-imagebar {
+.fancy-imagebar.theme-minimal {
   border-bottom: 2px solid #aaa;
 }
-.theme-webtrees .fancy-imagebar {
+.fancy-imagebar.theme-webtrees {
   margin-top: 3px;
 }
-.theme-webtrees .fancy-imagebar .fancy-imagebar-divider {
+.fancy-imagebar.theme-webtrees .fancy-imagebar-divider {
   background-color: #81a9cb;
   height: 2px;
   margin-top: 3px;
 }
-.theme-xenea .fancy-imagebar {
+.fancy-imagebar.theme-xenea {
   margin-top: 3px;
 }
-.theme-xenea .fancy-imagebar .fancy-imagebar-divider {
+.fancy-imagebar.theme-xenea .fancy-imagebar-divider {
   background-color: #0073cf;
   height: 2px;
   margin-top: 3px;

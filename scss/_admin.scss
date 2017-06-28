@@ -1,63 +1,63 @@
 // configuration panel layout
-.card-header {
-  a:hover,
-    a:focus,
-    a:active {
-    text-decoration: none;
-  }
-
-  a:after {
-    @include jc-icon($chevron-down, null, $gray, right)
-  }
-
-  a.collapsed:after {
-    @include jc-icon($chevron-right, $chevron-left);
-  }
-
-}
-
-.table {
-  border-top: $table-border;
-  border-bottom: $table-border;
-  thead {
-    display: none;
-  }
-
-  & > tbody > tr > td {
-    border: none;
-  }
-}
-
-#image_block_wrapper {
-  display: block;
-
-  .dt-clear {
-    clear: both;
-  }
-
-  @at-root {
-    .#{$dt}_info,
-    .#{$dt}_paginate {
-      @include jc-direction(float, right);
+.fancy-imagebar-admin {
+  .card-header {
+    a:hover,
+      a:focus,
+      a:active {
+      text-decoration: none;
     }
 
-    .#{$dt}_length {
-      display: flex;
-      & label {
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
-        display: inline-block;
-      }
+    a:after {
+      @include jc-icon($chevron-down, null, $gray, right)
     }
 
-    #image_block {
-      margin-bottom: 15px !important;
+    a.collapsed:after {
+      @include jc-icon($chevron-right, $chevron-left);
+    }
 
-      tr {
-        @include jc-direction(float, left);
-        padding: 15px;
-        text-align: center;
-      }
+  }
+
+  .table {
+    border-top: $table-border;
+    border-bottom: $table-border;
+    thead {
+      display: none;
+    }
+
+    & > tbody > tr > td {
+      border: none;
+    }
+  }
+
+  #image_block_wrapper {
+    display: block;
+
+    .dt-clear {
+      clear: both;
+    }
+  }
+
+  .#{$dt}_info,
+  .#{$dt}_paginate {
+    @include jc-direction(float, right);
+  }
+
+  .#{$dt}_length {
+    display: flex;
+    & label {
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+      display: inline-block;
+    }
+  }
+
+  #image_block {
+    margin-bottom: 15px !important;
+
+    tr {
+      @include jc-direction(float, left);
+      padding: 15px;
+      text-align: center;
     }
   }
 }

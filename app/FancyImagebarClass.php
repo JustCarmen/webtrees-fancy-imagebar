@@ -355,10 +355,11 @@ class FancyImagebarClass extends FancyImagebarModule {
     }
 
     // set the class
-    if (Theme::theme()->themeId() === 'fab') {
-      $class = 'fancy-imagebar container';
+    $theme = Theme::theme()->themeId();
+    if ($theme === 'fab') {
+      $class = 'fancy-imagebar container theme-' . $theme;
     } else {
-      $class = 'fancy-imagebar';
+      $class = 'fancy-imagebar theme-' . $theme;
     }
 
     // output

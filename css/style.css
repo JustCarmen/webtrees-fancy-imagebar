@@ -116,5 +116,9 @@
   height: 2px;
   margin-top: 3px;
 }
+.fancy-imagebar.theme-justlight {
+  border-bottom: 5px solid #428bca;
+  border-top: 5px solid #428bca;
+}
 
 /*# sourceMappingURL=style.css.map */

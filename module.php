@@ -130,6 +130,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
     // We don't actually have a menu - this is just a convenient "hook" to execute code at the right time during page execution
     global $controller;
 
+    echo $this->includeCss();
+
     // Check if the Fancy Imagebar is implemented in a (custom) theme
     // Quicker loading through theme. Include styling.
     if (method_exists(Theme::theme(), 'fancyImagebar')) {
@@ -138,9 +140,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 
     try {
       if ($this->module()->loadFancyImagebar()) {
-
-        echo $this->includeCss();
-
         // put the fancy imagebar in the right position
         echo $this->module()->getFancyImagebar();
         $controller->addInlineJavaScript('

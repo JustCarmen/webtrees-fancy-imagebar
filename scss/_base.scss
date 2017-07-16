@@ -27,5 +27,10 @@
   &.theme-xenea {
     @include fib-divider(#0073cf, 2px, 3px);
   }
+
+  &.theme-justlight {
+    border-bottom: 5px solid #428bca;
+    border-top: 5px solid #428bca;
+  }
 }
 

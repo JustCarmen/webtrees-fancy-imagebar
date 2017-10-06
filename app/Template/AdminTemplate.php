@@ -203,7 +203,7 @@ class AdminTemplate extends FancyImagebarClass {
               </h5>
             </div>
             <div id="card-imagelist-content" class="collapse show" role="tabpanel" aria-labelledby="card-imagelist-header">
-              <div class="card-block">
+              <div class="card-body">
                 <div class="alert alert-info alert-dismissible" role="alert">
                   <button type="button" class="close" data-dismiss="alert" aria-label="' . I18N::translate('close') . '">
                     <span aria-hidden="true">&times;</span>
@@ -254,7 +254,7 @@ class AdminTemplate extends FancyImagebarClass {
               </h5>
             </div>
             <div id="card-options-content" class="collapse" role="tabpanel" aria-labelledby="card-options-header">
-              <div id="options" class="card-block">
+              <div id="options" class="card-body">
                 <!-- FANCY IMAGEBAR -->
                 <div class="row form-group">
                   <label class="col-form-label col-sm-4">

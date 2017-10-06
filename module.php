@@ -29,7 +29,7 @@ use JustCarmen\WebtreesAddOns\FancyImagebar\Template\AdminTemplate;
 
 class FancyImagebarModule extends AbstractModule implements ModuleConfigInterface, ModuleMenuInterface {
 
-  const CUSTOM_VERSION = '1.8.0-dev';
+  const CUSTOM_VERSION = '2.0.0-dev';
   const CUSTOM_WEBSITE = 'http://www.justcarmen.nl/fancy-modules/fancy-imagebar/';
 
   /** @var string location of the Fancy imagebar module files */

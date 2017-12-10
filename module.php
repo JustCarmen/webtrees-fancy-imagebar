@@ -18,6 +18,7 @@ namespace JustCarmen\WebtreesAddOns\FancyImagebar;
 use Composer\Autoload\ClassLoader;
 use Fisharebest\Webtrees\Database;
 use Fisharebest\Webtrees\Filter;
+use Fisharebest\Webtrees\Html;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Log;
 use Fisharebest\Webtrees\Module\AbstractModule;

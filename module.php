@@ -114,9 +114,12 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 	}
 	}
 
-	// Implement ModuleConfigInterface
+	/** {@inheritdoc} */
 	public function getConfigLink() {
-		return 'module.php?mod=' . $this->getName() . '&amp;mod_action=admin_config';
+		return Html::url('module.php', [
+			'mod'        => $this->getName(),
+			'mod_action' => 'admin_config',
+		]);
 	}
 
 	// Implement ModuleMenuInterface

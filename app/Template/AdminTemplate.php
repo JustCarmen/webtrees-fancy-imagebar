@@ -25,25 +25,24 @@ use Fisharebest\Webtrees\Tree;
 use JustCarmen\WebtreesAddOns\FancyImagebar\FancyImagebarClass;
 
 class AdminTemplate extends FancyImagebarClass {
+	protected function pageContent() {
+		$controller = new PageController;
+		return
+		$this->pageHeader($controller) .
+		$this->pageBody($controller);
+	}
 
-  protected function pageContent() {
-    $controller = new PageController;
-    return
-        $this->pageHeader($controller) .
-        $this->pageBody($controller);
-  }
+	private function pageHeader(PageController $controller) {
+		$controller
+		->restrictAccess(Auth::isAdmin())
+		->setPageTitle($this->getTitle())
+		->pageHeader()
+		->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL)
+		->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL);
 
-  private function pageHeader(PageController $controller) {
-    $controller
-        ->restrictAccess(Auth::isAdmin())
-        ->setPageTitle($this->getTitle())
-        ->pageHeader()
-        ->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL)
-        ->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL);
+		echo $this->includeCss();
 
-    echo $this->includeCss();
-
-    $controller->addInlineJavascript('
+		$controller->addInlineJavascript('
 			var oTable=$("#image_block").dataTable( {
 				dom: \'<p<"dt-clear">il>t<r>\',
 				processing: true,
@@ -171,16 +170,15 @@ class AdminTemplate extends FancyImagebarClass {
 				}
 			});
 		');
-  }
+	}
 
-  private function pageBody(PageController $controller) {
-    global $WT_TREE;
+	private function pageBody(PageController $controller) {
+		global $WT_TREE;
 
-    echo Bootstrap4::breadcrumbs([
-        'admin.php'         => I18N::translate('Control panel'),
-        'admin_modules.php' => I18N::translate('Module administration'),
-        ], $controller->getPageTitle());
-    ?>
+		echo Bootstrap4::breadcrumbs([
+		'admin.php'         => I18N::translate('Control panel'),
+		'admin_modules.php' => I18N::translate('Module administration'),
+		], $controller->getPageTitle()); ?>
 
     <div class="fancy-imagebar-admin">
       <h1><?= $controller->getPageTitle() ?></h1>
@@ -227,16 +225,15 @@ class AdminTemplate extends FancyImagebarClass {
                     <?= Bootstrap4::checkbox(I18N::translate('select all'), true, ['name' => 'select-all']) ?>
                   </div>
                 </div>
-                <?php // The datatable will be dynamically filled with images from the database.   ?>
+                <?php // The datatable will be dynamically filled with images from the database.?>
                 <!-- IMAGE LIST -->
                 <?php
-                if (empty($this->options('images'))) {
-                  // we have not used the configuration page yet so use the default (list all images)
-                  $imagelist = implode("|", $this->getXrefs());
-                } else {
-                  $imagelist = implode("|", $this->options('images'));
-                }
-                ?>
+				if (empty($this->options('images'))) {
+					// we have not used the configuration page yet so use the default (list all images)
+				  $imagelist = implode("|", $this->getXrefs());
+				} else {
+					$imagelist = implode("|", $this->options('images'));
+				} ?>
                 <input id="imagelist" type="hidden" name="NEW_FIB_IMAGES" value = "<?= $imagelist ?>">
                 <table id="image_block" class="table table-sm">
                   <thead></thead>
@@ -345,6 +342,5 @@ class AdminTemplate extends FancyImagebarClass {
       </form>
     </div>
     <?php
-  }
-
+	}
 }

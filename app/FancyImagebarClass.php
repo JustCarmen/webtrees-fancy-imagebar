@@ -168,19 +168,19 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return array
 	 */
 	private function dbMedia($LIMIT = '') {
-		$sql             = "SELECT SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id";
+		$sql             = "SELECT SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id FROM `##media_file` WHERE m_file = :tree_id";
 		$args['tree_id'] = $this->getTreeId();
 
 		if ($this->getImageFolder()) {
-			$sql .= " AND SUBSTRING_INDEX(m_filename, '/', 1) = :image_folder";
+			$sql .= " AND SUBSTRING_INDEX(multimedia_file_refn, '/', 1) = :image_folder";
 			$args['image_folder'] = $this->getImageFolder();
 		}
 
 		if ($this->getPhotos()) {
-			$sql .= " AND m_type = 'photo'";
+			$sql .= " AND source_media_type = 'photo'";
 		}
 
-		$sql .= " AND m_ext IN ('jpg', 'jpeg', 'png')" . $LIMIT;
+		$sql .= " AND multimedia_format IN ('jpg', 'jpeg', 'png')" . $LIMIT;
 
 		$rows = Database::prepare($sql)->execute($args)->fetchAll();
 		return $rows;

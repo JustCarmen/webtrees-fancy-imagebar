@@ -20,9 +20,12 @@ use Fisharebest\Webtrees\File;
 use Fisharebest\Webtrees\Filter;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Media;
+use Fisharebest\Webtrees\MediaFile;
 use Fisharebest\Webtrees\Query\QueryMedia;
 use Fisharebest\Webtrees\Theme;
 use Fisharebest\Webtrees\Tree;
+use function GuzzleHttp\json_encode;
+use function Symfony\Component\Debug\header;
 
 /**
  * Class Fancy Imagebar
@@ -226,7 +229,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$data = [];
 		foreach ($rows as $row) {
 			$tree        = Tree::findById($row->tree_id);
-			$mediaobject = Media::getInstance($row->xref, $tree);
+			$mediaobject = Media::getInstance($row->xref, $tree)->mediaFiles();
 			$data[]      = [
 		  $this->displayImage($mediaobject)
 	  ];
@@ -391,7 +394,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$list = [];
 		foreach ($xrefs as $xref) {
 			$tree        = Tree::findById($this->getTreeId());
-			$mediaobject = Media::getInstance($xref, $tree);
+			$mediaobject = Media::getInstance($xref, $tree)->mediaFiles();
 			if ($mediaobject && $mediaobject->canShow() && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
 				$list[] = $mediaobject;
 			}
@@ -414,7 +417,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @param Media $mediaobject
 	 * @return filename
 	 */
-	private function cacheFileName(Media $mediaobject) {
+	private function cacheFileName(MediaFile $mediaobject) {
 		return $this->cacheDir() . $this->getTreeId() . '-' . $mediaobject->getXref() . '-' . filemtime($mediaobject->getServerFilename()) . '.jpg';
 	}
 
@@ -523,7 +526,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @param type $mediaobject
 	 * @return thumbnail
 	 */
-	private function fancyThumb(Media $mediaobject, $thumbheight, $square) {
+	private function fancyThumb(MediaFile $mediaobject, $thumbheight, $square) {
 		$filename = $mediaobject->getServerFilename();
 		$type     = $mediaobject->mimeType();
 

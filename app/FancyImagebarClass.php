@@ -147,7 +147,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		global $WT_TREE;
 
 		$MEDIA_DIRECTORY = $WT_TREE->getPreference('MEDIA_DIRECTORY');
-		$folders         = QueryMedia::folderList();
+		$folders         = QueryMedia::folderListAll();
 		array_shift($folders);
 
 		$folderlist        = [];

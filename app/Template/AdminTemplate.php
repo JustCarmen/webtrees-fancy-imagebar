@@ -36,9 +36,7 @@ class AdminTemplate extends FancyImagebarClass {
 		$controller
 		->restrictAccess(Auth::isAdmin())
 		->setPageTitle($this->getTitle())
-		->pageHeader()
-		->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL)
-		->addExternalJavascript(WT_DATATABLES_BOOTSTRAP_JS_URL);
+		->pageHeader();
 
 		echo $this->includeCss();
 

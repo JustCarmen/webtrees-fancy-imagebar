@@ -238,7 +238,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 				} else {
 					$attribute = "";
 				}
-				return 
+				return
 					$media_file->displayImage(60, 60, 'crop', []) .
 					'<label class="checkbox"><input type="checkbox" value="' . $media->getXref() . '"' . $attribute . '></label>';
 			}, $media_files);
@@ -365,7 +365,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			if ($media->canshow()) {
 				foreach ($media->mediaFiles() as $media_file) {
 					if ($media_file->mimeType() == 'image/jpeg' || $media_file->mimeType() == 'image/png') {
-						$list[] = $media_file;
+						$list[$xref] = $media_file;
 					}
 				}
 			}
@@ -385,11 +385,11 @@ class FancyImagebarClass extends FancyImagebarModule {
 	/**
 	 * Get the filename of the cached image
 	 *
-	 * @param Media $mediaobject
+	 * @param MediaFile $media_file
 	 * @return filename
 	 */
-	private function cacheFileName(MediaFile $mediaobject) {
-		return $this->cacheDir() . $this->getTreeId() . '-' . $mediaobject->getXref() . '-' . filemtime($mediaobject->getServerFilename()) . '.jpg';
+	private function cacheFileName($filename, $xref) {
+		return $this->cacheDir() . $this->getTreeId() . '-' . $xref . '-' . filemtime($filename) . '.jpg';
 	}
 
 	/**
@@ -404,12 +404,12 @@ class FancyImagebarClass extends FancyImagebarModule {
 			File::mkdir($this->cacheDir());
 		}
 
-		$mediaobjects = $this->fancyImagebarMedia();
-		foreach ($mediaobjects as $mediaobject) {
-			if (file_exists($mediaobject->getServerFilename())) {
-				$thumbnail = $this->fancyThumb($mediaobject, $this->options('height'), $this->options('square'));
+		foreach ($this->fancyImagebarMedia() as $xref => $media_file) {
+			$filename = $media_file->getServerFileName();
+			if (file_exists($filename)) {
+				$thumbnail = $this->fancyThumb($media_file, $this->options('height'), $this->options('square'));
 				if ($thumbnail) {
-					imagejpeg($thumbnail, $this->cacheFileName($mediaobject));
+					imagejpeg($thumbnail, $this->cacheFileName($filename, $xref));
 				}
 			}
 		}
@@ -469,18 +469,18 @@ class FancyImagebarClass extends FancyImagebarModule {
 			File::mkdir($cache_dir);
 		}
 
-		$mediaobjects = $this->fancyImagebarMedia();
-		$thumbnails   = [];
-		foreach ($mediaobjects as $mediaobject) {
-			if (file_exists($mediaobject->getServerFilename())) {
-				$cache_filename = $this->cacheFileName($mediaobject);
+		$thumbnails = [];
+		foreach ($this->fancyImagebarMedia() as $xref => $media_file) {
+			$filename = $media_file->getServerFileName();
+			if (file_exists($filename)) {
+				$cache_filename = $this->cacheFileName($filename, $xref);
 				if (is_file($cache_filename)) {
 					$thumbnail = $this->loadImage($cache_filename);
 					if ($thumbnail) {
 						$thumbnails[] = $thumbnail;
 					}
 				} else {
-					$thumbnail = $this->fancyThumb($mediaobject, $this->options('height'), $this->options('square'));
+					$thumbnail = $this->fancyThumb($media_file, $this->options('height'), $this->options('square'));
 					if ($thumbnail) {
 						imagejpeg($thumbnail, $cache_filename);
 						$thumbnails[] = $thumbnail;
@@ -494,12 +494,12 @@ class FancyImagebarClass extends FancyImagebarModule {
 	/**
 	 * Create a thumbnail
 	 *
-	 * @param type $mediaobject
+	 * @param type $media_file
 	 * @return thumbnail
 	 */
-	private function fancyThumb(MediaFile $mediaobject, $thumbheight, $square) {
-		$filename = $mediaobject->getServerFilename();
-		$type     = $mediaobject->mimeType();
+	private function fancyThumb(MediaFile $media_file, $thumbheight, $square) {
+		$filename = $media_file->getServerFilename();
+		$type     = $media_file->mimeType();
 
 		$image = $this->loadImage($filename);
 		if ($image) {

@@ -232,8 +232,17 @@ class FancyImagebarClass extends FancyImagebarModule {
 			$media = Media::getInstance($row->xref, Tree::findById($row->gedcom_id));
 			Media::getInstance($row->xref, Tree::findById($row->gedcom_id));
 			$media_files = $media->mediaFiles();
-			$media_files = array_map(function (MediaFile $media_file) {
-				return $media_file->displayImage(60, 60, 'crop', []);
+			$media_files = array_map(function (MediaFile $media_file) use ($media) {
+				if ($this->options('images') == 1) {
+					$attribute = ' checked="checked"';
+				} elseif (is_array($this->options('images')) && in_array($media->getXref(), $this->options('images'))) {
+					$attribute = ' checked="checked"';
+				} else {
+					$attribute = "";
+				}
+				return 
+					$media_file->displayImage(60, 60, 'crop', []) .
+					'<label class="checkbox"><input type="checkbox" value="' . $media->getXref() . '"' . $attribute . '></label>';
 			}, $media_files);
 			$data[] = [
 				implode('', $media_files)

@@ -171,8 +171,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return array
 	 */
 	private function dbMedia($LIMIT = '') {
-		$sql             = "SELECT SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id FROM `##media_file` WHERE m_file = :tree_id";
-		$args['tree_id'] = $this->getTreeId();
+		$sql               = "SELECT SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS gedcom_id FROM `##media_file` WHERE m_file = :gedcom_id";
+		$args['gedcom_id'] = $this->getTreeId();
 
 		if ($this->getImageFolder()) {
 			$sql .= " AND SUBSTRING_INDEX(multimedia_file_refn, '/', 1) = :image_folder";
@@ -227,66 +227,27 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$recordsTotal = $recordsFiltered = Database::prepare("SELECT FOUND_ROWS()")->fetchOne();
 
 		$data = [];
+		// example from: admin_media.php
 		foreach ($rows as $row) {
-			$tree        = Tree::findById($row->tree_id);
-			$mediaobject = Media::getInstance($row->xref, $tree)->mediaFiles();
-			$data[]      = [
-		  $this->displayImage($mediaobject)
-	  ];
+			$media = Media::getInstance($row->xref, Tree::findById($row->gedcom_id));
+			Media::getInstance($row->xref, Tree::findById($row->gedcom_id));
+			$media_files = $media->mediaFiles();
+			$media_files = array_map(function (MediaFile $media_file) {
+				return $media_file->displayImage(60, 60, 'crop', []);
+			}, $media_files);
+			$data[] = [
+				implode('', $media_files)
+			];
 		}
 		header('Content-type: application/json');
-		echo json_encode([// See http://www.datatables.net/usage/server-side
-		'draw'            => Filter::getInteger('draw'), // String, but always an integer
-		'recordsTotal'    => $recordsTotal,
-		'recordsFiltered' => $recordsFiltered,
-		'data'            => $data
-	]);
+		// See http://www.datatables.net/usage/server-side
+		echo json_encode([
+			'draw'            => Filter::getInteger('draw'), // String, but always an integer
+			'recordsTotal'    => $recordsTotal,
+			'recordsFiltered' => $recordsFiltered,
+			'data'            => $data,
+		]);
 		exit;
-	}
-
-	/**
-	 * Display images in control panel
-	 *
-	 * @param type $mediaobject
-	 * @return type
-	 */
-	private function displayImage($mediaobject) {
-		$image = $this->fancyThumb($mediaobject, 60, '1');
-		if ($image) {
-			if ($this->options('images') == 1) {
-				$img_checked = ' checked="checked"';
-			} elseif (is_array($this->options('images')) && in_array($mediaobject->getXref(), $this->options('images'))) {
-				$img_checked = ' checked="checked"';
-			} else {
-				$img_checked = "";
-			}
-
-			// ouput all thumbs as jpg thumbs (transparent png files are not possible in the Fancy Imagebar,
-			// so there is no need to keep the mimeType png).
-			// We can't use the cache folder for direct output since the data folder is a protected folder.
-			ob_start();
-			imagejpeg($image, null, 100);
-			$newImage = ob_get_clean();
-
-			return
-		  '<img src="data:image/jpeg;base64,' . base64_encode($newImage) . '" ' .
-		  'alt="' . $mediaobject->getXref() . '" title="' . strip_tags($mediaobject->getFullName()) . '"/>' .
-		  '<div class="checkbox">' .
-		  '<label><input type="checkbox" value="' . $mediaobject->getXref() . '"' . $img_checked . '></label>' .
-		  '</div>';
-		} else {
-			// this image doesn't exist on the server or is not a valid image
-			$mime_type   = str_replace('/', '-', $mediaobject->mimeType());
-			$image_title = strip_tags($mediaobject->getFullName()) . ' (' . $mediaobject->getXref() . ')';
-			return
-		  '<div class="no-image">' .
-		  '<i class="icon-mime-' . $mime_type . '" ' .
-		  'title="' . I18N::translate('The image “%s” doesn’t exist or is not a valid image', $image_title) . '">' .
-		  '</i></div>' .
-		  '<div class="checkbox">' .
-		  '<label><input type="checkbox" value="" disabled="disabled"></label>' .
-		  '</div>';
-		}
 	}
 
 	/**
@@ -393,10 +354,13 @@ class FancyImagebarClass extends FancyImagebarModule {
 
 		$list = [];
 		foreach ($xrefs as $xref) {
-			$tree        = Tree::findById($this->getTreeId());
-			$mediaobject = Media::getInstance($xref, $tree)->mediaFiles();
-			if ($mediaobject && $mediaobject->canShow() && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
-				$list[] = $mediaobject;
+			$media = Media::getInstance($xref, Tree::findById($this->getTreeId()));
+			if ($media->canshow()) {
+				foreach ($media->mediaFiles() as $media_file) {
+					if ($media_file->mimeType() == 'image/jpeg' || $media_file->mimeType() == 'image/png') {
+						$list[] = $media_file;
+					}
+				}
 			}
 		}
 		return $list;

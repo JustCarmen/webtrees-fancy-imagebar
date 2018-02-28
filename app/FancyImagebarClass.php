@@ -24,8 +24,6 @@ use Fisharebest\Webtrees\MediaFile;
 use Fisharebest\Webtrees\Query\QueryMedia;
 use Fisharebest\Webtrees\Theme;
 use Fisharebest\Webtrees\Tree;
-use function GuzzleHttp\json_encode;
-use function Symfony\Component\Debug\header;
 
 /**
  * Class Fancy Imagebar

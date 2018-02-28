@@ -297,17 +297,17 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return boolean
 	 */
 	public function loadFancyImagebar() {
-		global $ctype;
-
 		if (Theme::theme()->themeId() === '_administration') {
 			return false;
 		}
+
+		$route = Filter::get('route');
 
 		$all_pages = $this->options('allpages');
 		$homepage  = $this->options('homepage');
 		$mypage    = $this->options('mypage');
 
-		if ($all_pages || ($ctype == 'gedcom' && $homepage) || ($ctype == 'user' && $mypage)) {
+		if ($all_pages || ($route == 'tree-page' && $homepage) || ($route == 'user-page' && $mypage)) {
 			return true;
 		}
 	}

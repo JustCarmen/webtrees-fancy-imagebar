@@ -166,13 +166,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleConfigInterfac
 	 */
 	protected function includeCss() {
 		return
-		'<script>
-          var newSheet=document.createElement("link");
-          newSheet.setAttribute("rel","stylesheet");
-          newSheet.setAttribute("type","text/css");
-          newSheet.setAttribute("href","' . $this->directory . '/css/style.css");
-          document.getElementsByTagName("head")[0].appendChild(newSheet);
-        </script>';
+		'<script>' .
+		  'var newSheet=document.createElement("link"); ' .
+		  'newSheet.setAttribute("rel","stylesheet"); ' .
+		  'newSheet.setAttribute("type","text/css"); ' .
+		  'newSheet.setAttribute("href","' . $this->directory . '/assets/css/style.css"); ' .
+		  'document.getElementsByTagName("head")[0].appendChild(newSheet); ' .
+		'</script>';
 	}
 }
 

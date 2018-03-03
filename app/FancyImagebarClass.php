@@ -240,7 +240,8 @@ class FancyImagebarClass extends FancyImagebarModule {
 				}
 				return
 					$media_file->displayImage(60, 60, 'crop', []) .
-					'<label class="checkbox"><input type="checkbox" value="' . $media->getXref() . '"' . $attribute . '></label>';
+					'<div class="form-check">' .
+					'<input class="form-check-input position-static" type="checkbox" aria-label="image-select" value="' . $media->getXref() . '"' . $attribute . '>';
 			}, $media_files);
 			$data[] = [
 				implode('', $media_files)
@@ -254,7 +255,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			'recordsFiltered' => $recordsFiltered,
 			'data'            => $data,
 		]);
-		exit;
+		return;
 	}
 
 	/**

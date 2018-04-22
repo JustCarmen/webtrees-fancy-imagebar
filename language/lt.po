@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
 "POT-Creation-Date: 2016-12-26 16:42+0100\n"
-"PO-Revision-Date: 2016-06-11 21:41+0000\n"
+"PO-Revision-Date: 2018-04-22 16:07+0000\n"
 "Last-Translator: Vytautas Krivickas <vytautas.krivickas@gmail.com>\n"
 "Language-Team: Lithuanian <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/lt/>\n"
 "Language: lt\n"
@@ -10,7 +10,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
-"X-Generator: Weblate 2.5\n"
+"X-Generator: Weblate 2.10\n"
 "X-Poedit-Basepath: ..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
@@ -22,16 +22,16 @@ msgstr "Visit puslapiai"
 
 #: app/Template/AdminTemplate.php:314
 msgid "Amount of sepia"
-msgstr ""
+msgstr "Sepijos kiekis"
 
 #. I18N: Description of the module
 #: module.php:66
 msgid "An imagebar with small images between header and content."
-msgstr ""
+msgstr "Imagebar su mažais vaizdais tarp antraštės ir turinio."
 
 #: app/Template/AdminTemplate.php:216
 msgid "Choose which images you want to show in the Fancy Imagebar"
-msgstr ""
+msgstr "Pasirinkite, kuriuos vaizdus norite rodyti Mandrioje Vaizdajuostėje"
 
 #: app/Template/AdminTemplate.php:326
 msgid "Enter a value between 0 and 100"
@@ -40,11 +40,11 @@ msgstr "Įveskite numeri tarp 0 ir 100"
 #. I18N: Name of the module
 #: module.php:61
 msgid "Fancy Imagebar"
-msgstr ""
+msgstr "Mandri Vaizdajuostė"
 
 #: app/Template/AdminTemplate.php:332
 msgid "Height of the Fancy Imagebar"
-msgstr ""
+msgstr "Mandrios Vaizdajuostės aukštis"
 
 #: app/Template/AdminTemplate.php:226
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If there are fewer images chosen than needed to fill up the entire Fancy Imagebar, the images will be repeated."
@@ -52,7 +52,7 @@ msgstr ""
 
 #: app/Template/AdminTemplate.php:305
 msgid "Images Tone"
-msgstr ""
+msgstr "Vaizdų tonas"
 
 #: app/Template/AdminTemplate.php:249
 msgid "No images to display for this tree"

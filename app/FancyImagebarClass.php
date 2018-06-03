@@ -136,6 +136,34 @@ class FancyImagebarClass extends FancyImagebarModule {
 	}
 
 	/**
+	 * Generate a list of all the folders in a current tree.
+	 *
+	 * @param Tree $tree
+	 *
+	 * @return string[]
+	 */
+	private function allFolders(Tree $tree) {
+		$folders = Database::prepare(
+			"SELECT SQL_CACHE LEFT(multimedia_file_refn, CHAR_LENGTH(multimedia_file_refn) - CHAR_LENGTH(SUBSTRING_INDEX(multimedia_file_refn, '/', -1))) AS media_path" .
+			" FROM  `##media_file`" .
+			" WHERE m_file = ?" .
+			" AND   multimedia_file_refn NOT LIKE 'http://%'" .
+			" AND   multimedia_file_refn NOT LIKE 'https://%'" .
+			" GROUP BY 1" .
+			" ORDER BY 1"
+		)->execute([
+			$tree->getTreeId(),
+		])->fetchOneColumn();
+
+		// Ensure we have an empty (top level) folder.
+		if (!$folders || reset($folders) !== '') {
+			array_unshift($folders, '');
+		}
+
+		return array_combine($folders, $folders);
+	}
+
+	/**
 	 * Get a list of all the media folders
 	 *
 	 * @global $WT_TREE
@@ -145,7 +173,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		global $WT_TREE;
 
 		$MEDIA_DIRECTORY = $WT_TREE->getPreference('MEDIA_DIRECTORY');
-		$folders         = QueryMedia::folderListAll();
+		$folders         = $this->allFolders($WT_TREE);
 		array_shift($folders);
 
 		$folderlist        = [];

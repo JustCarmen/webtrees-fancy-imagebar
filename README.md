@@ -3,7 +3,7 @@ Fancy Imagebar
 
 Fancy Imagebar module for webtrees
 
-This module requires [webtrees 1.7.0](https://github.com/fisharebest/webtrees) or later. Download the latest stable release [here](https://github.com/JustCarmen/fancy_imagebar/releases/latest).
+This module requires [webtrees 1.7.11](https://github.com/fisharebest/webtrees). Download the latest stable release [here](https://github.com/JustCarmen/fancy_imagebar/releases/latest).
 
 Description
 -----------

@@ -1,5 +1,7 @@
 module.exports = function(grunt) {
 
+  const sass = require('node-sass');
+
   // load all grunt tasks with this command. No need to set grunt.loadNpmTasks(...) for each task separately;
   require('load-grunt-tasks')(grunt);
 
@@ -36,6 +38,7 @@ module.exports = function(grunt) {
     sass: {
       dev: {
         options: {
+          implementation: sass,
           outputStyle: 'expanded',
           sourceMap: true
 
@@ -52,6 +55,7 @@ module.exports = function(grunt) {
     postcss: {
       default: {
         options: {
+          implementation: sass,
           map: true,
           processors: [
             require('autoprefixer')({
@@ -63,6 +67,7 @@ module.exports = function(grunt) {
       },
       dist: {
         options: {
+          implementation: sass,
           map: true,
           processors: [
             require('cssnano')() // add minified css
@@ -77,6 +82,8 @@ module.exports = function(grunt) {
     // 
     // Source: https://github.com/FriendsOfPHP/PHP-CS-Fixer    //
     // Configurator: https://mlocati.github.io/php-cs-fixer-configurator/
+    //
+    // To install php-cs-fixer globally use: composer global require friendsofphp/php-cs-fixer
     // ========================================================================================
 
     phpcsfixer: {
@@ -84,7 +91,9 @@ module.exports = function(grunt) {
           dir: ''
       },
       options: {
-          bin: '../../vendor/bin/php-cs-fixer',
+		  // use path to global composer directory
+		  cwd: '~/.composer/vendor/bin/',
+          bin: 'php-cs-fixer',
           configfile: '.php_cs',
           quiet: true
       }

@@ -153,10 +153,12 @@ class FancyImagebarClass extends FancyImagebarModule {
 		foreach ($folders as $key => $value) {
 			if (count(glob(WT_DATA_DIR . $MEDIA_DIRECTORY . $value . '*')) > 0) {
                 $folder = array_filter(explode("/", $value));
-				// only list first level folders
-				if (count($folder) > 0 && !array_search($folder[0], $folderlist)) {
-					$folderlist[$folder[0]] = I18N::translate($folder[0]);
-				}
+                // only list first level folders
+                if (count($folder) > 0 && array_key_exists(0, $folder)) {
+                    if (!array_search($folder[0], $folderlist)) {
+                        $folderlist[$folder[0]] = I18N::translate($folder[0]);
+                    }
+                }
 			}
 		}
 		return $folderlist;

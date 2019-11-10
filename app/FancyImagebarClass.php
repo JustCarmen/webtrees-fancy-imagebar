@@ -57,7 +57,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * Get module options
 	 *
 	 * @param type $k
-	 * @return type
+	 * @return array
 	 */
 	protected function options($k) {
 		$FIB_OPTIONS = unserialize($this->getSetting('FIB_OPTIONS'));
@@ -86,7 +86,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	protected function getTreeId() {
 		global $WT_TREE;
-		
+
 		$tree = Tree::findByName(Filter::get('ged'));
 		if ($tree) {
 			return $tree->getTreeId();
@@ -152,7 +152,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 		$folderlist['all']	 = I18N::translate('All');
 		foreach ($folders as $key => $value) {
 			if (count(glob(WT_DATA_DIR . $MEDIA_DIRECTORY . $value . '*')) > 0) {
-				$folder = array_filter(explode("/", $value));
+                $folder = array_filter(explode("/", $value));
 				// only list first level folders
 				if (count($folder) > 0 && !array_search($folder[0], $folderlist)) {
 					$folderlist[$folder[0]] = I18N::translate($folder[0]);
@@ -169,7 +169,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @return array
 	 */
 	private function dbMedia($LIMIT = '') {
-		$sql			 = "SELECT SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id FROM `##media` WHERE m_file = :tree_id";
+		$sql			 = "SELECT SQL_CALC_FOUND_ROWS m_id AS xref, m_file AS tree_id, m_gedcom as gedcom FROM `##media` WHERE m_file = :tree_id";
 		$args['tree_id'] = $this->getTreeId();
 
 		if ($this->getImageFolder()) {
@@ -190,7 +190,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	/**
 	 * Get a list of all the media xrefs
 	 *
-	 * @return list
+	 * @return array
 	 */
 	protected function getXrefs() {
 		$rows	 = $this->dbMedia();
@@ -226,8 +226,9 @@ class FancyImagebarClass extends FancyImagebarModule {
 
 		$data = [];
 		foreach ($rows as $row) {
-			$tree		 = Tree::findById($row->tree_id);
-			$mediaobject = Media::getInstance($row->xref, $tree);
+            $tree		 = Tree::findById($row->tree_id);
+            $gedcom      = $row->gedcom;
+			$mediaobject = Media::getInstance($row->xref, $tree, $gedcom);
 			$data[]		 = [
 				$this->displayImage($mediaobject)
 			];
@@ -248,7 +249,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 * @param type $mediaobject
 	 * @return type
 	 */
-	private function displayImage($mediaobject) {
+	private function displayImage(Media $mediaobject) {
 		$image = $this->fancyThumb($mediaobject, 60, '1');
 		if ($image) {
 			if ($this->options('images') == 1) {
@@ -274,7 +275,7 @@ class FancyImagebarClass extends FancyImagebarModule {
 			// this image doesn't exist on the server or is not a valid image
 			$mime_type = str_replace('/', '-', $mediaobject->mimeType());
 			$image_title = strip_tags($mediaobject->getFullName()) . ' (' . $mediaobject->getXref() . ')';
-			return 
+			return
 				'<div class="no-image">' .
 				'<i class="icon-mime-' . $mime_type . '" ' .
 				'title="' . I18N::translate('The image “%s” doesn’t exist or is not a valid image', $image_title) . '">' .
@@ -367,27 +368,41 @@ class FancyImagebarClass extends FancyImagebarModule {
 	 */
 	private function fancyImagebarMedia() {
 		$images = $this->options('images');
-
-		$xrefs = [];
+        $list = [];
 		if (empty($images)) {
 			$rows = $this->dbMedia();
 			foreach ($rows as $row) {
-				$xrefs[] = $row->xref;
+                $tree		 = Tree::findById($this->getTreeId());
+			    $mediaobject = Media::getInstance($row->xref, $tree, $row->gedcom);
+                if ($mediaobject && $mediaobject->canShow() && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
+                    $list[] = $mediaobject;
+                }
 			}
 		} else {
-			$xrefs = $images;
+            foreach ($images as $image) {
+                $tree		 = Tree::findById($this->getTreeId());
+                $mediaobject = Media::getInstance($image, $tree);
+                if ($mediaobject && $mediaobject->canShow() && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
+                    $list[] = $mediaobject;
+                }
+            }
+
 		}
 
-		$list = [];
-		foreach ($xrefs as $xref) {
-			$tree		 = Tree::findById($this->getTreeId());
-			$mediaobject = Media::getInstance($xref, $tree);
-			if ($mediaobject && $mediaobject->canShow() && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
-				$list[] = $mediaobject;
-			}
-		}
 		return $list;
-	}
+    }
+
+    /**
+	 * Get the single media object
+	 *
+	 * @return list
+	 */
+    Private function checkMediaObject (Media $mediaobject) {
+        if ($mediaobject && $mediaobject->canShow() && ($mediaobject->mimeType() == 'image/jpeg' || $mediaobject->mimeType() == 'image/png')) {
+            $list[] = $mediaobject;
+        }
+
+    }
 
 	/**
 	 * Get the fib_cache directory

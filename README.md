@@ -1,11 +1,10 @@
 Fancy Imagebar
 ==============
 
-Fancy Imagebar module for webtrees
+[![Latest Release](https://img.shields.io/github/release/JustCarmen/fancy_imagebar.svg)][1]
+[![webtrees major version](https://img.shields.io/badge/webtrees-v1.x-green)][2]
 
-This module requires [webtrees 1.7.11 - 1.7.14](https://github.com/fisharebest/webtrees). Download the latest stable release [here](https://github.com/JustCarmen/fancy_imagebar/releases/latest).
-
-THIS MODULE DOES NOT WORK WITH WEBTREES 2.0.
+Fancy Imagebar Module for webtrees. This is a webtrees 1 module. It cannot be used with webtrees 2.
 
 Description
 -----------
@@ -28,16 +27,19 @@ On the Fancy Imagebar Configuration page you can set some other options too:
 
 Translations
 ------------
-You can help to translate this module. Updates to translations should be made at https://translate.webtrees.net/projects/justcarmen/. Changes made there will be pushed to the git repository periodically and will be available on the development version of the module. They will be included in the next release of this module.
+You can help to translate this module. Updates to translations should be made at [the translation server][3]. Changes made there will be pushed to the git repository periodically and will be available on the development version of the module. They will be included in the next release of this module.
 
 Installation & upgrading
 ------------------------
-For more information about these subjects go to the [JustCarmen help pages][1].
+For more information about these subjects go to the [JustCarmen help pages][4].
 
 Bugs and feature requests
 -------------------------
-If you experience any bugs or have a feature request for this module you can [create a new issue on GitHub][2] or [use the webtrees subforum 'customising'][3] to contact me.
+If you experience any bugs or have a feature request for this module you can [create a new issue on GitHub][5] or [use the webtrees subforum 'customising'][6] to contact me.
 
- [1]: http://www.justcarmen.nl/help-category/modules-help
- [2]: https://github.com/JustCarmen/fancy_imagebar/issues?state=open
- [3]: http://www.webtrees.net/index.php/en/forum/4-customising
+ [1]: https://github.com/JustCarmen/fancy_imagebar/releases/latest
+ [2]: https://webtrees.github.io/download/
+ [3]: https://poeditor.com/join/project/Sx5p5SqzdQ
+ [4]: http://www.justcarmen.nl/help-category/modules-help
+ [5]: https://github.com/JustCarmen/fancy_imagebar/issues?state=open
+ [6]: http://www.webtrees.net/index.php/en/forum/4-customising

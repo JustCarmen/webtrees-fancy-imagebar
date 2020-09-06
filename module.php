@@ -317,4 +317,48 @@ return new class extends AbstractModule implements ModuleCustomInterface, Module
 
         return $thumb; // resource
     }
+
+    /**
+     * {@inheritDoc}
+     * @see \Fisharebest\Webtrees\Module\ModuleCustomInterface::customModuleAuthorName()
+     */
+    public function customModuleAuthorName(): string
+    {
+        return 'JustCarmen';
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \Fisharebest\Webtrees\Module\ModuleCustomInterface::customModuleVersion()
+     *
+     * We use a system where the version number is equal to the latest version of webtrees
+     * Interim versions get an extra sub number
+     *
+     * The dev version is always one step above the latest stable version of this module
+     * The subsequent stable version depends on the version number of the latest stable version of webtrees
+     *
+     */
+    public function customModuleVersion(): string
+    {
+        return '2.0.8-dev';
+    }
+
+     /**
+     * A URL that will provide the latest stable version of this module.
+     *
+     * @return string
+     */
+    public function customModuleLatestVersionUrl(): string
+    {
+        return 'https://raw.githubusercontent.com/JustCarmen/webtrees-fancy-imagebar/master/latest-version.txt';
+    }
+
+    /**
+     * {@inheritDoc}
+     * @see \Fisharebest\Webtrees\Module\ModuleCustomInterface::customModuleSupportUrl()
+     */
+    public function customModuleSupportUrl(): string
+    {
+        return 'https://github.com/justcarmen/webtrees-fancy-imagebar/issues';
+    }
 };

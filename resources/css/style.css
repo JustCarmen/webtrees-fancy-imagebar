@@ -1,0 +1,90 @@
+/**
+ * Fancy Imagebar
+ *
+ * JustCarmen webtrees modules
+ * Copyright (C) 2020 Carmen Pijpers-Knegt
+ *
+ * Based on webtrees: online genealogy
+ * Copyright (C) 2020 webtrees development team
+ *
+ * This file is part of JustCarmen webtrees modules
+ *
+ * JustCarmen webtrees modules is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * JustCarmen webtrees modules is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with JustCarmen webtrees modules. If not, see <http://www.gnu.org/licenses/>.
+ */
+
+ .jc-fancy-imagebar {
+    overflow: hidden;
+}
+
+.wt-theme-clouds .jc-fancy-imagebar {
+    border: 1px solid #003399;
+    margin: 10px 10px 0 10px
+}
+
+.wt-theme-clouds .jc-fancy-imagebar img {
+    margin-bottom: -2px
+}
+
+.wt-theme-colors .jc-fancy-imagebar-divider {
+    background-color: #999;
+    height: 1px;
+    margin-top: 1px
+}
+
+.wt-theme-fab .jc-fancy-imagebar {
+    border: #A9A9A9 1px solid;
+    border-bottom-right-radius: 3px;
+    border-bottom-left-radius: 3px;
+	margin-left: auto;
+    margin-right:auto;
+}
+
+@media (min-width: 992px) {
+    .wt-theme-fab .jc-fancy-imagebar {
+        max-width: 960px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .wt-theme-fab .jc-fancy-imagebar {
+        max-width: 1140px;
+    }
+}
+
+.wt-theme-minimal .jc-fancy-imagebar-divider {
+    background-color: #555;
+    height: 1px
+}
+
+.wt-theme-webtrees .jc-fancy-imagebar {
+    margin-top: 3px;
+}
+.wt-theme-webtrees .jc-fancy-imagebar-divider {
+    background-color: #81A9CB;
+    height: 1px;
+    margin-top: 3px
+}
+
+.wt-theme-xenea .jc-fancy-imagebar {
+    margin-top: 5px
+}
+
+.wt-theme-xenea .jc-fancy-imagebar-divider {
+    background-color: #0073CF;
+    height: 2px;
+    margin: 5px
+}
+.jc-theme-justlight .jc-fancy-imagebar img {
+    border-top: 5px solid #428bca;
+	border-bottom: 5px solid #428bca
+}
+

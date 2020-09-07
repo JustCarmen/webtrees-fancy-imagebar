@@ -252,6 +252,7 @@ return new class extends AbstractModule implements ModuleCustomInterface, Module
 
             $html  = '<div class="jc-fancy-imagebar">';
             $html .= '<img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($fancy_imagebar) . '">';
+            $html .= '<div class="jc-fancy-imagebar-divider"></div>';
             $html .= '</div>';
 
             return $html;

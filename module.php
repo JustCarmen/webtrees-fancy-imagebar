@@ -203,9 +203,9 @@ return new class extends AbstractModule implements ModuleCustomInterface, Module
                     if ($media_file->isImage() && $media_file->fileExists($data_filesystem)) {
 
                         $media_folder = $data_folder . $media_file->media()->tree()->getPreference('MEDIA_DIRECTORY', 'media/');
-                        $filename     = $media_file->filename();
+                        $filename     = $media_folder . $media_file->filename();
 
-                        $resources[] = $this->fancyThumb($media_folder . $filename, '80', true); // height and square are module settings
+                        $resources[] = $this->fancyThumb($filename, '80', true); // height and square are module settings
                     }
                 }
 

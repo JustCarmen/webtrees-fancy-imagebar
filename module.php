@@ -1,7 +1,26 @@
 <?php
 
 /**
- * Example module.
+ * Fancy Imagebar
+ *
+ * JustCarmen webtrees modules
+ * Copyright (C) 2009-2020 Carmen Pijpers-Knegt
+ *
+ * Based on webtrees: online genealogy
+ * Copyright (C) 2020 webtrees development team
+ *
+ * This file is part of JustCarmen webtrees modules
+ *
+ * JustCarmen webtrees modules is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ * JustCarmen webtrees modules is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with JustCarmen webtrees modules. If not, see <http://www.gnu.org/licenses/>.
  */
 
 declare(strict_types=1);
@@ -177,7 +196,9 @@ return new class extends AbstractModule implements ModuleCustomInterface, Module
      */
     public function headContent(): string
     {
-        return '<style>.jc-fancy-imagebar img {border-top: 5px solid #428bca; border-bottom: 5px solid #428bca}</style>';
+        $url = $this->assetUrl('css/style.css');
+
+        return '<link rel="stylesheet" href="' . e($url) . '">';
     }
 
     /**

@@ -154,8 +154,11 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         $this->layout = 'layouts/administration';
 
+        $all_trees = $this->tree_service->all();
+
         return $this->viewResponse($this->name() . '::settings', [
-            'title' => $this->title()
+            'title' => $this->title(),
+            'all_trees' => $all_trees
         ]);
     }
 

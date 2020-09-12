@@ -9,172 +9,86 @@ use Fisharebest\Webtrees\I18N;
 
 <h1><?= $title ?></h1>
 
+<p class="alert alert-info">
+    <?= I18N::translate('Choose the images for the Fancy Imagebar. If there are fewer images chosen than needed to fill up the entire Fancy Imagebar, the images will be repeated.') ?>
+    <?= I18N::translate('Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.') ?>
+    <?= I18N::translate('The Fancy Imagebar module respects privacy settings!') ?>
+</p>
+
 <?php // not converted parts of form commented out in php tags to test the other parts ?>
 <form method="post">
     <?= csrf_field() ?>
-    <div class="row form-group">
-        <label class="col-sm-3 col-form-label for="tree"><?= I18N::translate('Family tree') ?></label>
-        <div class="col-sm-9">
-            <select class="form-control" id="tree" name="tree" type="text" required>
-                <option value=""><?= I18N::translate('&lt;select&gt;') ?></option>
-                <?php foreach ($all_trees as $tree) : ?>
-                    <option value="<?= $tree->name() ?>">
-                        <?= $tree->title() ?>
-                    </option>
-                <?php endforeach ?>
-            </select>
+    <div class="card mb-4">
+        <div class="card-header">
+            <h2 class="mb-0">
+                <?= I18N::translate('Settings') ?>
+            </h2>
+        </div>
+        <div class="card-body">
+            <!-- TREE LIST -->
+            <div class="row form-group">
+                <label class="col-sm-3 col-form-label for=" tree"><?= I18N::translate('Family tree') ?></label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="tree" name="tree" type="text" required>
+                        <option value=""><?= I18N::translate('&lt;select&gt;') ?></option>
+                        <?php foreach ($all_trees as $tree) : ?>
+                        <option value="<?= $tree->name() ?>">
+                            <?= $tree->title() ?>
+                        </option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+            </div>
+            <!-- MEDIA FOLDER LIST -->
+            <div class="row form-group">
+                <label class="col-sm-3 col-form-label" for="media-folder">
+                    <?= I18N::translate('Media folder') ?>
+                </label>
+                <div class="col-sm-9">
+                    <select class="form-control" id="media-folders" name="media-folders" type="text" required>
+                        <option value=""><?= I18N::translate('&lt;select&gt;') ?></option>
+                        <?php foreach ($media_folders as $media_folder) : ?>
+                        <option value="<?= $media_folder ?>">
+                            <?= $media_folder ?>
+                        </option>
+                        <?php endforeach ?>
+                    </select>
+                </div>
+            </div>
+            <div class="row form-group">
+                <label class="col-form-label col-sm-3" for="image-type-photo">
+                    <?= I18N::translate('Image type') ?>
+                </label>
+                <div class="col-sm-9">
+                    <?= view('components/checkbox-inline', ['label' => I18N::translate('Only show images with type = “photo”'), 'name' => 'image-type-photo', 'checked' => $image_type_photo]) ?>
+                </div>
+            </div>
+            <!-- HEIGHT OF THE IMAGE BAR -->
+            <div class="row form-group">
+                <label class="col-form-label col-sm-3">
+                    <?= I18N::translate('Height of the Fancy Imagebar') ?>
+                </label>
+                <div class="col-sm-1">
+                    <input class="form-control" type="text" name="fancy-imagebar-height" size="3" value="<?= $fancy_imagebar_height ?>">
+                </div>
+                <div class="form-control-static">px</div>
+            </div>
+            <!-- CROP THUMBNAILS TO SQUARE -->
+            <fieldset class="form-group">
+                <div class="row">
+                    <legend class="col-form-label col-sm-3">
+                        <?= I18N::translate('Crop thumbnails') ?>
+                    </legend>
+                    <div class="col-sm-8">
+                        <?= view('components/radios-inline', ['name' => 'crop-thumbnails', 'options' => [I18N::translate('no'), I18N::translate('yes')], 'selected' => $crop_thumbnails]) ?>
+                    </div>
+                </div>
+            </fieldset>
         </div>
     </div>
-
-    <?php
-/*         <div id="accordion" role="tablist" aria-multiselectable="true">
-            <div class="card">
-            <div class="card-header" role="tab" id="card-imagelist-header">
-                <h5 class="mb-0">
-                <a data-toggle="collapse" data-parent="#accordion" href="#card-imagelist-content" aria-expanded="true" aria-controls="card-imagelist-content">
-                    <?= I18N::translate('Choose which images you want to show in the Fancy Imagebar') ?>
-                </a>
-                </h5>
-            </div>
-            <div id="card-imagelist-content" class="collapse show" role="tabpanel" aria-labelledby="card-imagelist-header">
-                <div class="card-body">
-                <div class="alert alert-info alert-dismissible" role="alert">
-                    <button type="button" class="close" data-dismiss="alert" aria-label="' . I18N::translate('close') . '">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                    <p class="small"><?= I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. If there are fewer images chosen than needed to fill up the entire Fancy Imagebar, the images will be repeated.') ?></p>
-                    <p class="small"><?= I18N::translate('Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already.') ?></p>
-                    <p class="small"><?= I18N::translate('The Fancy Imagebar module respects privacy settings!') ?></p>
-                </div>
-                <!-- MEDIA LIST -->
-                <?php $folders = $this->listMediaFolders(); ?>
-                <div id="medialist" class="row form-group">
-                    <label class="col-form-label col-sm-2">
-                    <?= I18N::translate('Media folder') ?>
-                    </label>
-                    <div class="col-sm-4">
-                    <?= Bootstrap4::select($folders, $this->options('image_folder'), ['id' => 'folderlist', 'name' => 'NEW_FIB_OPTIONS[IMAGE_FOLDER]']) ?>
-                    <?= Bootstrap4::checkbox(I18N::translate('Only show images with type = “photo”'), false, ['id' => 'photos', 'name' => 'NEW_FIB_OPTIONS[PHOTOS]', 'checked' => $this->options('photos')]) ?>
-                    </div>
-                    <!-- SELECT ALL -->
-                    <div class="col-sm-6 text-right">
-                    <?= Bootstrap4::checkbox(I18N::translate('select all'), true, ['name' => 'select-all']) ?>
-                    </div>
-                </div>
-                <?php // The datatable will be dynamically filled with images from the database.?>
-                <!-- IMAGE LIST -->
-                <?php
-                if (empty($this->options('images'))) {
-                    // we have not used the configuration page yet so use the default (list all images)
-                    $imagelist = implode("|", $this->getXrefs());
-                } else {
-                    $imagelist = implode("|", $this->options('images'));
-                } ?>
-                <input id="imagelist" type="hidden" name="NEW_FIB_IMAGES" value = "<?= $imagelist ?>">
-                <table id="image_block" class="table table-sm">
-                    <thead></thead>
-                    <tbody></tbody>
-                </table>
-                </div>
-            </div>
-            </div>
-            <div class="card">
-            <div class="card-header" role="tab" id="card-options-header">
-                <h5 class="mb-0">
-                <a data-toggle="collapse" data-parent="#accordion" href="#card-options-content" aria-expanded="true" aria-controls="card-options-content">
-                    <!-- Dynamic text here -->
-                </a>
-                </h5>
-            </div>
-            <div id="card-options-content" class="collapse" role="tabpanel" aria-labelledby="card-options-header">
-                <div id="options" class="card-body">
-                <!-- FANCY IMAGEBAR -->
-                <div class="row form-group">
-                    <label class="col-form-label col-sm-4">
-                    <?= I18N::translate('Show Fancy Imagebar on') ?>
-                    </label>
-                    <div class="col-sm-8">
-                    <?= Bootstrap4::checkbox(I18N::translate('Home page'), true, ['name' => 'NEW_FIB_OPTIONS[HOMEPAGE]', 'checked' => (bool) $this->options('homepage')]) ?>
-                    <?= Bootstrap4::checkbox(I18N::translate('My page'), true, ['name' => 'NEW_FIB_OPTIONS[MYPAGE]', 'checked' => (bool) $this->options('mypage')]) ?>
-                    <?= Bootstrap4::checkbox(I18N::translate('All pages'), true, ['name' => 'NEW_FIB_OPTIONS[ALLPAGES]', 'checked' => (bool) $this->options('allpages')]) ?>
-                    </div>
-                </div>
-                <!-- RANDOM IMAGES -->
-                <div class="row form-group">
-                    <label class="col-form-label col-sm-4">
-                    <?= I18N::translate('Random images') ?>
-                    </label>
-                    <div class="col-sm-8">
-                    <?= Bootstrap4::radioButtons('NEW_FIB_OPTIONS[RANDOM]', FunctionsEdit::optionsNoYes(), $this->options('random'), true) ?>
-                    </div>
-                </div>
-                <!-- IMAGE TONE -->
-                <div id="tone" class="row form-group">
-                    <label class="col-form-label col-sm-4">
-                    <?= I18N::translate('Images Tone') ?>
-                    </label>
-                    <div class="col-sm-2">
-                    <?= Bootstrap4::select([I18N::translate('Sepia'), I18N::translate('Black and White'), I18N::translate('Colors')], $this->options('tone'), ['name' => 'NEW_FIB_OPTIONS[TONE]']) ?>
-                    </div>
-                </div>
-                <!-- SEPIA -->
-                <div id="sepia" class="row form-group">
-                    <label class="col-form-label col-sm-4">
-                    <?= I18N::translate('Amount of sepia') ?>
-                    </label>
-                    <div class="col-sm-2">
-                    <input
-                        class="form-control"
-                        type="text"
-                        name="NEW_FIB_OPTIONS[SEPIA]"
-                        size="3"
-                        value="<?= $this->options('sepia') ?>"
-                        >
-                    </div>
-                    <p class="offset-sm-3 col-sm-8 small text-muted">
-                    <?= I18N::translate('Enter a value between 0 and 100') ?>
-                    </p>
-                </div>
-                <!-- HEIGHT OF THE IMAGE BAR -->
-                <div class="row form-group">
-                    <label class="col-form-label col-sm-4">
-                    <?= I18N::translate('Height of the Fancy Imagebar') ?>
-                    </label>
-                    <div class="col-sm-2">
-                    <input
-                        class="form-control"
-                        type="text"
-                        name="NEW_FIB_OPTIONS[HEIGHT]"
-                        size="3"
-                        value="<?= $this->options('height') ?>"
-                        >
-                    </div>
-                    <div class="form-control-static">px</div>
-                </div>
-                <!-- CROP THUMBNAILS TO SQUARE -->
-                <div class="row form-group">
-                    <label class="col-form-label col-sm-4">
-                    <?= I18N::translate('Use square thumbs') ?>
-                    </label>
-                    <div class="col-sm-8">
-                    <?= Bootstrap4::radioButtons('NEW_FIB_OPTIONS[SQUARE]', FunctionsEdit::optionsNoYes(), $this->options('square'), true) ?>
-                    </div>
-                </div>
-                </div>
-            </div>
-            </div>
-        </div> */
-    ?>
     <button type="submit" class="btn btn-primary">
         <?= view('icons/save') ?>
         <?= I18N::translate('save') ?>
     </button>
-
-    <?php
-   /*  <button class="btn btn-primary" type="reset" onclick="if (confirm('<?= I18N::translate('The settings will be reset to default (for all trees). Are you sure you want to do this?') ?>'))
-        window.location.href = 'module.php?mod=<?= $this->getName() ?>&amp;mod_action=admin_reset';">
-    <i class="fa fa-recycle"></i>
-    <?= I18N::translate('reset') ?>
-    </button> */
-    ?>
 </form>
+

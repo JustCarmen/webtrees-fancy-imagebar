@@ -42,7 +42,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /** @var TreeService */
     private $tree_service;
 
-     /**
+    /**
      * FancyImagebar constructor.
      *
      * @param DatatablesService $datatables_service
@@ -160,11 +160,12 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $media_folders = $this->media_file_service->allMediaFolders($data_filesystem);
 
         return $this->viewResponse($this->name() . '::settings', [
-            'title' => $this->title(),
-            'all_trees' => $all_trees,
-            'media_folders' => $media_folders,
-            'image_type_photo' => $this->getPreference('image-type-photo', '1'),
-            'fancy_imagebar_height' => $this->getPreference('fancy-imagebar-height', '80')
+            'title'             => $this->title(),
+            'all_trees' 		=> $all_trees,
+            'media_folders'     => $media_folders,
+            'image_type_photo'  => $this->getPreference('image-type-photo', '1'),
+            'canvas_height'     => $this->getPreference('canvas-height', '80'),
+            'square_thumbs'     => $this->getPreference('square-thumbs', '0')
         ]);
     }
 
@@ -180,7 +181,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $params = (array) $request->getParsedBody();
 
         // store the preferences in the database
-        $this->setPreference('activate', $params['activate'] ?? '1'); // test example
+        $this->setPreference('media-folder', $params['media-folder']);
+        $this->setPreference('image-type-photo',  $params['image-type-photo'] ?? 0);
+        $this->setPreference('canvas-height',  $params['canvas-height'] ?? '80');
+        $this->setPreference('square-thumbs',  $params['square-thumbs'] ?? 0);
 
         $message = I18N::translate('The preferences for the module “%s” have been updated.', $this->title());
         FlashMessages::addMessage($message, 'success');
@@ -230,8 +234,17 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         if ($tree !== null) {
 
-            $records = $this->allMedia($tree, 'jpg', 'photo'); // parameters are module settings
-            $fancy_imagebar_height = $this->getPreference('fancy-imagebar-height', '80');
+            $canvas_height      = $this->getPreference('canvas-height', '80');
+            $square_thumbs      = $this->getPreference('square-thumbs', '0');
+            $media_type_photo   = $this->getPreference('media-type-photo', '0');
+
+            // how much images do we need at most to fill up the canvas. If square is unwanted then we don't know the width of the images.
+            // Play safe and use 0.75 thumb height as thumb width
+            // 2400 is the maximum screensize we will take into account.
+            $canvas_width = 2400;
+            $num_thumbs = (int)ceil($canvas_width / ($canvas_height * 0.75));
+
+            $records = $this->allMedia($tree, 'jpg', $media_type_photo, $num_thumbs);
 
             $resources = array();
             foreach ($records as $record) {
@@ -240,31 +253,15 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                     if ($media_file->isImage() && $media_file->fileExists($data_filesystem)) {
 
                         $media_folder = $data_folder . $media_file->media()->tree()->getPreference('MEDIA_DIRECTORY', 'media/');
-                        $filename     = $media_folder . $media_file->filename();
+                        $file         = $media_folder . $media_file->filename();
 
-                        $resources[] = $this->fancyThumb($filename, $fancy_imagebar_height, true);
-                    }
-                }
-
-                $source_images = array();
-                $canvas_width = 0;
-
-                // 2400 is the maximum screensize we will take into account.
-                while ($canvas_width < 2400) {
-                    shuffle($resources); // this setting depends on the module settings
-
-                    foreach ($resources as $resource) {
-                        $canvas_width      = $canvas_width + imagesx($resource);
-                        $source_images[]   = $resource;
-                        if ($canvas_width >= 2400) {
-                            break;
-                        }
+                        $resources[] = $this->fancyThumb($file, $canvas_height, $square_thumbs);
                     }
                 }
             }
 
             // Generate the response.
-            $fancy_imagebar = $this->createFancyImagebar($source_images, $canvas_width, $fancy_imagebar_height);
+            $fancy_imagebar = $this->createFancyImagebar($resources, $canvas_width, $canvas_height);
 
             $html  = '<div class="jc-fancy-imagebar">';
             $html .= '<img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($fancy_imagebar) . '">';
@@ -287,7 +284,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @return Collection<Media>
      */
-    private function allMedia(Tree $tree, string $format, string $type): Collection
+    private function allMedia(Tree $tree, string $format, string $type, int $num_thumbs): Collection
     {
         $query = DB::table('media')
             ->join('media_file', static function (JoinClause $join): void {
@@ -306,7 +303,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         }
 
         return $query
-            ->get()
+            ->inRandomOrder()->limit($num_thumbs)->get()
             ->map(Factory::media()->mapper($tree))
             ->uniqueStrict()
             ->filter(GedcomRecord::accessFilter());
@@ -371,29 +368,46 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @param type $mediaobject
      * @return thumbnail
+     *
+     * https://www.jveweb.net/en/archives/2010/09/how-to-create-cropped-and-scaled-thumbnails-in-php.html
      */
-    private function fancyThumb($file, $canvas_height, $square)
+    private function fancyThumb($file, $canvas_height, $square_thumbs)
     {
-        $image = $this->loadImage($file);
-        list($width, $height) = getimagesize($file);
-        $ratio = $width / $height;
-        if ($square) {
-            $new_width = $new_height = $canvas_height;
-            $new_height = $canvas_height;
+        $source_image = $this->loadImage($file);
+        list($source_width, $source_height) = getimagesize($file);
+
+        $source_ratio = $source_width / $source_height;
+
+        $source_x = 0;
+        $source_y = 0;
+
+        // if square thumbnails are wanted then resize and crop the original image
+        if ($square_thumbs) {
+            $thumb_width = $thumb_height = $canvas_height;
+
+            if ($source_ratio < 1) {
+                $source_y = ceil(($source_height - $source_width) / 2);
+                $source_height = $source_width;
+            }
+
+            if ($source_ratio > 1) {
+                $source_x = ceil(($source_width - $source_height) / 2);
+                $source_width = $source_height;
+            }
         } else {
-            if ($ratio < 1) {
-                $new_height = $canvas_height / $ratio;
-                $new_width  = $canvas_height;
+            if ($source_ratio < 1) {
+                $thumb_width  = $canvas_height;
+                $thumb_height = $canvas_height / $source_ratio;
             } else {
-                $new_width  = $canvas_height * $ratio;
-                $new_height = $canvas_height;
+                $thumb_width  = $canvas_height * $source_ratio;
+                $thumb_height = $canvas_height;
             }
         }
 
-        $thumb = imagecreatetruecolor((int) round($new_width), (int) round($new_height));
-        imagecopyresampled($thumb, $image, 0, 0, 0, 0, (int) $new_width, (int) $new_height, (int) $width, (int) $height);
+        $thumb = ImageCreateTrueColor((int)$thumb_width, (int)$thumb_height);
+        imagecopyresampled($thumb, $source_image, 0, 0, (int)$source_x, (int)$source_y, (int)$thumb_width, (int)$thumb_height, (int)$source_width, (int)$source_height);
 
-        imagedestroy($image);
+        imagedestroy($source_image);
 
         return $thumb; // resource
     }

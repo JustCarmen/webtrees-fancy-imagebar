@@ -156,9 +156,15 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         $all_trees = $this->tree_service->all();
 
+        $data_filesystem = Factory::filesystem()->data();
+        $media_folders = $this->media_file_service->allMediaFolders($data_filesystem);
+
         return $this->viewResponse($this->name() . '::settings', [
             'title' => $this->title(),
-            'all_trees' => $all_trees
+            'all_trees' => $all_trees,
+            'media_folders' => $media_folders,
+            'image_type_photo' => $this->getPreference('image-type-photo', '1'),
+            'fancy_imagebar_height' => $this->getPreference('fancy-imagebar-height', '80')
         ]);
     }
 
@@ -219,14 +225,14 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $request = app(ServerRequestInterface::class);
         $tree = $request->getAttribute('tree');
 
-        $data_filesystem = $request->getAttribute('filesystem.data');
-        assert($data_filesystem instanceof FilesystemInterface);
-
-        $data_folder = $request->getAttribute('filesystem.data.name');
-        assert(is_string($data_folder));
+        $data_filesystem = Factory::filesystem()->data();
+        $data_folder = Factory::filesystem()->dataName();
 
         if ($tree !== null) {
+
             $records = $this->allMedia($tree, 'jpg', 'photo'); // parameters are module settings
+            $fancy_imagebar_height = $this->getPreference('fancy-imagebar-height', '80');
+
             $resources = array();
             foreach ($records as $record) {
                 foreach ($record->mediaFiles() as $media_file) {
@@ -236,7 +242,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                         $media_folder = $data_folder . $media_file->media()->tree()->getPreference('MEDIA_DIRECTORY', 'media/');
                         $filename     = $media_folder . $media_file->filename();
 
-                        $resources[] = $this->fancyThumb($filename, '80', true); // height and square are module settings
+                        $resources[] = $this->fancyThumb($filename, $fancy_imagebar_height, true);
                     }
                 }
 
@@ -258,7 +264,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             }
 
             // Generate the response.
-            $fancy_imagebar = $this->createFancyImagebar($source_images, $canvas_width, '80'); // '80' is a module setting (canvas height)
+            $fancy_imagebar = $this->createFancyImagebar($source_images, $canvas_width, $fancy_imagebar_height);
 
             $html  = '<div class="jc-fancy-imagebar">';
             $html .= '<img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($fancy_imagebar) . '">';
@@ -309,11 +315,11 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /**
      * Create the Fancy Imagebar
      *
-     * @param type $srcImages
-     * @param type $thumbWidth
-     * @param type $thumbHeight
-     * @param type $numberOfThumbs
-     * @return Fancy Imagebar
+     * @param type $source_images
+     * @param type $canvas_width
+     * @param type $canvas_height
+     *
+     * return image resource
      */
     private function createFancyImagebar($source_images, $canvas_width, $canvas_height)
     {
@@ -372,17 +378,16 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         list($width, $height) = getimagesize($file);
         $ratio = $width / $height;
         if ($square) {
-            $thumbwidth = $canvas_height;
+            $new_width = $new_height = $canvas_height;
+            $new_height = $canvas_height;
+        } else {
             if ($ratio < 1) {
-                $new_height = $thumbwidth / $ratio;
-                $new_width  = $thumbwidth;
+                $new_height = $canvas_height / $ratio;
+                $new_width  = $canvas_height;
             } else {
                 $new_width  = $canvas_height * $ratio;
                 $new_height = $canvas_height;
             }
-        } else {
-            $new_height = $canvas_height;
-            $new_width  = $thumbwidth = $canvas_height * $ratio;
         }
 
         $thumb = imagecreatetruecolor((int) round($new_width), (int) round($new_height));

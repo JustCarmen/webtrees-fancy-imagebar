@@ -158,12 +158,15 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         $data_filesystem = Factory::filesystem()->data();
         $media_folders = $this->media_file_service->allMediaFolders($data_filesystem);
+        $media_types = $this->media_file_service->mediaTypes();
 
         return $this->viewResponse($this->name() . '::settings', [
             'title'             => $this->title(),
             'all_trees' 		=> $all_trees,
             'media_folders'     => $media_folders,
-            'image_type_photo'  => $this->getPreference('image-type-photo', '1'),
+            'media_types'       => $media_types,
+            'media_folder_selected' => $this->getPreference('media-folder'),
+            'media_type_selected'        => $this->getPreference('media-type'),
             'canvas_height'     => $this->getPreference('canvas-height', '80'),
             'square_thumbs'     => $this->getPreference('square-thumbs', '0')
         ]);
@@ -182,7 +185,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         // store the preferences in the database
         $this->setPreference('media-folder', $params['media-folder']);
-        $this->setPreference('image-type-photo',  $params['image-type-photo'] ?? 0);
+        $this->setPreference('media-type',  $params['media-type'] ?? 'photo');
         $this->setPreference('canvas-height',  $params['canvas-height'] ?? '80');
         $this->setPreference('square-thumbs',  $params['square-thumbs'] ?? 0);
 
@@ -236,7 +239,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
             $canvas_height      = $this->getPreference('canvas-height', '80');
             $square_thumbs      = $this->getPreference('square-thumbs', '0');
-            $media_type_photo   = $this->getPreference('media-type-photo', '0');
+            $media_type         = $this->getPreference('media-type', 'photo');
 
             // how much images do we need at most to fill up the canvas. If square is unwanted then we don't know the width of the images.
             // Play safe and use 0.75 thumb height as thumb width
@@ -244,7 +247,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             $canvas_width = 2400;
             $num_thumbs = (int)ceil($canvas_width / ($canvas_height * 0.75));
 
-            $records = $this->allMedia($tree, 'jpg', $media_type_photo, $num_thumbs);
+            $records = $this->allMedia($tree, 'jpg', $media_type, $num_thumbs);
 
             $resources = array();
             foreach ($records as $record) {

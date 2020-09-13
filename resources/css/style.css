@@ -25,6 +25,11 @@
     overflow: hidden;
 }
 
+.jc-fancy-imagebar img {
+    width: 100vw;
+    object-fit: cover;
+}
+
 .wt-theme-clouds .jc-fancy-imagebar {
     border: 1px solid #003399;
     margin: 10px 10px 0 10px

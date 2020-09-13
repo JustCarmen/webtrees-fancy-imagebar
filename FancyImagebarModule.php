@@ -219,9 +219,31 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function headContent(): string
     {
+        $canvas_height = $this->getPreference('canvas-height', '80');
+        $canvas_height_md = 0.85 * $canvas_height;
+        $canvas_height_sm = 0.75 * $canvas_height;
+
         $url = $this->assetUrl('css/style.css');
 
-        return '<link rel="stylesheet" href="' . e($url) . '">';
+        return '
+            <style>
+            .jc-fancy-imagebar img {
+                height: ' . $canvas_height . 'px;
+            }
+
+            @media screen and (max-width: 992px) {
+                .jc-fancy-imagebar img {
+                    height: ' . $canvas_height_md. 'px;
+                }
+            }
+
+            @media screen and (max-width: 768px) {
+                .jc-fancy-imagebar img {
+                    height: '. $canvas_height_sm . 'px;
+                }
+            }
+            </style>
+            <link rel="stylesheet" href="' . e($url) . '">';
     }
 
     /**

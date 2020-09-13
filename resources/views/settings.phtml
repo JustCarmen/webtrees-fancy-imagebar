@@ -31,14 +31,8 @@ use Fisharebest\Webtrees\I18N;
                     <?= I18N::translate('Media folder') ?>
                 </label>
                 <div class="col-sm-9">
-                    <select class="form-control" id="media-folder" name="media-folder" type="text" required>
-                        <option value=""><?= I18N::translate('&lt;select&gt;') ?></option>
-                        <?php foreach ($media_folders as $media_folder) : ?>
-                        <option value="<?= $media_folder ?>" <?= $media_folder_selected === $media_folder ? 'selected' : '' ?>>
-                            <?= $media_folder ?>
-                        </option>
-                        <?php endforeach ?>
-                    </select>
+                    <?= view('components/select', ['name' => 'media-folder', 'selected' => $media_folder_selected, 'options' => $media_folders]) ?>
+                    <?= view('components/checkbox-inline', ['label' => /* I18N: Label for check-box */ I18N::translate('Include subfolders'), 'name' => 'subfolders', 'checked' => $subfolders === '1']) ?>
                 </div>
             </div>
             <!-- MEDIA TYPE LIST -->
@@ -47,14 +41,7 @@ use Fisharebest\Webtrees\I18N;
                     <?= I18N::translate('Media type') ?>
                 </label>
                 <div class="col-sm-9">
-                    <select class="form-control" id="media-type" name="media-type" type="text" required>
-                        <option value=""><?= I18N::translate('&lt;select&gt;') ?></option>
-                        <?php foreach ($media_types as $media_type => $media_type_name) : ?>
-                        <option value="<?= $media_type ?>" <?= $media_type_selected === $media_type ? 'selected' : '' ?>>
-                            <?= $media_type_name ?>
-                        </option>
-                        <?php endforeach ?>
-                    </select>
+                    <?= view('components/select', ['name' => 'media-type', 'selected' => $media_type_selected, 'options' => $media_types]) ?>
                 </div>
             </div>
             <!-- HEIGHT OF THE IMAGE BAR -->
@@ -71,10 +58,10 @@ use Fisharebest\Webtrees\I18N;
             <fieldset class="form-group">
                 <div class="row">
                     <legend class="col-form-label col-sm-3">
-                        <?= I18N::translate('Use square thumbnails') ?>
+                        <?= I18N::translate('Crop thumbnails to square') ?>
                     </legend>
                     <div class="col-sm-9">
-                        <?= view('components/radios-inline', ['name' => 'square-thumbs', 'options' => [I18N::translate('no'), I18N::translate('yes')], 'selected' => $square_thumbs]) ?>
+                        <?= view('components/radios-inline', ['name' => 'square-thumbs', 'options' => [I18N::translate('no'), I18N::translate('yes')], 'selected' => (int)$square_thumbs]) ?>
                     </div>
                 </div>
             </fieldset>

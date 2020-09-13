@@ -25,20 +25,6 @@ use Fisharebest\Webtrees\I18N;
             </h2>
         </div>
         <div class="card-body">
-            <!-- TREE LIST -->
-            <div class="row form-group">
-                <label class="col-sm-3 col-form-label for=" tree"><?= I18N::translate('Family tree') ?></label>
-                <div class="col-sm-9">
-                    <select class="form-control" id="tree" name="tree" type="text" required>
-                        <option value=""><?= I18N::translate('&lt;select&gt;') ?></option>
-                        <?php foreach ($all_trees as $tree) : ?>
-                        <option value="<?= $tree->name() ?>">
-                            <?= $tree->title() ?>
-                        </option>
-                        <?php endforeach ?>
-                    </select>
-                </div>
-            </div>
             <!-- MEDIA FOLDER LIST -->
             <div class="row form-group">
                 <label class="col-sm-3 col-form-label" for="media-folder">

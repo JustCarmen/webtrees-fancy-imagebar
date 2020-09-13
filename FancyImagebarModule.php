@@ -47,16 +47,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @param DatatablesService $datatables_service
      * @param MediaFileService  $media_file_service
-     * @param TreeService       $tree_service
      */
     public function __construct(
         DatatablesService $datatables_service,
-        MediaFileService $media_file_service,
-        TreeService $tree_service
+        MediaFileService $media_file_service
     ) {
         $this->datatables_service = $datatables_service;
         $this->media_file_service = $media_file_service;
-        $this->tree_service       = $tree_service;
     }
 
     /**
@@ -154,21 +151,18 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         $this->layout = 'layouts/administration';
 
-        $all_trees = $this->tree_service->all();
-
         $data_filesystem = Factory::filesystem()->data();
         $media_folders = $this->media_file_service->allMediaFolders($data_filesystem);
         $media_types = $this->media_file_service->mediaTypes();
 
         return $this->viewResponse($this->name() . '::settings', [
-            'title'             => $this->title(),
-            'all_trees' 		=> $all_trees,
-            'media_folders'     => $media_folders,
-            'media_types'       => $media_types,
+            'title'                 => $this->title(),
+            'media_folders'         => $media_folders,
+            'media_types'           => $media_types,
             'media_folder_selected' => $this->getPreference('media-folder'),
-            'media_type_selected'        => $this->getPreference('media-type'),
-            'canvas_height'     => $this->getPreference('canvas-height', '80'),
-            'square_thumbs'     => $this->getPreference('square-thumbs', '0')
+            'media_type_selected'   => $this->getPreference('media-type'),
+            'canvas_height'         => $this->getPreference('canvas-height', '80'),
+            'square_thumbs'         => $this->getPreference('square-thumbs', '0')
         ]);
     }
 

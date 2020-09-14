@@ -156,13 +156,14 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $media_types = $this->media_file_service->mediaTypes();
 
         return $this->viewResponse($this->name() . '::settings', [
-            'title'                 => $this->title(),
-            'media_folders'         => $media_folders,
-            'media_types'           => $media_types,
-            'media_folder_selected' => $this->getPreference('media-folder'),
-            'media_type_selected'   => $this->getPreference('media-type'),
-            'canvas_height'         => $this->getPreference('canvas-height', '80'),
-            'square_thumbs'         => $this->getPreference('square-thumbs', '0')
+            'title'            => $this->title(),
+            'media_folders'    => $media_folders,
+            'media_types'      => $media_types,
+            'media_folder'     => $this->getPreference('media-folder'),
+            'subfolders'       => $this->getPreference('subfolders', '1'),
+            'media_type'       => $this->getPreference('media-type'),
+            'canvas_height'    => $this->getPreference('canvas-height', '80'),
+            'square_thumbs'    => $this->getPreference('square-thumbs', '0')
         ]);
     }
 
@@ -251,8 +252,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $data_filesystem = Factory::filesystem()->data();
         $data_folder = Factory::filesystem()->dataName();
 
+        $html = '';
         if ($tree !== null) {
 
+            $wt_media_folder    = $tree->getPreference('MEDIA_DIRECTORY', 'media/');
             $canvas_height      = $this->getPreference('canvas-height', '80');
             $square_thumbs      = $this->getPreference('square-thumbs', '0');
             $media_type         = $this->getPreference('media-type', 'photo');
@@ -263,32 +266,38 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             $canvas_width = 2400;
             $num_thumbs = (int)ceil($canvas_width / ($canvas_height * 0.75));
 
-            $records = $this->allMedia($tree, 'jpg', $media_type, $num_thumbs);
+            $folder = str_replace($wt_media_folder, "", $this->getPreference('media-folder'));
+
+            $records = $this->allMedia($tree, $folder, $media_type, $num_thumbs);
 
             $resources = array();
             foreach ($records as $record) {
                 foreach ($record->mediaFiles() as $media_file) {
 
                     if ($media_file->isImage() && $media_file->fileExists($data_filesystem)) {
-
-                        $media_folder = $data_folder . $media_file->media()->tree()->getPreference('MEDIA_DIRECTORY', 'media/');
-                        $file         = $media_folder . $media_file->filename();
-
+                        $file        = $data_folder . $wt_media_folder . $media_file->filename();
                         $resources[] = $this->fancyThumb($file, $canvas_height, $square_thumbs);
                     }
                 }
             }
 
+            // Repeat items if neccessary to fill up the Fancy Imagebar
+            if (count($resources) < $num_thumbs) {
+                // see: https://stackoverflow.com/questions/2963777/how-to-repeat-an-array-in-php
+                // works in php 5.6+
+                $resources = array_merge(...array_fill(0, $num_thumbs - count($resources), $resources));
+                shuffle($resources);
+            }
+
             // Generate the response.
             $fancy_imagebar = $this->createFancyImagebar($resources, $canvas_width, $canvas_height);
 
-            $html  = '<div class="jc-fancy-imagebar">';
+            $html .= '<div class="jc-fancy-imagebar">';
             $html .= '<img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($fancy_imagebar) . '">';
             $html .= '<div class="jc-fancy-imagebar-divider"></div>';
             $html .= '</div>';
-
-            return $html;
         }
+        return $html;
     }
 
     /**
@@ -303,7 +312,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @return Collection<Media>
      */
-    private function allMedia(Tree $tree, string $format, string $type, int $num_thumbs): Collection
+    private function allMedia(Tree $tree, string $folder, string $type, int $num_thumbs): Collection
     {
         $query = DB::table('media')
             ->join('media_file', static function (JoinClause $join): void {
@@ -311,11 +320,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                     ->on('media_file.m_file', '=', 'media.m_file')
                     ->on('media_file.m_id', '=', 'media.m_id');
             })
-            ->where('media.m_file', '=', $tree->id());
-
-        if ($format) {
-            $query->where('multimedia_format', '=', $format);
-        }
+            ->where('media.m_file', '=', $tree->id())
+            ->where('multimedia_file_refn', 'LIKE', $folder . '%')
+            ->whereIn('multimedia_format', ['jpg', 'jpeg', 'png']);
 
         if ($type) {
             $query->where('source_media_type', '=', $type);

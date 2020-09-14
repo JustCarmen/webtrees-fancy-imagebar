@@ -32,7 +32,7 @@ use Fisharebest\Webtrees\I18N;
                 </label>
                 <div class="col-sm-9">
                     <?= view('components/select', ['name' => 'media-folder', 'selected' => $media_folder, 'options' => $media_folders]) ?>
-                    <?= view('components/checkbox-inline', ['label' => /* I18N: Label for check-box */ I18N::translate('Include subfolders'), 'name' => 'subfolders', 'checked' => $subfolders === '1']) ?>
+                    <?= view('components/checkbox-inline', ['label' => /* I18N: Label for check-box */ I18N::translate('Include subfolders'), 'name' => 'subfolders', 'checked' => (int)$subfolders]) ?>
                 </div>
             </div>
             <!-- MEDIA TYPE LIST -->
@@ -50,7 +50,7 @@ use Fisharebest\Webtrees\I18N;
                     <?= I18N::translate('Height of the Fancy Imagebar') ?>
                 </label>
                 <div class="col-sm-1">
-                    <input class="form-control" type="text" name="canvas-height" size="3" value="<?= $canvas_height ?>">
+                    <input class="form-control" type="text" name="canvas-height" size="3" value="<?= $canvas_height ?>" required>
                 </div>
                 <div class="form-control-static align-self-center">px</div>
             </div>

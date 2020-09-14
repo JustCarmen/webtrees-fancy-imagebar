@@ -147,10 +147,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             'media_folders'    => $media_folders,
             'media_types'      => $media_types,
             'media_folder'     => $this->getPreference('media-folder'),
-            'subfolders'       => $this->getPreference('subfolders', '1'),
+            'subfolders'       => $this->getPreference('subfolders'),
             'media_type'       => $this->getPreference('media-type'),
             'canvas_height'    => $this->getPreference('canvas-height', '80'),
-            'square_thumbs'    => $this->getPreference('square-thumbs', '0')
+            'square_thumbs'    => $this->getPreference('square-thumbs')
         ]);
     }
 
@@ -167,9 +167,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         // store the preferences in the database
         $this->setPreference('media-folder', $params['media-folder']);
-        $this->setPreference('media-type',  $params['media-type'] ?? 'photo');
-        $this->setPreference('canvas-height',  $params['canvas-height'] ?? '80');
-        $this->setPreference('square-thumbs',  $params['square-thumbs'] ?? 0);
+        $this->setPreference('subfolders', $params['subfolders'] ?? '0');
+        $this->setPreference('media-type',  $params['media-type']);
+        $this->setPreference('canvas-height',  $params['canvas-height']);
+        $this->setPreference('square-thumbs',  $params['square-thumbs']);
 
         $message = I18N::translate('The preferences for the module “%s” have been updated.', $this->title());
         FlashMessages::addMessage($message, 'success');
@@ -242,21 +243,31 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $html = '';
         if ($tree !== null) {
 
-            $wt_media_folder    = $tree->getPreference('MEDIA_DIRECTORY', 'media/');
-            $canvas_height      = $this->getPreference('canvas-height', '80');
-            $square_thumbs      = $this->getPreference('square-thumbs', '0');
-            $media_type         = $this->getPreference('media-type', 'photo');
+            $wt_media_folder = $tree->getPreference('MEDIA_DIRECTORY', 'media/');
+
+            // Set default values in case the settings are not stored in the database yet
+            $canvas_height   = $this->getPreference('canvas-height', '80');
+            $subfolders      = $this->getPreference('subfolders', '1');
+            $media_type      = $this->getPreference('media-type', '');
+            $square_thumbs   = $this->getPreference('square-thumbs', '0');
 
             // how much images do we need at most to fill up the canvas. If square is unwanted then we don't know the width of the images.
             // Play safe and use 0.75 thumb height as thumb width
             // 2400 is the maximum screensize we will take into account.
-            $canvas_width = 2400;
-            $num_thumbs = (int)ceil($canvas_width / ($canvas_height * 0.75));
+            $canvas_width  = 2400;
+            $canvas_height = $this->getPreference('canvas-height', '80');
+            $num_thumbs    = (int)ceil($canvas_width / ($canvas_height * 0.75));
 
+            // strip out the default media directory from the folder path. It is not stored in the database
             $folder = str_replace($wt_media_folder, "", $this->getPreference('media-folder'));
 
-            $records = $this->allMedia($tree, $folder, $media_type, $num_thumbs);
+            // include or exclude subfolders
+            $subfolders = $subfolders === '1' ? 'include' : 'exclude';
 
+            // pull the records from the database
+            $records = $this->allMedia($tree, $folder, $subfolders, $media_type, $num_thumbs);
+
+            // Get the resources
             $resources = array();
             foreach ($records as $record) {
                 foreach ($record->mediaFiles() as $media_file) {
@@ -299,7 +310,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @return Collection<Media>
      */
-    private function allMedia(Tree $tree, string $folder, string $type, int $num_thumbs): Collection
+    private function allMedia(Tree $tree, string $folder, string $subfolders, string $type, int $num_thumbs): Collection
     {
         $query = DB::table('media')
             ->join('media_file', static function (JoinClause $join): void {
@@ -310,6 +321,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             ->where('media.m_file', '=', $tree->id())
             ->where('multimedia_file_refn', 'LIKE', $folder . '%')
             ->whereIn('multimedia_format', ['jpg', 'jpeg', 'png']);
+
+        if ($subfolders === 'exclude') {
+            $query->where('multimedia_file_refn', 'NOT LIKE', $folder . '%/%');
+        }
 
         if ($type) {
             $query->where('source_media_type', '=', $type);

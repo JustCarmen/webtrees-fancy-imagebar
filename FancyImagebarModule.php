@@ -13,16 +13,13 @@ use Fisharebest\Webtrees\GedcomRecord;
 use Fisharebest\Webtrees\FlashMessages;
 use Psr\Http\Message\ResponseInterface;
 use Illuminate\Database\Query\JoinClause;
-use League\Flysystem\FilesystemInterface;
 use Psr\Http\Message\ServerRequestInterface;
-use Fisharebest\Webtrees\Services\TreeService;
 use Illuminate\Database\Capsule\Manager as DB;
 use Fisharebest\Webtrees\Module\AbstractModule;
 use Fisharebest\Webtrees\Module\ModuleConfigTrait;
 use Fisharebest\Webtrees\Module\ModuleCustomTrait;
 use Fisharebest\Webtrees\Module\ModuleGlobalTrait;
 use Fisharebest\Webtrees\Services\MediaFileService;
-use Fisharebest\Webtrees\Services\DatatablesService;
 use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleGlobalInterface;
@@ -33,26 +30,16 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     use ModuleConfigTrait;
     use ModuleGlobalTrait;
 
-    /** @var DatatablesService */
-    private $datatables_service;
-
     /** @var MediaFileService */
     private $media_file_service;
-
-    /** @var TreeService */
-    private $tree_service;
 
     /**
      * FancyImagebar constructor.
      *
-     * @param DatatablesService $datatables_service
      * @param MediaFileService  $media_file_service
      */
-    public function __construct(
-        DatatablesService $datatables_service,
-        MediaFileService $media_file_service
-    ) {
-        $this->datatables_service = $datatables_service;
+    public function __construct(MediaFileService $media_file_service)
+    {
         $this->media_file_service = $media_file_service;
     }
 
@@ -354,7 +341,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             $x = $pos;
             $pos = $pos + imagesx($image);
 
-            // copy the images (thumbnails) onto the canvas
+            // copy the images (thumbnails) to the canvas
             imagecopy($fancy_imagebar_canvas, $image, $x, 0, 0, 0, imagesx($image), (int) $canvas_height);
         }
 

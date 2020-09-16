@@ -8,11 +8,13 @@ use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
 use Fisharebest\Webtrees\Factory;
+use Fisharebest\Webtrees\Webtrees;
 use Illuminate\Support\Collection;
 use Fisharebest\Webtrees\GedcomRecord;
 use Fisharebest\Webtrees\FlashMessages;
 use Psr\Http\Message\ResponseInterface;
 use Illuminate\Database\Query\JoinClause;
+use League\Flysystem\FilesystemInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Illuminate\Database\Capsule\Manager as DB;
 use Fisharebest\Webtrees\Module\AbstractModule;
@@ -32,6 +34,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
     /** @var MediaFileService */
     private $media_file_service;
+
+    /** @var Webtrees::VERSION */
+    private $wt_version;
 
     /**
      * FancyImagebar constructor.
@@ -117,6 +122,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         // Register a namespace for our views.
         View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
+
+        // What webtrees version are we on?
+        $this->wt_version = (int)str_replace(['_dev', '.'], '', Webtrees::VERSION);
     }
 
     /**
@@ -138,7 +146,14 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         $this->layout = 'layouts/administration';
 
-        $data_filesystem = Factory::filesystem()->data();
+        // changed as of wt-2.0.8-dev.
+        if ($this->wt_version > 207) {
+            $data_filesystem = Factory::filesystem()->data();
+        } else {
+            $data_filesystem = $request->getAttribute('filesystem.data');
+            assert($data_filesystem instanceof FilesystemInterface);
+        }
+
         $media_folders = $this->media_file_service->allMediaFolders($data_filesystem);
         $media_types = $this->media_file_service->mediaTypes();
 
@@ -236,66 +251,71 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         $request = app(ServerRequestInterface::class);
         $tree = $request->getAttribute('tree');
+        assert($tree instanceof Tree);
 
-        $data_filesystem = Factory::filesystem()->data();
-        $data_folder = Factory::filesystem()->dataName();
+        // changed in wt-2.0.8-dev.
+        if ($this->wt_version > 207) {
+            $data_filesystem = Factory::filesystem()->data();
+            $data_folder = Factory::filesystem()->dataName();
+        } else {
+            $data_filesystem = $request->getAttribute('filesystem.data');
+            assert($data_filesystem instanceof FilesystemInterface);
 
-        $html = '';
-        if ($tree !== null) {
+            $data_folder = $request->getAttribute('filesystem.data.name');
+            assert(is_string($data_folder));
+        }
 
-            $wt_media_folder = $tree->getPreference('MEDIA_DIRECTORY', 'media/');
+        $wt_media_folder = $tree->getPreference('MEDIA_DIRECTORY', 'media/');
 
-            // Set default values in case the settings are not stored in the database yet
-            $canvas_height   = $this->getPreference('canvas-height', '80');
-            $subfolders      = $this->getPreference('subfolders', '1');
-            $media_type      = $this->getPreference('media-type', '');
-            $square_thumbs   = $this->getPreference('square-thumbs', '0');
+        // Set default values in case the settings are not stored in the database yet
+        $canvas_height   = $this->getPreference('canvas-height', '80');
+        $subfolders      = $this->getPreference('subfolders', '1');
+        $media_type      = $this->getPreference('media-type', '');
+        $square_thumbs   = $this->getPreference('square-thumbs', '0');
 
-            // how much images do we need at most to fill up the canvas. If square is unwanted then we don't know the width of the images.
-            // Play safe and use 0.75 thumb height as thumb width
-            // 2400 is the maximum screensize we will take into account.
-            $canvas_width  = 2400;
-            $canvas_height = $this->getPreference('canvas-height', '80');
-            $num_thumbs    = (int)ceil($canvas_width / ($canvas_height * 0.75));
+        // how much images do we need at most to fill up the canvas. If square is unwanted then we don't know the width of the images.
+        // Play safe and use 0.75 thumb height as thumb width
+        // 2400 is the maximum screensize we will take into account.
+        $canvas_width  = 2400;
+        $canvas_height = $this->getPreference('canvas-height', '80');
+        $num_thumbs    = (int)ceil($canvas_width / ($canvas_height * 0.75));
 
-            // strip out the default media directory from the folder path. It is not stored in the database
-            $folder = str_replace($wt_media_folder, "", $this->getPreference('media-folder'));
+        // strip out the default media directory from the folder path. It is not stored in the database
+        $folder = str_replace($wt_media_folder, "", $this->getPreference('media-folder'));
 
-            // include or exclude subfolders
-            $subfolders = $subfolders === '1' ? 'include' : 'exclude';
+        // include or exclude subfolders
+        $subfolders = $subfolders === '1' ? 'include' : 'exclude';
 
-            // pull the records from the database
-            $records = $this->allMedia($tree, $folder, $subfolders, $media_type, $num_thumbs);
+        // pull the records from the database
+        $records = $this->allMedia($tree, $folder, $subfolders, $media_type, $num_thumbs);
 
-            // Get the resources
-            $resources = array();
-            foreach ($records as $record) {
-                foreach ($record->mediaFiles() as $media_file) {
+        // Get the thumbnail resources
+        $resources = array();
+        foreach ($records as $record) {
+            foreach ($record->mediaFiles() as $media_file) {
 
-                    if ($media_file->isImage() && $media_file->fileExists($data_filesystem)) {
-                        $file        = $data_folder . $wt_media_folder . $media_file->filename();
-                        $resources[] = $this->fancyThumb($file, $canvas_height, $square_thumbs);
-                    }
+                if ($media_file->isImage() && $media_file->fileExists($data_filesystem)) {
+                    $file        = $data_folder . $wt_media_folder . $media_file->filename();
+                    $resources[] = $this->fancyThumb($file, $canvas_height, $square_thumbs);
+                    //die(var_dump($record->xref()));
                 }
             }
-
-            // Repeat items if neccessary to fill up the Fancy Imagebar
-            if (count($resources) < $num_thumbs) {
-                // see: https://stackoverflow.com/questions/2963777/how-to-repeat-an-array-in-php
-                // works in php 5.6+
-                $resources = array_merge(...array_fill(0, $num_thumbs - count($resources), $resources));
-                shuffle($resources);
-            }
-
-            // Generate the response.
-            $fancy_imagebar = $this->createFancyImagebar($resources, $canvas_width, $canvas_height);
-
-            $html .= '<div class="jc-fancy-imagebar">';
-            $html .= '<img alt="fancy-imagebar" src="data:image/jpeg;base64,' . base64_encode($fancy_imagebar) . '">';
-            $html .= '<div class="jc-fancy-imagebar-divider"></div>';
-            $html .= '</div>';
         }
-        return $html;
+
+        // Repeat items if neccessary to fill up the Fancy Imagebar
+        if (count($resources) < $num_thumbs) {
+            // see: https://stackoverflow.com/questions/2963777/how-to-repeat-an-array-in-php
+            // works in php 5.6+
+            $resources = array_merge(...array_fill(0, $num_thumbs - count($resources), $resources));
+            shuffle($resources);
+        }
+
+        // Generate the response.
+        $fancy_imagebar = $this->createFancyImagebar($resources, $canvas_width, $canvas_height);
+
+        return view($this->name() . '::fancy-imagebar', [
+            'fancy_imagebar' => $fancy_imagebar
+        ]);
     }
 
     /**

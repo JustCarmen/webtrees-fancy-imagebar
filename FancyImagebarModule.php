@@ -274,11 +274,11 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $square_thumbs   = $this->getPreference('square-thumbs', '0');
 
         // how much images do we need at most to fill up the canvas. If square is unwanted then we don't know the width of the images.
-        // Play safe and use 0.75 thumb height as thumb width
+        // Play safe and use 0.5 thumb height as thumb width, so we assume an image of 80px height is 40px width. Normally it would be larger.
         // 2400 is the maximum screensize we will take into account.
         $canvas_width  = 2400;
         $canvas_height = $this->getPreference('canvas-height', '80');
-        $num_thumbs    = (int)ceil($canvas_width / ($canvas_height * 0.75));
+        $num_thumbs    = (int)ceil($canvas_width / ($canvas_height * 0.5));
 
         // strip out the default media directory from the folder path. It is not stored in the database
         $folder = str_replace($wt_media_folder, "", $this->getPreference('media-folder'));
@@ -297,7 +297,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                 if ($media_file->isImage() && $media_file->fileExists($data_filesystem)) {
                     $file        = $data_folder . $wt_media_folder . $media_file->filename();
                     $resources[] = $this->fancyThumb($file, $canvas_height, $square_thumbs);
-                    //die(var_dump($record->xref()));
                 }
             }
         }

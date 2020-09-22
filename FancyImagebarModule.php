@@ -231,13 +231,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
             @media screen and (max-width: 992px) {
                 .jc-fancy-imagebar img {
-                    height: ' . $canvas_height_md. 'px;
+                    height: ' . $canvas_height_md . 'px;
                 }
             }
 
             @media screen and (max-width: 768px) {
                 .jc-fancy-imagebar img {
-                    height: '. $canvas_height_sm . 'px;
+                    height: ' . $canvas_height_sm . 'px;
                 }
             }
             </style>
@@ -273,9 +273,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $media_type      = $this->getPreference('media-type', '');
         $square_thumbs   = $this->getPreference('square-thumbs', '0');
 
-        // how much images do we need at most to fill up the canvas. If square is unwanted then we don't know the width of the images.
-        // Play safe and use 0.5 thumb height as thumb width, so we assume an image of 80px height is 40px width. Normally it would be larger.
-        // 2400 is the maximum screensize we will take into account.
+        // how much thumbnails do we need at most to fill up the canvas.
+        // If square is chosen as an option then we don't know the width of the thumbnails.
+        // Play safe and use 0.5 * thumb height as thumb width. This means we assume an thumbnail with a height of 80px is 40px width.
+        // Most thumbnails will be larger than that. 2400 is the maximum screensize we will take into account.
         $canvas_width  = 2400;
         $canvas_height = $this->getPreference('canvas-height', '80');
         $num_thumbs    = (int)ceil($canvas_width / ($canvas_height * 0.5));
@@ -287,16 +288,17 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $subfolders = $subfolders === '1' ? 'include' : 'exclude';
 
         // pull the records from the database
-        $records = $this->allMedia($tree, $folder, $subfolders, $media_type, $num_thumbs);
+        $records = $this->allMedia($tree, $folder, $subfolders, $media_type);
 
         // Get the thumbnail resources
         $resources = array();
         foreach ($records as $record) {
-            foreach ($record->mediaFiles() as $media_file) {
-
-                if ($media_file->isImage() && $media_file->fileExists($data_filesystem)) {
-                    $file        = $data_folder . $wt_media_folder . $media_file->filename();
-                    $resources[] = $this->fancyThumb($file, $canvas_height, $square_thumbs);
+            if (count($resources) < $num_thumbs) {
+                foreach ($record->mediaFiles() as $media_file) {
+                    if ($media_file->isImage() && $media_file->fileExists($data_filesystem)) {
+                        $file        = $data_folder . $wt_media_folder . $media_file->filename();
+                        $resources[] = $this->fancyThumb($file, $canvas_height, $square_thumbs);
+                    }
                 }
             }
         }
@@ -329,7 +331,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @return Collection<Media>
      */
-    private function allMedia(Tree $tree, string $folder, string $subfolders, string $type, int $num_thumbs): Collection
+    private function allMedia(Tree $tree, string $folder, string $subfolders, string $type): Collection
     {
         $query = DB::table('media')
             ->join('media_file', static function (JoinClause $join): void {
@@ -350,7 +352,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         }
 
         return $query
-            ->inRandomOrder()->limit($num_thumbs)->get()
+            ->inRandomOrder()->get()
             ->map(Factory::media()->mapper($tree))
             ->uniqueStrict()
             ->filter(GedcomRecord::accessFilter());

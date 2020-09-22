@@ -2,3 +2,14 @@
     <img alt="fancy-imagebar" src="data:image/jpeg;base64, <?= base64_encode($fancy_imagebar) ?>" usemap="#jc-fancy-imagebar">
     <div class="jc-fancy-imagebar-divider"></div>
 </div>
+<map name="jc-fancy-imagebar" class="jc-fancy-imagebar-map">
+    <?php foreach ($fancy_map as $area) : ?>
+    <?php
+            $x1 = $area['coords']['x1'];
+            $y1 = $area['coords']['y1'];
+            $x2 = $area['coords']['x2'];
+            $y2 = $area['coords']['y2'];
+        ?>
+    <area shape="rect" coords="<?= $x1 ?>, <?= $y1 ?>, <?= $x2 ?>, <?= $y2 ?>" alt="<?= $area['title'] ?>" title="<?= $area['title'] ?>" href="<?= $area['url'] ?>">
+    <?php endforeach ?>
+</map>

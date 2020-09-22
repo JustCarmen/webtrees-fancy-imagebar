@@ -22,21 +22,20 @@
  */
 
  .jc-fancy-imagebar {
-    overflow: hidden;
-}
+     overflow: hidden;
+ }
 
 .jc-fancy-imagebar img {
-    width: 100vw;
     object-fit: cover;
+    object-position: left;
+}
+
+.jc-fancy-imagebar-map area {
+    outline: none;
 }
 
 .wt-theme-clouds .jc-fancy-imagebar {
     border: 1px solid #003399;
-    margin: 10px 10px 0 10px
-}
-
-.wt-theme-clouds .jc-fancy-imagebar img {
-    margin-bottom: -2px
 }
 
 .wt-theme-colors .jc-fancy-imagebar-divider {
@@ -88,7 +87,7 @@
     height: 2px;
     margin: 5px
 }
-.jc-theme-justlight .jc-fancy-imagebar img {
+.jc-theme-justlight .jc-fancy-imagebar {
     border-top: 5px solid #428bca;
 	border-bottom: 5px solid #428bca
 }

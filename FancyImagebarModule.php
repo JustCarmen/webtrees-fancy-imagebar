@@ -7,11 +7,13 @@ namespace JustCarmen\Webtrees\Module;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
+use Fisharebest\Webtrees\Media;
 use Fisharebest\Webtrees\Factory;
 use Fisharebest\Webtrees\Webtrees;
 use Illuminate\Support\Collection;
 use Fisharebest\Webtrees\GedcomRecord;
 use Fisharebest\Webtrees\FlashMessages;
+use Fisharebest\Webtrees\Individual;
 use Psr\Http\Message\ResponseInterface;
 use Illuminate\Database\Query\JoinClause;
 use League\Flysystem\FilesystemInterface;
@@ -197,11 +199,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      * Raw content, to be added at the end of the <body> element.
      * Typically, this will be <script> elements.
      *
+     * Script to put the fancy imagebar in place once it is created
+     *
      * @return string
      */
     public function bodyContent(): string
     {
-        $body = $this->fancyImagebarHtml();
+        $body = $this->fancyImagebar();
         $body .= '<script>';
         $body .= '$(".wt-main-wrapper").prepend($(".jc-fancy-imagebar"))';
         $body .= '</script>';
@@ -247,7 +251,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /**
      * Generate the html for the Fancy imagebar
      */
-    public function fancyImagebarHtml(): string
+    public function fancyImagebar(): string
     {
         $request = app(ServerRequestInterface::class);
         $tree = $request->getAttribute('tree');
@@ -297,7 +301,11 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                 foreach ($record->mediaFiles() as $media_file) {
                     if ($media_file->isImage() && $media_file->fileExists($data_filesystem)) {
                         $file        = $data_folder . $wt_media_folder . $media_file->filename();
-                        $resources[] = $this->fancyThumb($file, $canvas_height, $square_thumbs);
+
+                        $resources[] = [
+                            'image'     => $this->fancyThumb($file, $canvas_height, $square_thumbs),
+                            'linked'    => $this->getLinkedObject($record)
+                        ];
                     }
                 }
             }
@@ -311,12 +319,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             shuffle($resources);
         }
 
-        // Generate the response.
-        $fancy_imagebar = $this->createFancyImagebar($resources, $canvas_width, $canvas_height);
-
-        return view($this->name() . '::fancy-imagebar', [
-            'fancy_imagebar' => $fancy_imagebar
-        ]);
+        return $this->createFancyImagebar($resources, $canvas_width, $canvas_height);
     }
 
     /**
@@ -359,7 +362,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     }
 
     /**
-     * Create the Fancy Imagebar
+     * Create the Fancy Imagebar + html output
      *
      * @param type $source_images
      * @param type $canvas_width
@@ -373,19 +376,44 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $fancy_imagebar_canvas = imagecreatetruecolor((int) $canvas_width, (int) $canvas_height);
 
         $pos = 0;
-        foreach ($source_images as $image) {
-            $x = $pos;
+        foreach ($source_images as $source) {
+
+            $image  = $source['image'];
+            $linked = $source['linked'];
+
+            $x1  = $pos;
+            $x2  = $x1 + imagesx($image);
             $pos = $pos + imagesx($image);
 
             // copy the images (thumbnails) to the canvas
-            imagecopy($fancy_imagebar_canvas, $image, $x, 0, 0, 0, imagesx($image), (int) $canvas_height);
+            // imagecopy (resource $dst_im , resource $src_im , int $dst_x , int $dst_y , int $src_x , int $src_y , int $src_w , int $src_h)
+            imagecopy($fancy_imagebar_canvas, $image, $x1, 0, 0, 0, imagesx($image), (int) $canvas_height);
+
+            // prepare the map
+            if ($linked !== '') {
+                $lifespan = $linked instanceof Individual ? ' (' . $linked->lifespan() . ')' : '';
+                $fancy_map[] = [
+                    'coords' => [
+                        'x1' => $x1,
+                        'y1' => '0',
+                        'x2' => $x2,
+                        'y2' => $canvas_height
+                    ],
+                    'title' => strip_tags($linked->fullName() . $lifespan),
+                    'url'   => e($linked->url())
+                ];
+            }
         }
 
+        // Output
         ob_start();
         imagejpeg($fancy_imagebar_canvas);
         $fancy_imagebar = ob_get_clean();
 
-        return $fancy_imagebar;
+        return view($this->name() . '::fancy-imagebar', [
+            'fancy_imagebar' => $fancy_imagebar,
+            'fancy_map'      => $fancy_map
+        ]);
     }
 
     /**
@@ -395,7 +423,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      * @param type $file
      * @return boolean
      */
-    public function loadImage($file)
+    private function loadImage($file)
     {
         $size = getimagesize($file);
         switch ($size["mime"]) {
@@ -459,5 +487,31 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         imagedestroy($source_image);
 
         return $thumb; // resource
+    }
+
+    /**
+     * Which objects are linked to this file?
+     * return the first linked object (indi, fam or source)
+     *
+     * @param type $media
+     * @return object
+     */
+    private function getLinkedObject(Media $media): object
+    {
+        $links = [];
+        foreach ($media->linkedIndividuals('OBJE') as $linked) {
+            $links[] = $linked;
+        }
+        foreach ($media->linkedFamilies('OBJE') as $linked) {
+            $links[] = $linked;
+        }
+        foreach ($media->linkedsources('OBJE') as $linked) {
+            $links[] = $linked;
+        }
+
+        // return the first link found
+        if ($links !== []) {
+            return $links[0];
+        }
     }
 };

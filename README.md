@@ -2,7 +2,7 @@ Fancy Imagebar
 ==============
 
 [![Latest Release](https://img.shields.io/github/release/JustCarmen/fancy_imagebar.svg)][1]
-[![webtrees major version](https://img.shields.io/badge/webtrees-v1.x-green)][2]
+[![webtrees major version](https://img.shields.io/badge/webtrees-v1.x-red)][2]
 
 Fancy Imagebar Module for webtrees. This is a webtrees 1 module. It cannot be used with webtrees 2.
 

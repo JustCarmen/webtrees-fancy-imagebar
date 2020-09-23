@@ -4,17 +4,20 @@ declare(strict_types=1);
 
 namespace JustCarmen\Webtrees\Module;
 
+use FilesystemIterator;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
+use RecursiveIteratorIterator;
 use Fisharebest\Webtrees\Media;
 use Fisharebest\Webtrees\Factory;
 use Fisharebest\Webtrees\Webtrees;
 use Illuminate\Support\Collection;
+use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\GedcomRecord;
 use Fisharebest\Webtrees\FlashMessages;
-use Fisharebest\Webtrees\Individual;
 use Psr\Http\Message\ResponseInterface;
+use Fisharebest\Localization\Translation;
 use Illuminate\Database\Query\JoinClause;
 use League\Flysystem\FilesystemInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -27,6 +30,7 @@ use Fisharebest\Webtrees\Services\MediaFileService;
 use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleGlobalInterface;
+use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
 
 class FancyImagebarModule extends AbstractModule implements ModuleCustomInterface, ModuleConfigInterface, ModuleGlobalInterface
 {
@@ -246,6 +250,24 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             }
             </style>
             <link rel="stylesheet" href="' . e($url) . '">';
+    }
+
+    /**
+     * Additional/updated translations.
+     *
+     * @param string $language
+     *
+     * @return string[]
+     */
+    public function customTranslations(string $language): array
+    {
+        $lang_dir   = $this->resourcesFolder() . 'lang/';
+        $file       = $lang_dir . $language . '.mo';
+        if (file_exists($file)) {
+            return (new Translation($file))->asArray();
+        } else {
+            return [];
+        }
     }
 
     /**

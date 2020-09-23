@@ -1,7 +1,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
-"POT-Creation-Date: 2016-12-26 16:42+0100\n"
+"POT-Creation-Date: 2020-09-23 08:13+0200\n"
 "PO-Revision-Date: 2016-09-26 11:12+0000\n"
 "Last-Translator: Francesco Fragasso <francescofragasso@alice.it>\n"
 "Language-Team: Italian <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/it/>\n"
@@ -16,85 +16,19 @@ msgstr ""
 "X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: app/Template/AdminTemplate.php:289
-msgid "All pages"
-msgstr "Tutte le pagine"
-
-#: app/Template/AdminTemplate.php:314
-msgid "Amount of sepia"
-msgstr "Quantità di seppia"
-
-#. I18N: Description of the module
-#: module.php:66
+#: FancyImagebarModule.php:70
 msgid "An imagebar with small images between header and content."
 msgstr "Una Imagebar con piccole immagini tra intestazione e contenuti."
 
-#: app/Template/AdminTemplate.php:216
-msgid "Choose which images you want to show in the Fancy Imagebar"
-msgstr "Scegliere le immagini che si desidera visualizzare nella Fancy Imagebar"
+#: resources/views/settings.phtml:50
+msgid "Crop thumbnails to square"
+msgstr ""
 
-#: app/Template/AdminTemplate.php:326
-msgid "Enter a value between 0 and 100"
-msgstr "Immettere un valore compreso tra 0 e 100"
-
-#. I18N: Name of the module
-#: module.php:61
+#: FancyImagebarModule.php:60
 msgid "Fancy Imagebar"
 msgstr "Fancy-Imagebar"
 
-#: app/Template/AdminTemplate.php:332
+#: resources/views/settings.phtml:39
 msgid "Height of the Fancy Imagebar"
 msgstr "Altezza della Fancy Imagebar"
 
-#: app/Template/AdminTemplate.php:226
-msgid "Here you can choose which images should be shown in the Fancy Imagebar. If there are fewer images chosen than needed to fill up the entire Fancy Imagebar, the images will be repeated."
-msgstr "Qui è possibile scegliere quali immagini dovrebbero essere mostrate nella Fancy Imagebar. Se ci sono meno immagini scelte di quanto necessario per riempire l'intera Fancy Imagebar, le immagini verranno ripetute."
-
-#: app/Template/AdminTemplate.php:305
-msgid "Images Tone"
-msgstr "Tonalità delle immagini"
-
-#: app/Template/AdminTemplate.php:249
-msgid "No images to display for this tree"
-msgstr "Nessuna immagine da visualizzare per questo albero genealogico"
-
-#: app/Template/AdminTemplate.php:227
-msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background in the Fancy Imagebar. The images shown in this table have the right specifications already."
-msgstr "Nota: solo immagini locali \"jpg\" o \"png\" sono supportate da questo modulo. Le immagini esterne non sono supportate. Non è possibile mantenere la trasparenza per le miniature PNG nella Fancy Imagebar. Miniature PNG trasparenti avranno un sfondo nero nella Fancy Imagebar. Le immagini mostrate in questa tabella hanno già le caratteristiche giuste."
-
-#: app/Template/AdminTemplate.php:240
-msgid "Only show images with type = “photo”"
-msgstr "Mostra solo immagini di tipo = \"foto\""
-
-#: app/Template/AdminTemplate.php:84 app/Template/AdminTemplate.php:136
-msgid "Options for"
-msgstr "Opzioni per"
-
-#: app/Template/AdminTemplate.php:296
-msgid "Random images"
-msgstr "Immagini casuali"
-
-#: app/Template/AdminTemplate.php:279
-msgid "Show Fancy Imagebar on"
-msgstr "Mostra Fancy Imagebar su"
-
-#: app/Template/AdminTemplate.php:228
-msgid "The Fancy Imagebar module respects privacy settings!"
-msgstr "Il modulo Fancy Imagebar rispetta le impostazioni di privacy!"
-
-#: app/FancyImagebarClass.php:274
-#, php-format
-msgid "The image “%s” doesn’t exist or is not a valid image"
-msgstr "L'immagine “%s1” non esiste o non è una immagine valida"
-
-#: app/Template/AdminTemplate.php:130
-msgid "The settings are changed. You will lose your changes if you switch trees."
-msgstr "Le impostazioni sono cambiate. Se si passa ad un altro albero, le modifiche andranno perse."
-
-#: app/Template/AdminTemplate.php:364
-msgid "The settings will be reset to default (for all trees). Are you sure you want to do this?"
-msgstr "Le impostazioni saranno resettate ai valori predefiniti (per tutti gli alberi). Sei sicuro di voler procedere?"
-
-#: app/Template/AdminTemplate.php:350
-msgid "Use square thumbs"
-msgstr "Utilizzare miniature quadrate"

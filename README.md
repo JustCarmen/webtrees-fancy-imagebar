@@ -1,7 +1,7 @@
 Fancy Imagebar
 ==============
 
-[![Latest Release](https://img.shields.io/github/release/JustCarmen/fancy_imagebar.svg)][1]
+[![latest release for webtrees 1](https://img.shields.io/badge/release-v1.7.11-lightgrey)][1]
 [![webtrees major version](https://img.shields.io/badge/webtrees-v1.x-red)][2]
 
 Fancy Imagebar Module for webtrees. This is a webtrees 1 module. It cannot be used with webtrees 2.
@@ -37,9 +37,9 @@ Bugs and feature requests
 -------------------------
 If you experience any bugs or have a feature request for this module you can [create a new issue on GitHub][5] or [use the webtrees subforum 'customising'][6] to contact me.
 
- [1]: https://github.com/JustCarmen/fancy_imagebar/releases/latest
+ [1]: https://github.com/JustCarmen/webtrees-theme-justlight/releases/tag/1.7.11
  [2]: https://webtrees.github.io/download/
  [3]: https://poeditor.com/join/project/Sx5p5SqzdQ
  [4]: http://www.justcarmen.nl/help-category/modules-help
- [5]: https://github.com/JustCarmen/fancy_imagebar/issues?state=open
+ [5]: https://github.com/JustCarmen/webtrees-fancy-imagebar/issues?state=open
  [6]: http://www.webtrees.net/index.php/en/forum/4-customising

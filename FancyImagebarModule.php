@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace JustCarmen\Webtrees\Module;
 
-use FilesystemIterator;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
-use RecursiveIteratorIterator;
 use Fisharebest\Webtrees\Media;
 use Fisharebest\Webtrees\Factory;
 use Fisharebest\Webtrees\Webtrees;
@@ -30,7 +28,6 @@ use Fisharebest\Webtrees\Services\MediaFileService;
 use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleGlobalInterface;
-use Symfony\Component\Finder\Iterator\RecursiveDirectoryIterator;
 
 class FancyImagebarModule extends AbstractModule implements ModuleCustomInterface, ModuleConfigInterface, ModuleGlobalInterface
 {

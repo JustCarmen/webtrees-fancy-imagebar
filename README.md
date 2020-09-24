@@ -11,9 +11,9 @@ The Fancy Imagebar is a nice looking imagebar between header and content of your
 
 There is a configuration page in control panel where you can set a few options. For performance reasons the options are less extended as in webtrees 1, but in most cases the provided options will be sufficient.
 
-You can choose the folder(s) which contains the images you want to show in the Fancy Imagebar and set the desired image type (leave empty to show all). Further you can set the height of the imagebar and opt for square thumbnails.
+You can choose the folder(s) which contains the images you want to show in the Fancy Imagebar and set the desired image type (leave empty to show all). Further you can set the height of the imagebar and opt for square thumbnails. External images are not supported.
 
-External images are not supported.
+A cool new feature is that the images in the imagebar are clickable now. By clicking an image the user is redirected to the individual page, family page or source page the image is linked to. In case an image contains mulitple links, the first link found is used.
 
 Translations
 ------------

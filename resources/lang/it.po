@@ -2,18 +2,18 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
 "POT-Creation-Date: 2020-09-23 08:13+0200\n"
-"PO-Revision-Date: 2016-09-26 11:12+0000\n"
-"Last-Translator: Francesco Fragasso <francescofragasso@alice.it>\n"
-"Language-Team: Italian <https://translate.webtrees.net/projects/justcarmen/fancy-image-bar/it/>\n"
-"Language: it\n"
+"Last-Translator: Carmen <carmen@justcarmen.nl>\n"
+"Language-Team: \n"
+"Language: en_US\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=2; plural=n != 1;\n"
-"X-Generator: Weblate 2.5\n"
-"X-Poedit-Basepath: ..\n"
+"X-Generator: Poedit 2.4.1\n"
+"X-Poedit-Basepath: ../..\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
+"PO-Revision-Date: \n"
 "X-Poedit-SearchPath-0: .\n"
 
 #: FancyImagebarModule.php:70
@@ -22,7 +22,7 @@ msgstr "Una Imagebar con piccole immagini tra intestazione e contenuti."
 
 #: resources/views/settings.phtml:50
 msgid "Crop thumbnails to square"
-msgstr ""
+msgstr "Ritaglia le miniature in un quadrato"
 
 #: FancyImagebarModule.php:60
 msgid "Fancy Imagebar"
@@ -31,4 +31,3 @@ msgstr "Fancy-Imagebar"
 #: resources/views/settings.phtml:39
 msgid "Height of the Fancy Imagebar"
 msgstr "Altezza della Fancy Imagebar"
-

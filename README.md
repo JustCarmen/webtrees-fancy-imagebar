@@ -1,45 +1,33 @@
-Fancy Imagebar
-==============
+Fancy Imagebar for webtrees
+===========================
 
-[![Latest Release](https://img.shields.io/github/release/JustCarmen/fancy_imagebar.svg)][1]
-[![webtrees major version](https://img.shields.io/badge/webtrees-v1.x-green)][2]
+[![Latest Release](https://img.shields.io/github/release/JustCarmen/webtrees-fancy-imagebar.svg)][1]
+[![webtrees major version](https://img.shields.io/badge/webtrees-v2.x-green)][2]
+[![Downloads](https://img.shields.io/github/downloads/JustCarmen/webtrees-fancy-imagebar/total.svg)]()
 
-Fancy Imagebar Module for webtrees. This is a webtrees 1 module. It cannot be used with webtrees 2.
+Introduction
+------------
+The Fancy Imagebar is a nice looking imagebar between header and content of your webtrees website.
 
-Description
------------
-The Fancy Imagebar is a nice looking imagebar between header and content of your webtrees homepage or my page.
+There is a configuration page in control panel where you can set a few options. For performance reasons the options are less extended as in webtrees 1, but in most cases the provided options will be sufficient.
 
-You can set the images you want to show in the Fancy Imagebar at the Fancy Imagebar configuration page. However, there are a few restrictions:
+You can choose the folder(s) which contains the images you want to show in the Fancy Imagebar and set the desired image type (leave empty to show all). Further you can set the height of the imagebar and opt for square thumbnails.
 
-*   Only local ’jpg’ or ’png’ images can be used.
-*   External images are not supported.
-*   It is not possible to keep transparency for png thumbnails in the Fancy Imagebar.
-
-On the Fancy Imagebar Configuration page you can set some other options too:
-
-*   Show Imagebar on Homepage, My Page or all pages
-*   Show random images (the sequence of the images in the Fancy Imagebar will change with every page refresh).
-*   Image tone: Sepia, Color or Black and White
-*   Amount of Sepia
-*   Height of the Fancy Imagebar
-*	Use square thumbs or proportional resized thumbs
+External images are not supported.
 
 Translations
 ------------
-You can help to translate this module. Updates to translations should be made at [the translation server][3]. Changes made there will be pushed to the git repository periodically and will be available on the development version of the module. They will be included in the next release of this module.
+You can help to translate this module. The language files are at [Gitlocalize][3] where you can update them. Send me a review request when you are ready. Or use a local editor, like poeditor or notepad++ to make the translations and send them back to me. You can do this via a pull request (if you know how) or by e-mail. Updated translations will be included in the next release of this module.
 
 Installation & upgrading
 ------------------------
-For more information about these subjects go to the [JustCarmen help pages][4].
+Unpack the zip file and place the folder jc-fancy-imagebar in the modules_v4 folder of webtrees. Upload the newly added folder to your server. It is activated by default. Go to the control panel to set some options.
 
 Bugs and feature requests
 -------------------------
-If you experience any bugs or have a feature request for this module you can [create a new issue on GitHub][5] or [use the webtrees subforum 'customising'][6] to contact me.
+If you experience any bugs or have a feature request for this module you can [create a new issue on GitHub][4].
 
  [1]: https://github.com/JustCarmen/fancy_imagebar/releases/latest
  [2]: https://webtrees.github.io/download/
- [3]: https://poeditor.com/join/project/Sx5p5SqzdQ
- [4]: http://www.justcarmen.nl/help-category/modules-help
- [5]: https://github.com/JustCarmen/fancy_imagebar/issues?state=open
- [6]: http://www.webtrees.net/index.php/en/forum/4-customising
+ [3]: https://gitlocalize.com/repo/5328
+ [4]: https://github.com/JustCarmen/fancy_imagebar/issues?state=open

@@ -8,7 +8,7 @@
     "filemanager-webpack-plugin": "^2.0.5",
     "laravel-mix": "^5.0.5",
     "laravel-mix-clean": "^0.1.0",
-    "webpack": "^4.44.1",
+    "webpack": "^4.44.2",
     "webpack-cli": "^3.3.12"
   }
 }

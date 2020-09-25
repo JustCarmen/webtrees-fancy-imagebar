@@ -515,7 +515,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      * @param type $media
      * @return object
      */
-    private function getLinkedObject(Media $media): object
+    private function getLinkedObject(Media $media)
     {
         $links = [];
         foreach ($media->linkedIndividuals('OBJE') as $linked) {

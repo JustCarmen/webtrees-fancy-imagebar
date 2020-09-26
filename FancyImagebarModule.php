@@ -313,6 +313,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         // pull the records from the database
         $records = $this->allMedia($tree, $folder, $subfolders, $media_type);
 
+        if (count($records) === 0) {
+            return '';
+        }
+
         // Get the thumbnail resources
         $resources = array();
         foreach ($records as $record) {

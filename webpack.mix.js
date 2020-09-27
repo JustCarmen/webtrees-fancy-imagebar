@@ -63,7 +63,7 @@ mix
           new FileManagerPlugin({
             onEnd: {
                 archive: [
-                    { source: './dist', destination: 'dist/fancy-imagebar-2.0.7.zip'}
+                    { source: './dist', destination: 'dist/fancy-imagebar-2.0.7.1.zip'}
                   ]
             }
           })

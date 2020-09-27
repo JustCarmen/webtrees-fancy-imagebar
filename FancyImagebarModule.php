@@ -274,7 +274,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         $request = app(ServerRequestInterface::class);
         $tree = $request->getAttribute('tree');
-        assert($tree instanceof Tree);
+
+        if ($tree === null) {
+            return '';
+        }
 
         // changed in wt-2.0.8-dev.
         if ($this->wt_version > 207) {

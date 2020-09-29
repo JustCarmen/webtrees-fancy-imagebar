@@ -418,6 +418,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             // prepare the map
             if ($linked !== '') {
                 $lifespan = $linked instanceof Individual ? ' (' . $linked->lifespan() . ')' : '';
+                $fullname = $linked->has('fullname') ? $linked->fullname() : '';
+                $url = $linked->has('url') ? $linked->url() : '';
                 $fancy_map[] = [
                     'coords' => [
                         'x1' => $x1,
@@ -425,8 +427,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                         'x2' => $x2,
                         'y2' => $canvas_height
                     ],
-                    'title' => strip_tags($linked->fullName() . $lifespan),
-                    'url'   => e($linked->url())
+                    'title' => strip_tags($fullname . $lifespan),
+                    'url'   => e($url)
                 ];
             }
         }
@@ -524,7 +526,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     private function getLinkedObject(Media $media)
     {
-        $links = [];
+        $links = new Collection;
         foreach ($media->linkedIndividuals('OBJE') as $linked) {
             $links[] = $linked;
         }
@@ -536,8 +538,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         }
 
         // return the first link found
-        if ($links !== []) {
-            return $links[0];
+        if (!$links->isEmpty()) {
+            return new Collection($links[0]);
         }
     }
 };

@@ -416,7 +416,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             imagecopy($fancy_imagebar_canvas, $image, $x1, 0, 0, 0, imagesx($image), (int) $canvas_height);
 
             // prepare the map
-            if ($linked !== '') {
+            if ($linked !== null) {
                 $lifespan = $linked instanceof Individual ? ' (' . $linked->lifespan() . ')' : '';
                 $fancy_map[] = [
                     'coords' => [
@@ -519,25 +519,15 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      * Which objects are linked to this file?
      * return the first linked object (indi, fam or source)
      *
-     * @param type $media
-     * @return object
+     * @param Media $media
+     * @return GedcomRecord|null
      */
-    private function getLinkedObject(Media $media)
+    private function getLinkedObject(Media $media): ?GedcomRecord
     {
-        $links = [];
-        foreach ($media->linkedIndividuals('OBJE') as $linked) {
-            $links[] = $linked;
-        }
-        foreach ($media->linkedFamilies('OBJE') as $linked) {
-            $links[] = $linked;
-        }
-        foreach ($media->linkedsources('OBJE') as $linked) {
-            $links[] = $linked;
-        }
-
         // return the first link found
-        if ($links !== []) {
-            return $links[0];
-        }
+        return
+            $media->linkedIndividuals('OBJE')->first() ??
+            $media->linkedFamilies('OBJE')->first() ??
+            $media->linkedsources('OBJE')->first();
     }
 };

@@ -401,6 +401,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         // create the FancyImagebar canvas to put the thumbs on
         $fancy_imagebar_canvas = imagecreatetruecolor((int) $canvas_width, (int) $canvas_height);
 
+        $fancy_map = [];
         $pos = 0;
         foreach ($source_images as $source) {
 

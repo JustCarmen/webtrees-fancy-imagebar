@@ -1,7 +1,8 @@
 <?php
 
-use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
 use Fisharebest\Webtrees\I18N;
+use Fisharebest\Webtrees\View;
+use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
 
 ?>
 
@@ -12,6 +13,27 @@ use Fisharebest\Webtrees\I18N;
 <?php // not converted parts of form commented out in php tags to test the other parts ?>
 <form method="post">
     <?= csrf_field() ?>
+    <input type="hidden" name="save" id="save" value="1">
+    <!-- TREE LIST -->
+    <div class="row form-group">
+        <label class="col-sm-3 col-form-label for=" tree"><?= I18N::translate('Family tree') ?></label>
+        <div class="col-sm-9">
+            <select class="form-control" id="tree" name="tree-id" type="text" required>
+                <option value=""><?= I18N::translate('&lt;select&gt;') ?></option>
+                <?php foreach ($all_trees as $tree) : ?>
+                    <?php if($tree->id() === (int)$tree_id) : ?>
+                    <option value="<?= $tree->id() ?>" selected="selected">
+                        <?= $tree->title() ?>
+                    </option>
+                    <?php else : ?>
+                    <option value="<?= $tree->id() ?>">
+                        <?= $tree->title() ?>
+                    </option>
+                    <?php endif; ?>
+                <?php endforeach ?>
+            </select>
+        </div>
+    </div>
     <!-- MEDIA FOLDER LIST -->
     <div class="row form-group">
         <label class="col-sm-3 col-form-label" for="media-folder">
@@ -59,3 +81,13 @@ use Fisharebest\Webtrees\I18N;
         <?= I18N::translate('save') ?>
     </button>
 </form>
+
+<?php View::push('javascript') ?>
+<script>
+    $('#tree').on('change', function() {
+        $('#save').val('0');
+        $('form').submit();
+        return false;
+    });
+</script>
+<?php View::endpush() ?>

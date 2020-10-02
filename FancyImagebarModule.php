@@ -19,6 +19,7 @@ use Fisharebest\Localization\Translation;
 use Illuminate\Database\Query\JoinClause;
 use League\Flysystem\FilesystemInterface;
 use Psr\Http\Message\ServerRequestInterface;
+use Fisharebest\Webtrees\Services\TreeService;
 use Illuminate\Database\Capsule\Manager as DB;
 use Fisharebest\Webtrees\Module\AbstractModule;
 use Fisharebest\Webtrees\Module\ModuleConfigTrait;
@@ -38,6 +39,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /** @var MediaFileService */
     private $media_file_service;
 
+    /** @var TreeService */
+    private $tree_service;
+
     /** @var Webtrees::VERSION */
     private $wt_version;
 
@@ -45,10 +49,12 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      * FancyImagebar constructor.
      *
      * @param MediaFileService  $media_file_service
+     * @param TreeService       $tree_service
      */
-    public function __construct(MediaFileService $media_file_service)
+    public function __construct(MediaFileService $media_file_service, TreeService $tree_service)
     {
         $this->media_file_service = $media_file_service;
+        $this->tree_service       = $tree_service;
     }
 
     /**
@@ -160,15 +166,19 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $media_folders = $this->media_file_service->allMediaFolders($data_filesystem);
         $media_types = $this->media_file_service->mediaTypes();
 
+        $tree_id = $this->getPreference('last-tree-id');
+
         return $this->viewResponse($this->name() . '::settings', [
-            'title'            => $this->title(),
+            'all_trees'        => $this->tree_service->all(),
+            'canvas_height'    => $this->getPreference($tree_id . '-canvas-height', '80'),
+            'media_folder'     => $this->getPreference($tree_id . '-media-folder'),
             'media_folders'    => $media_folders,
+            'media_type'       => $this->getPreference($tree_id . '-media-type'),
             'media_types'      => $media_types,
-            'media_folder'     => $this->getPreference('media-folder'),
-            'subfolders'       => $this->getPreference('subfolders'),
-            'media_type'       => $this->getPreference('media-type'),
-            'canvas_height'    => $this->getPreference('canvas-height', '80'),
-            'square_thumbs'    => $this->getPreference('square-thumbs')
+            'square_thumbs'    => $this->getPreference($tree_id . '-square-thumbs'),
+            'subfolders'       => $this->getPreference($tree_id . '-subfolders'),
+            'title'            => $this->title(),
+            'tree_id'          => $tree_id
         ]);
     }
 
@@ -184,14 +194,19 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $params = (array) $request->getParsedBody();
 
         // store the preferences in the database
-        $this->setPreference('media-folder', $params['media-folder']);
-        $this->setPreference('subfolders', $params['subfolders'] ?? '0');
-        $this->setPreference('media-type',  $params['media-type']);
-        $this->setPreference('canvas-height',  $params['canvas-height']);
-        $this->setPreference('square-thumbs',  $params['square-thumbs']);
+        $tree_id = $params['tree-id'];
+        $this->setPreference('last-tree-id', $tree_id);
 
-        $message = I18N::translate('The preferences for the module “%s” have been updated.', $this->title());
-        FlashMessages::addMessage($message, 'success');
+        if ($params['save'] === '1') {
+            $this->setPreference($tree_id . '-media-folder', $params['media-folder']);
+            $this->setPreference($tree_id . '-subfolders', $params['subfolders'] ?? '0');
+            $this->setPreference($tree_id . '-media-type',  $params['media-type']);
+            $this->setPreference($tree_id . '-canvas-height',  $params['canvas-height']);
+            $this->setPreference($tree_id . '-square-thumbs',  $params['square-thumbs']);
+
+            $message = I18N::translate('The preferences for the module “%s” have been updated.', $this->title());
+            FlashMessages::addMessage($message, 'success');
+        }
 
         return redirect($this->getConfigLink());
     }
@@ -222,7 +237,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function headContent(): string
     {
-        $canvas_height = $this->getPreference('canvas-height', '80');
+        $request    = app(ServerRequestInterface::class);
+        $tree       = $request->getAttribute('tree');
+
+        $canvas_height = $this->getPreference($tree->id() . '-canvas-height', '80');
         $canvas_height_md = 0.85 * $canvas_height;
         $canvas_height_sm = 0.75 * $canvas_height;
 
@@ -294,21 +312,21 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $wt_media_folder = $tree->getPreference('MEDIA_DIRECTORY', 'media/');
 
         // Set default values in case the settings are not stored in the database yet
-        $canvas_height   = $this->getPreference('canvas-height', '80');
-        $subfolders      = $this->getPreference('subfolders', '1');
-        $media_type      = $this->getPreference('media-type', '');
-        $square_thumbs   = $this->getPreference('square-thumbs', '0');
+        $canvas_height   = $this->getPreference($tree->id() . '-canvas-height', '80');
+        $subfolders      = $this->getPreference($tree->id() . '-subfolders', '1');
+        $media_type      = $this->getPreference($tree->id() . '-media-type', '');
+        $square_thumbs   = $this->getPreference($tree->id() . '-square-thumbs', '0');
 
         // how much thumbnails do we need at most to fill up the canvas.
         // If square is chosen as an option then we don't know the width of the thumbnails.
         // Play safe and use 0.5 * thumb height as thumb width. This means we assume an thumbnail with a height of 80px is 40px width.
         // Most thumbnails will be larger than that. 2400 is the maximum screensize we will take into account.
         $canvas_width  = 2400;
-        $canvas_height = $this->getPreference('canvas-height', '80');
+        $canvas_height = $this->getPreference($tree->id() . '-canvas-height', '80');
         $num_thumbs    = (int)ceil($canvas_width / ($canvas_height * 0.5));
 
         // strip out the default media directory from the folder path. It is not stored in the database
-        $folder = str_replace($wt_media_folder, "", $this->getPreference('media-folder'));
+        $folder = str_replace($wt_media_folder, "", $this->getPreference($tree->id() . '-media-folder'));
 
         // include or exclude subfolders
         $subfolders = $subfolders === '1' ? 'include' : 'exclude';

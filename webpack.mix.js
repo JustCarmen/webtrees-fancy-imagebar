@@ -14,7 +14,7 @@
  *
  */
 
- /**
+/**
  * Laravel mix entry point
  *
  * Load the appropriate section
@@ -42,13 +42,15 @@ const dist_dir = 'dist/jc-fancy-imagebar';
 //https://github.com/gregnb/filemanager-webpack-plugin
 const FileManagerPlugin = require('filemanager-webpack-plugin');
 
-mix
+if (process.env.NODE_ENV === 'production') {
+
+  mix
     .setPublicPath('./dist')
     .options({
       processCssUrls: false,
       postCss: [
-          postcss_rtl,
-          postcss_autoprefixer,
+        postcss_rtl,
+        postcss_autoprefixer,
       ]
     })
     .postCss("resources/css/style.css", dist_dir + '/resources/css/style.css')
@@ -59,14 +61,27 @@ mix
     .copy('LICENSE.md', dist_dir)
     .copy('README.md', dist_dir)
     .webpackConfig({
-        plugins: [
-          new FileManagerPlugin({
-            onEnd: {
-                archive: [
-                    { source: './dist', destination: 'dist/fancy-imagebar-2.0.7.1.zip'}
-                  ]
-            }
-          })
-        ]
+      plugins: [
+        new FileManagerPlugin({
+          onEnd: {
+            archive: [{
+              source: './dist',
+              destination: 'dist/fancy-imagebar-2.0.7.1.zip'
+            }]
+          }
+        })
+      ]
     })
     .clean();
+} else {
+  mix
+    .setPublicPath('./')
+    .sass('src/sass/style.scss', 'resources/css/style.css')
+    .options({
+      processCssUrls: false,
+      postCss: [
+        postcss_rtl,
+        postcss_autoprefixer
+      ]
+    });
+}

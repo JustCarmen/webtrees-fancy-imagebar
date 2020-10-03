@@ -20,75 +20,93 @@
  * You should have received a copy of the GNU General Public License
  * along with JustCarmen webtrees modules. If not, see <http://www.gnu.org/licenses/>.
  */
-
- .jc-fancy-imagebar {
-     overflow: hidden;
- }
-
+.jc-fancy-imagebar {
+  overflow: hidden;
+}
 .jc-fancy-imagebar img {
-    object-fit: cover;
-    object-position: left;
+  -o-object-fit: cover;
+     object-fit: cover;
+  -o-object-position: left;
+     object-position: left;
 }
-
 .jc-fancy-imagebar-map area {
-    outline: none;
+  outline: none;
 }
 
-.wt-theme-clouds .jc-fancy-imagebar {
-    border: 1px solid #003399;
+/** webtrees themes */
+[dir] .wt-theme-clouds .jc-fancy-imagebar {
+  border: 1px solid #003399;
 }
 
 .wt-theme-colors .jc-fancy-imagebar-divider {
-    background-color: #999;
-    height: 1px;
-    margin-top: 1px
+  height: 1px;
 }
 
-.wt-theme-fab .jc-fancy-imagebar {
-    border: #A9A9A9 1px solid;
-    border-bottom-right-radius: 3px;
-    border-bottom-left-radius: 3px;
-	margin-left: auto;
-    margin-right:auto;
+[dir] .wt-theme-colors .jc-fancy-imagebar-divider {
+  background-color: #999;
+  margin-top: 1px;
 }
 
+[dir] .wt-theme-fab .jc-fancy-imagebar {
+  border: #A9A9A9 1px solid;
+}
+
+[dir=ltr] .wt-theme-fab .jc-fancy-imagebar {
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+[dir=rtl] .wt-theme-fab .jc-fancy-imagebar {
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
+  margin-right: auto;
+  margin-left: auto;
+}
 @media (min-width: 992px) {
-    .wt-theme-fab .jc-fancy-imagebar {
-        max-width: 960px;
-    }
+  .wt-theme-fab .jc-fancy-imagebar {
+    max-width: 960px;
+  }
 }
-
 @media (min-width: 1200px) {
-    .wt-theme-fab .jc-fancy-imagebar {
-        max-width: 1140px;
-    }
+  .wt-theme-fab .jc-fancy-imagebar {
+    max-width: 1140px;
+  }
 }
 
 .wt-theme-minimal .jc-fancy-imagebar-divider {
-    background-color: #555;
-    height: 1px
+  height: 1px;
 }
 
-.wt-theme-webtrees .jc-fancy-imagebar {
-    margin-top: 3px;
+[dir] .wt-theme-minimal .jc-fancy-imagebar-divider {
+  background-color: #555;
+}
+
+[dir] .wt-theme-webtrees .jc-fancy-imagebar {
+  margin-top: 3px;
 }
 .wt-theme-webtrees .jc-fancy-imagebar-divider {
-    background-color: #81A9CB;
-    height: 1px;
-    margin-top: 3px
+  height: 1px;
+}
+[dir] .wt-theme-webtrees .jc-fancy-imagebar-divider {
+  background-color: #81A9CB;
+  margin-top: 3px;
 }
 
-.wt-theme-xenea .jc-fancy-imagebar {
-    margin-top: 5px
+[dir] .wt-theme-xenea .jc-fancy-imagebar {
+  margin-top: 5px;
 }
-
 .wt-theme-xenea .jc-fancy-imagebar-divider {
-    background-color: #0073CF;
-    height: 2px;
-    margin: 5px
+  height: 2px;
 }
-.jc-theme-justlight .jc-fancy-imagebar {
-    border-top: 5px solid #428bca;
-	border-bottom: 5px solid #428bca
+[dir] .wt-theme-xenea .jc-fancy-imagebar-divider {
+  background-color: #0073CF;
+  margin: 5px;
 }
 
+/** Custom themes */
+[dir] .jc-theme-justlight .jc-fancy-imagebar {
+  border-top: 5px solid #428bca;
+  border-bottom: 5px solid #428bca;
+}

@@ -1,18 +1,11 @@
 .wt-theme-fab {
 
     .jc-fancy-imagebar {
-        border: #A9A9A9 1px solid;
-        border-bottom-right-radius: 3px;
-        border-bottom-left-radius: 3px;
-        margin-left: auto;
-        margin-right:auto;
 
-        @media (min-width: 992px) {
-            max-width: 960px;
-        }
+        border: 5px solid #EEE;
+        border-bottom-right-radius: .25rem;
+        border-bottom-left-radius: .25rem;
 
-        @media (min-width: 1200px) {
-            max-width: 1140px;
-        }
+        @include jc-container-lg;
     }
 }

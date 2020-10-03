@@ -21,6 +21,21 @@
  * along with JustCarmen webtrees modules. If not, see <http://www.gnu.org/licenses/>.
  */
 
+ @mixin jc-container-lg {
+    margin-left: auto;
+    margin-right:auto;
+
+    @media (min-width: 992px) {
+        max-width: 960px;
+    }
+
+    @media (min-width: 1200px) {
+        max-width: 1140px;
+    }
+
+    width: 100%;
+ }
+
  .jc-fancy-imagebar {
 
     overflow: hidden;

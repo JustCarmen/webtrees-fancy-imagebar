@@ -47,20 +47,24 @@
   margin-top: 1px;
 }
 
+.wt-theme-fab .jc-fancy-imagebar {
+  width: 100%;
+}
+
 [dir] .wt-theme-fab .jc-fancy-imagebar {
-  border: #A9A9A9 1px solid;
+  border: 5px solid #EEE;
 }
 
 [dir=ltr] .wt-theme-fab .jc-fancy-imagebar {
-  border-bottom-right-radius: 3px;
-  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 0.25rem;
+  border-bottom-left-radius: 0.25rem;
   margin-left: auto;
   margin-right: auto;
 }
 
 [dir=rtl] .wt-theme-fab .jc-fancy-imagebar {
-  border-bottom-left-radius: 3px;
-  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 0.25rem;
+  border-bottom-right-radius: 0.25rem;
   margin-right: auto;
   margin-left: auto;
 }

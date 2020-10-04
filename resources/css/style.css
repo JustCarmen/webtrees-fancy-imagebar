@@ -114,3 +114,45 @@
   border-top: 5px solid #428bca;
   border-bottom: 5px solid #428bca;
 }
+
+.wt-theme-_webtrees-theme-rural_ .jc-fancy-imagebar {
+  width: 100%;
+  max-width: 95vw;
+}
+
+[dir=ltr] .wt-theme-_webtrees-theme-rural_ .jc-fancy-imagebar {
+  margin-left: auto;
+  margin-right: auto;
+  border-left: 15px solid white;
+  border-right: 15px solid white;
+}
+
+[dir=rtl] .wt-theme-_webtrees-theme-rural_ .jc-fancy-imagebar {
+  margin-right: auto;
+  margin-left: auto;
+  border-right: 15px solid white;
+  border-left: 15px solid white;
+}
+@media (min-width: 992px) {
+  .wt-theme-_webtrees-theme-rural_ .jc-fancy-imagebar {
+    max-width: 960px;
+  }
+}
+@media (min-width: 1200px) {
+  .wt-theme-_webtrees-theme-rural_ .jc-fancy-imagebar {
+    max-width: 1140px;
+  }
+}
+@media (min-width: 768px) {
+  .wt-theme-_webtrees-theme-rural_ .jc-fancy-imagebar {
+    max-width: 85vw;
+  }
+}
+[dir=ltr] .wt-theme-_webtrees-theme-rural_ .container-lg {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+}
+[dir=rtl] .wt-theme-_webtrees-theme-rural_ .container-lg {
+  padding-right: 15px !important;
+  padding-left: 15px !important;
+}

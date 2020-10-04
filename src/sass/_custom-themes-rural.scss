@@ -1,0 +1,21 @@
+.wt-theme-_webtrees-theme-rural_ {
+
+    .jc-fancy-imagebar {
+
+        @include jc-container-lg;
+
+        max-width: 95vw;
+        @media (min-width: 768px) {
+            max-width: 85vw;
+        }
+
+        border-left: 15px solid white;
+        border-right: 15px solid white;
+    }
+
+    // correction for Rural theme
+    .container-lg {
+        padding-left: 15px !important;
+        padding-right: 15px !important;
+    }
+}

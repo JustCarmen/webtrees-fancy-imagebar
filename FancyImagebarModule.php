@@ -8,7 +8,7 @@ use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
 use Fisharebest\Webtrees\Media;
-use Fisharebest\Webtrees\Factory;
+use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Webtrees;
 use Illuminate\Support\Collection;
 use Fisharebest\Webtrees\Individual;
@@ -99,7 +99,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function customModuleVersion(): string
     {
-        return '2.0.7.3-dev';
+        return '2.0.9';
     }
 
     /**
@@ -131,9 +131,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         // Register a namespace for our views.
         View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
-
-        // What webtrees version are we on?
-        $this->wt_version = (int)str_replace(['_dev', '.'], '', Webtrees::VERSION);
     }
 
     /**
@@ -155,13 +152,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         $this->layout = 'layouts/administration';
 
-        // changed as of wt-2.0.8-dev.
-        if ($this->wt_version > 207) {
-            $data_filesystem = Factory::filesystem()->data();
-        } else {
-            $data_filesystem = $request->getAttribute('filesystem.data');
-            assert($data_filesystem instanceof FilesystemInterface);
-        }
+        $data_filesystem = Registry::filesystem()->data();
 
         $media_folders = $this->media_file_service->allMediaFolders($data_filesystem);
         $media_types = $this->media_file_service->mediaTypes();
@@ -297,17 +288,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             return '';
         }
 
-        // changed in wt-2.0.8-dev.
-        if ($this->wt_version > 207) {
-            $data_filesystem = Factory::filesystem()->data();
-            $data_folder = Factory::filesystem()->dataName();
-        } else {
-            $data_filesystem = $request->getAttribute('filesystem.data');
-            assert($data_filesystem instanceof FilesystemInterface);
-
-            $data_folder = $request->getAttribute('filesystem.data.name');
-            assert(is_string($data_folder));
-        }
+        $data_filesystem = Registry::filesystem()->data();
+        $data_folder = Registry::filesystem()->dataName();
 
         $wt_media_folder = $tree->getPreference('MEDIA_DIRECTORY', 'media/');
 
@@ -400,7 +382,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         return $query
             ->inRandomOrder()->get()
-            ->map(Factory::media()->mapper($tree))
+            ->map(Registry::mediaFactory()->mapper($tree))
             ->uniqueStrict()
             ->filter(GedcomRecord::accessFilter());
     }

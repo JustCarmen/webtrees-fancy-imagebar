@@ -66,7 +66,7 @@ if (process.env.NODE_ENV === 'production') {
           onEnd: {
             archive: [{
               source: './dist',
-              destination: 'dist/fancy-imagebar-2.0.7.2.zip'
+              destination: 'dist/fancy-imagebar-2.0.9.zip'
             }]
           }
         })

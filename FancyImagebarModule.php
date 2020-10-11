@@ -231,6 +231,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $request    = app(ServerRequestInterface::class);
         $tree       = $request->getAttribute('tree');
 
+        if ($tree === null) {
+            return '';
+        }
+
         $canvas_height = $this->getPreference($tree->id() . '-canvas-height', '80');
         $canvas_height_md = 0.85 * $canvas_height;
         $canvas_height_sm = 0.75 * $canvas_height;

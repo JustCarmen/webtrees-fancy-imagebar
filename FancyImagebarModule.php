@@ -329,7 +329,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         foreach ($records as $record) {
             if (count($resources) < $num_thumbs) {
                 foreach ($record->mediaFiles() as $media_file) {
-                    if ($media_file->isImage() && $media_file->fileExists($data_filesystem)) {
+                    if (in_array($media_file->mimeType(), ['image/jpeg', 'image/png'], true) && $media_file->fileExists($data_filesystem)) {
                         $file        = $data_folder . $wt_media_folder . $media_file->filename();
 
                         $resources[] = [

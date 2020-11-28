@@ -27,6 +27,7 @@ use Fisharebest\Webtrees\Services\MediaFileService;
 use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleGlobalInterface;
+use Throwable;
 
 class FancyImagebarModule extends AbstractModule implements ModuleCustomInterface, ModuleConfigInterface, ModuleGlobalInterface
 {
@@ -329,11 +330,14 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                 foreach ($record->mediaFiles() as $media_file) {
                     if (in_array($media_file->mimeType(), ['image/jpeg', 'image/png'], true) && $media_file->fileExists($data_filesystem)) {
                         $file        = $data_folder . $wt_media_folder . $media_file->filename();
+                        $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
 
-                        $resources[] = [
-                            'image'     => $this->fancyThumb($file, $canvas_height, $square_thumbs),
-                            'linked'    => $this->getLinkedObject($record)
-                        ];
+                        if (!is_null($fancy_thumb)) {
+                            $resources[] = [
+                                'image'     => $fancy_thumb,
+                                'linked'    => $this->getLinkedObject($record)
+                            ];
+                        }
                     }
                 }
             }
@@ -479,10 +483,18 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     private function fancyThumb($file, $canvas_height, $square_thumbs)
     {
-        $source_image = $this->loadImage($file);
-        list($source_width, $source_height) = getimagesize($file);
+        // error handling to prevent bad images from loading
+        try {
 
-        $source_ratio = $source_width / $source_height;
+            $source_image = $this->loadImage($file);
+            list($source_width, $source_height) = getimagesize($file);
+            $source_ratio = $source_width / $source_height;
+
+        } catch (Throwable $exception) {
+
+            return null;
+
+        }
 
         $source_x = 0;
         $source_y = 0;

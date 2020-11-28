@@ -130,6 +130,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         // Register a namespace for our views.
         View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
+
+         // Add the javascript used by this module in a separate view
+         View($this->name() . '::script');
     }
 
     /**
@@ -445,7 +448,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         return view($this->name() . '::fancy-imagebar', [
             'fancy_imagebar' => $fancy_imagebar,
-            'fancy_map'      => $fancy_map
+            'fancy_map'      => $fancy_map,
+            'canvas_height'  => $canvas_height
         ]);
     }
 

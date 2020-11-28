@@ -1,0 +1,35 @@
+<?php
+
+// script to keep map coords and images in sync
+
+use Fisharebest\Webtrees\View;
+
+?>
+
+<?php View::push('javascript') ?>
+<script>
+    mapcoords();
+    $(window).resize(function() {
+        mapcoords();
+    });
+
+    function mapcoords() {
+        var height = $('.jc-fancy-imagebar').height(); // current height of the imagebar
+        var setting = $('.jc-fancy-imagebar').attr('data-height'); // original height (from the settings in control panel)
+        var ratio = height / setting
+        $('area').each(function() {
+            // save the original coords
+            if (!$(this).attr('data-coords')) {
+                $(this).attr('data-coords', $(this).attr('coords'));
+            }
+            var coords = $(this).attr('data-coords').split(', ');
+            var new_coords = [];
+            new_coords[0] = parseInt(coords[0]) * ratio;
+            new_coords[1] = parseInt(coords[1]);
+            new_coords[2] = parseInt(coords[2]) * ratio;
+            new_coords[3] = parseInt(coords[3]);
+            $(this).attr("coords", new_coords.join(', '));
+        });
+    }
+</script>
+<?php View::endpush() ?>

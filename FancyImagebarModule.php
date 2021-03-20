@@ -351,7 +351,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             // see: https://stackoverflow.com/questions/2963777/how-to-repeat-an-array-in-php
             // works in php 5.6+
             $resources = array_merge(...array_fill(0, $num_thumbs - count($resources), $resources));
-            shuffle($resources);
         }
 
         return $this->createFancyImagebar($resources, $canvas_width, $canvas_height);

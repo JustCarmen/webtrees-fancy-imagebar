@@ -517,13 +517,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                 $source_width = $source_height;
             }
         } else {
-            if ($source_ratio < 1) {
-                $thumb_width  = $canvas_height;
-                $thumb_height = $canvas_height / $source_ratio;
-            } else {
-                $thumb_width  = $canvas_height * $source_ratio;
-                $thumb_height = $canvas_height;
-            }
+            $thumb_width  = $canvas_height * $source_ratio;
+            $thumb_height = $canvas_height;
         }
 
         $thumb = ImageCreateTrueColor((int)$thumb_width, (int)$thumb_height);

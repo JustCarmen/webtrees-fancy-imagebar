@@ -308,8 +308,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         // how much thumbnails do we need at most to fill up the canvas.
         // If square is chosen as an option then we don't know the width of the thumbnails.
         // Play safe and use 0.5 * thumb height as thumb width. This means we assume an thumbnail with a height of 80px is 40px width.
-        // Most thumbnails will be larger than that. 2400 is the maximum screensize we will take into account.
-        $canvas_width  = 2400;
+        // Most thumbnails will be larger than that. 3840 is the maximum screensize we will take into account.
+        $canvas_width  = 3840; // Add support for 4K displays
         $canvas_height = $this->getPreference($tree->id() . '-canvas-height', '80');
         $num_thumbs    = (int)ceil($canvas_width / ($canvas_height * 0.5));
 

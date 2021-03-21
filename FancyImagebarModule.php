@@ -15,6 +15,7 @@ use Fisharebest\Webtrees\GedcomRecord;
 use Fisharebest\Webtrees\FlashMessages;
 use Psr\Http\Message\ResponseInterface;
 use Fisharebest\Localization\Translation;
+use Fisharebest\Webtrees\Http\RequestHandlers\TreePage;
 use Illuminate\Database\Query\JoinClause;
 use Psr\Http\Message\ServerRequestInterface;
 use Fisharebest\Webtrees\Services\TreeService;
@@ -164,6 +165,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         return $this->viewResponse($this->name() . '::settings', [
             'all_trees'        => $this->tree_service->all(),
             'canvas_height'    => $this->getPreference($tree_id . '-canvas-height', '80'),
+            'homepage_only'    => $this->getPreference($tree_id . '-homepage-only'),
             'media_folder'     => $this->getPreference($tree_id . '-media-folder'),
             'media_folders'    => $media_folders,
             'media_type'       => $this->getPreference($tree_id . '-media-type'),
@@ -196,6 +198,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             $this->setPreference($tree_id . '-media-type',  $params['media-type']);
             $this->setPreference($tree_id . '-canvas-height',  $params['canvas-height']);
             $this->setPreference($tree_id . '-square-thumbs',  $params['square-thumbs']);
+            $this->setPreference($tree_id . '-homepage-only',  $params['homepage-only']);
 
             $message = I18N::translate('The preferences for the module “%s” have been updated.', $this->title());
             FlashMessages::addMessage($message, 'success');
@@ -288,10 +291,16 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     public function fancyImagebar(): string
     {
         $request = app(ServerRequestInterface::class);
-        $tree = $request->getAttribute('tree');
 
+        $tree = $request->getAttribute('tree');
         if ($tree === null) {
             return '';
+        }
+
+        $route = $request->getAttribute('route');
+        $homepage_only = $this->getPreference($tree->id() . '-homepage-only', '0');
+        if ($homepage_only === '1' && $route->name !== TreePage::class) {
+           return '';
         }
 
         $data_filesystem = Registry::filesystem()->data();

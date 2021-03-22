@@ -19,7 +19,7 @@ A cool new feature is that the images in the imagebar are clickable now. By clic
 
 Translations
 ------------
-You can help to translate this module. The language files are at [Gitlocalize][3] where you can update them. Send me a review request when you are ready. Or use a local editor, like poeditor or notepad++ to make the translations and send them back to me. You can do this via a pull request (if you know how) or by e-mail. Updated translations will be included in the next release of this module.
+You can help to translate this module. The language files are at [POEditor][3] where you can update them. Or use a local editor, like poeditor or notepad++ to make the translations and send them back to me. You can do this via a pull request (if you know how) or by e-mail. Updated translations will be included in the next release of this module.
 
 Installation & upgrading
 ------------------------
@@ -31,5 +31,5 @@ If you experience any bugs or have a feature request for this module you can [cr
 
  [1]: https://github.com/JustCarmen/fancy_imagebar/releases/latest
  [2]: https://webtrees.github.io/download/
- [3]: https://gitlocalize.com/repo/5328
+ [3]: https://poeditor.com/join/project?hash=kH2euLO811
  [4]: https://github.com/JustCarmen/fancy_imagebar/issues?state=open

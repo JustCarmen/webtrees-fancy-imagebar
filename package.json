@@ -12,7 +12,7 @@
     "filemanager-webpack-plugin": "^4.0.0",
     "laravel-mix": "^6.0.13",
     "laravel-mix-clean": "^0.1.0",
-    "postcss": "^8.1.14",
+    "postcss": "^8.2.10",
     "webpack": "^5.27.1",
     "webpack-cli": "^4.5.0"
   }

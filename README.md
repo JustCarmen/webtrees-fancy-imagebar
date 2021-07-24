@@ -29,7 +29,7 @@ Bugs and feature requests
 -------------------------
 If you experience any bugs or have a feature request for this module you can [create a new issue on GitHub][4].
 
- [1]: https://github.com/JustCarmen/fancy_imagebar/releases/latest
+ [1]: https://github.com/JustCarmen/webtrees-fancy-imagebar/releases/latest
  [2]: https://webtrees.github.io/download/
  [3]: https://poeditor.com/join/project?hash=kH2euLO811
- [4]: https://github.com/JustCarmen/fancy_imagebar/issues?state=open
+ [4]: https://github.com/JustCarmen/webtrees-fancy-imagebar/issues?state=open

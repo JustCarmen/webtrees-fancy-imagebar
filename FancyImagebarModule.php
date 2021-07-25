@@ -362,8 +362,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      * Generate a list of all the media objects matching the criteria in a current tree.
      * Source: app\Module\MediaListModule.php
      *
-     * SELECT * FROM `wt_media_file` WHERE `m_file`=8 AND `multimedia_format`='jpg' and `source_media_type`='photo'
-     *
      * @param Tree   $tree       find media in this tree
      * @param string $format     'jpg'
      * @param string $type       source media type = 'photo'

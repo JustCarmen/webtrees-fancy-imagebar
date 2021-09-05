@@ -277,6 +277,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
     /**
      * Generate the html for the Fancy imagebar
+     *
+     * @return string
      */
     public function fancyImagebar(): string
     {
@@ -359,9 +361,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      * Generate a list of all the media objects matching the criteria in a current tree.
      * Source: app\Module\MediaListModule.php
      *
-     * @param Tree   $tree       find media in this tree
-     * @param string $format     'jpg'
-     * @param string $type       source media type = 'photo'
+     * @param Tree   $tree
+     * @param string $folder
+     * @param string $subfolders
+     * @param string $type
      *
      * @return Collection<Media>
      */
@@ -395,13 +398,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /**
      * Create the Fancy Imagebar + html output
      *
-     * @param type $source_images
-     * @param type $canvas_width
-     * @param type $canvas_height
+     * @param array $source_images
+     * @param string $canvas_width
+     * @param string $canvas_height
      *
-     * return image resource
+     * @return string
      */
-    private function createFancyImagebar($source_images, $canvas_width, $canvas_height)
+    private function createFancyImagebar($source_images, $canvas_width, $canvas_height): string
     {
         // create the FancyImagebar canvas to put the thumbs on
         $fancy_imagebar_canvas = imagecreatetruecolor((int) $canvas_width, (int) $canvas_height);
@@ -453,8 +456,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      * load image from file
      * return false if image could not be loaded
      *
-     * @param type $file
-     * @return boolean
+     * @param string $file
      */
     private function loadImage($file)
     {
@@ -476,8 +478,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /**
      * Create a thumbnail
      *
-     * @param type $mediaobject
-     * @return thumbnail
+     * @param string $file
+     * @param string $canvas_height
+     * @param string $canvas_width
      *
      * https://www.jveweb.net/en/archives/2010/09/how-to-create-cropped-and-scaled-thumbnails-in-php.html
      */

@@ -42,9 +42,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /** @var TreeService */
     private $tree_service;
 
-    /** @var Webtrees::VERSION */
-    private $wt_version;
-
     /**
      * FancyImagebar constructor.
      *

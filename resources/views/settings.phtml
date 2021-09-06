@@ -2,6 +2,7 @@
 
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\View;
+use Fisharebest\Webtrees\Services\ModuleService;
 use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
 
 ?>
@@ -42,7 +43,7 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
             <div class="col-sm-9">
                 <?= view('components/select', ['name' => 'media-folder', 'selected' => $media_folder, 'options' => $media_folders]) ?>
                 <div class="mx-1 mt-2">
-                    <?= view('components/checkbox-inline', ['label' => /* I18N: Label for check-box */ I18N::translate('Include subfolders'), 'name' => 'subfolders', 'checked' => (int)$subfolders]) ?>
+                    <?= view('components/checkbox-inline', ['id' => 'subfolders', 'label' => /* I18N: Label for check-box */ I18N::translate('Include subfolders'), 'name' => 'subfolders', 'checked' => (int)$subfolders]) ?>
                 </div>
             </div>
         </div>
@@ -87,6 +88,12 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
                 </div>
             </div>
         </fieldset>
+        <!-- IMAGE TABLE -->
+        <hr/>
+        <?php $module = app(ModuleService::class)->findByName('_jc-fancy-imagebar_'); ?>
+        <?= view($module->name() . '::media-table', ['media_objects' => $media_objects, 'media_list' => $media_list, 'tree' => $tree]) ?>
+        <!-- SAVE BUTTON -->
+        <hr/>
         <button type="submit" class="btn btn-primary">
             <?= view('icons/save') ?>
             <?= I18N::translate('save') ?>
@@ -96,7 +103,7 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
 
 <?php View::push('javascript') ?>
 <script>
-    $('#tree').on('change', function() {
+    $('#tree, #media-folder, #subfolders, #media-type').on('change', function() {
         $('#save').val('0');
         $('form').submit();
         return false;

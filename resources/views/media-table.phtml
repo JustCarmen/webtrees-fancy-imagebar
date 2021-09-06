@@ -1,0 +1,111 @@
+<?php
+
+use Fisharebest\Webtrees\I18N;
+use Fisharebest\Webtrees\Tree;
+use Fisharebest\Webtrees\View;
+use Fisharebest\Webtrees\Media;
+use Illuminate\Support\Collection;
+
+/**
+ * @var Collection<Media> $media_objects
+ * @var Tree              $tree
+ */
+
+ // Get list of media xrefs (for select all checkbox)
+ foreach ($media_objects as $media_object) {
+     $arr_media_xrefs[] = $media_object->xref();
+ }
+ $media_xrefs = implode(",", $arr_media_xrefs);
+
+?>
+
+<input id="media-list" type="hidden" name="media-list" value = "<?= $media_list ?>">
+<!-- SELECT ALL -->
+<div class="col">
+    <?= view('components/checkbox', ['label' => I18N::translate('Select/unselect all'), 'name' => 'select-all']) ?>
+    <p class="small text-muted"><?= I18N::translate('Toggle this checkbox to select all images.') ?></p>
+</div>
+<table id="fancy-imagebar-media-table"
+    class="table table-bordered table-sm wt-table-media datatables d-none"
+    <?= view('lists/datatables-attributes') ?>
+    data-columns="<?= e(json_encode([
+        null
+    ])) ?>"
+>
+    <caption class="sr-only">
+        <?= $caption ?? I18N::translate('Media objects') ?>
+    </caption>
+
+    <thead>
+        <tr>
+            <th><?= I18N::translate('Media') ?></th>
+        </tr>
+    </thead>
+
+    <tbody>
+        <?php foreach ($media_objects as $media_object) : ?>
+            <tr class="d-block float-left">
+                <!-- Thumbnails-->
+                <td data-sort="<?= e($media_object->sortName()) ?>">
+                    <?php foreach ($media_object->mediaFiles() as $media_file) : ?>
+                        <?php
+                            $arr_media_list = explode(',', $media_list);
+                            if (count($arr_media_list) > 0) {
+                                $checked = in_array($media_object->xref(), $arr_media_list) ? 'checked' : '';
+                            } else {
+                                $checked = 'checked';
+                            }
+                        ?>
+                        <?= $media_file->displayImage(100, 100, 'crop', ['data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => strip_tags($media_object->fullName())]) ?>
+                        <div class="text-center"><?= view('components/checkbox-inline', ['label' => '', 'name' => 'media-checkbox', 'value' => $media_object->xref() , 'checked' => $checked]) ?></div>
+                    <?php endforeach ?>
+                </td>
+            </tr>
+        <?php endforeach ?>
+    </tbody>
+</table>
+
+<?php View::push('javascript') ?>
+<script>
+    $("#fancy-imagebar-media-table").on('draw.dt', function() {
+        if ($("#media-list").val()) {
+            var images = $("#media-list").val().split(",");
+            $("input[type=checkbox]", this).each(function(){
+                if($.inArray($(this).val(), images) > -1){
+                    $(this).prop("checked", true);
+                } else {
+                    $(this).prop("checked", false);
+                }
+            });
+        } else {
+            $('input[type="checkbox"]').prop('checked', false);
+        }
+    });
+
+    $('#fancy-imagebar-media-table').on("change", "input[type=checkbox]",function() {
+        var images = $("#media-list").val().split(",")
+        if(this.checked){
+            images.push($(this).val());
+        } else {
+            var index = images.indexOf($(this).val());
+            images.splice(index, 1 );
+        }
+
+        // remove empty values from array
+        images = images.filter(function(e){return e});
+
+        // turn array into a string
+        $('#media-list').val(images.join(","));
+    });
+
+    $('#select-all-1').change(function(e) {
+        if (e.currentTarget.checked) {
+            $("#media-list").val("<?= $media_xrefs ?>");
+            $('input[type="checkbox"]').prop('checked', true);
+        } else {
+            $("#media-list").val("");
+            $('input[type="checkbox"]').prop('checked', false);
+        }
+    });
+</script>
+<?php View::endpush() ?>

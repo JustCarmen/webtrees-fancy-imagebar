@@ -145,23 +145,35 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         $this->layout = 'layouts/administration';
 
+        $tree_id = $this->getPreference('last-tree-id');
+        if ($tree_id === '') {
+            $tree = $this->tree_service->all()->first();
+        } else {
+            $tree = $this->tree_service->find((int)$tree_id);
+        }
+
         $data_filesystem = Registry::filesystem()->data();
 
         $media_folders = $this->media_file_service->allMediaFolders($data_filesystem);
         $media_types = $this->media_file_service->mediaTypes();
 
-        $tree_id = $this->getPreference('last-tree-id');
+        $media_folder = $this->getPreference($tree_id . '-media-folder');
+        $media_type = $this->getPreference($tree_id . '-media-type');
+        $subfolders = $this->getPreference($tree_id . '-subfolders');
+        $media_objects = $this->allMedia($tree, str_replace($tree->getPreference('MEDIA_DIRECTORY', 'media/'), "", $media_folder), $subfolders, $media_type);
 
         return $this->viewResponse($this->name() . '::settings', [
             'all_trees'        => $this->tree_service->all(),
             'canvas_height'    => $this->getPreference($tree_id . '-canvas-height', '80'),
             'homepage_only'    => $this->getPreference($tree_id . '-homepage-only'),
-            'media_folder'     => $this->getPreference($tree_id . '-media-folder'),
+            'media_folder'     => $media_folder,
             'media_folders'    => $media_folders,
-            'media_type'       => $this->getPreference($tree_id . '-media-type'),
+            'media_list'       => $this->getPreference($tree_id . '-media-list', ''),
+            'media_objects'    => $media_objects,
+            'media_type'       => $media_type,
             'media_types'      => $media_types,
             'square_thumbs'    => $this->getPreference($tree_id . '-square-thumbs'),
-            'subfolders'       => $this->getPreference($tree_id . '-subfolders'),
+            'subfolders'       => $subfolders,
             'title'            => $this->title(),
             'tree_id'          => $tree_id
         ]);
@@ -178,9 +190,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         $params = (array) $request->getParsedBody();
 
-        // store the preferences in the database
+        // store the preferences in the database when editing the form
         $tree_id = $params['tree-id'];
         $this->setPreference('last-tree-id', $tree_id);
+
+        $this->setPreference($tree_id . '-media-folder', $params['media-folder']);
+        $this->setPreference($tree_id . '-subfolders', $params['subfolders'] ?? '0');
+        $this->setPreference($tree_id . '-media-type',  $params['media-type']);
 
         if ($params['save'] === '1') {
             $this->setPreference($tree_id . '-media-folder', $params['media-folder']);
@@ -189,6 +205,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             $this->setPreference($tree_id . '-canvas-height',  $params['canvas-height']);
             $this->setPreference($tree_id . '-square-thumbs',  $params['square-thumbs']);
             $this->setPreference($tree_id . '-homepage-only',  $params['homepage-only']);
+            $this->setPreference($tree_id . '-media-list', $params['media-list']);
 
             $message = I18N::translate('The preferences for the module “%s” have been updated.', $this->title());
             FlashMessages::addMessage($message, 'success');
@@ -305,6 +322,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $subfolders      = $this->getPreference($tree->id() . '-subfolders', '1');
         $media_type      = $this->getPreference($tree->id() . '-media-type', '');
         $square_thumbs   = $this->getPreference($tree->id() . '-square-thumbs', '0');
+        $media_list      = $this->getPreference($tree->id() . '-media-list', '');
 
         // how much thumbnails do we need at most to fill up the canvas.
         // If square is chosen as an option then we don't know the width of the thumbnails.
@@ -329,10 +347,17 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         // Get the thumbnail resources
         $resources = array();
+        $arr_media_list = explode(',', $media_list);
         foreach ($records as $record) {
             if (count($resources) < $num_thumbs) {
                 foreach ($record->mediaFiles() as $media_file) {
-                    if (in_array($media_file->mimeType(), ['image/jpeg', 'image/png'], true) && $media_file->fileExists($data_filesystem)) {
+                    if (count($arr_media_list) > 0) {
+                        $process_image = in_array($record->xref(), $arr_media_list) ? true : false;
+                    } else {
+                        $process_image = in_array($media_file->mimeType(), ['image/jpeg', 'image/png'], true) ? true : false;
+                    }
+
+                    if ($process_image === true && $media_file->fileExists($data_filesystem)) {
                         $file        = $data_folder . $wt_media_folder . $media_file->filename();
                         $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
 

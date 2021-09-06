@@ -199,9 +199,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $this->setPreference($tree_id . '-media-type',  $params['media-type']);
 
         if ($params['save'] === '1') {
-            $this->setPreference($tree_id . '-media-folder', $params['media-folder']);
-            $this->setPreference($tree_id . '-subfolders', $params['subfolders'] ?? '0');
-            $this->setPreference($tree_id . '-media-type',  $params['media-type']);
             $this->setPreference($tree_id . '-canvas-height',  $params['canvas-height']);
             $this->setPreference($tree_id . '-square-thumbs',  $params['square-thumbs']);
             $this->setPreference($tree_id . '-homepage-only',  $params['homepage-only']);

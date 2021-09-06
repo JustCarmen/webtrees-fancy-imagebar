@@ -11,11 +11,11 @@ use Illuminate\Support\Collection;
  * @var Tree              $tree
  */
 
- // Get list of media xrefs (for select all checkbox)
- foreach ($media_objects as $media_object) {
-     $arr_media_xrefs[] = $media_object->xref();
- }
- $media_xrefs = implode(",", $arr_media_xrefs);
+// Get list of media xrefs (for select all checkbox)
+foreach ($media_objects as $media_object) {
+    $arr_media_xrefs[] = $media_object->xref();
+}
+$media_xrefs = implode(",", $arr_media_xrefs);
 
 ?>
 
@@ -47,9 +47,9 @@ use Illuminate\Support\Collection;
             <tr class="d-block float-left">
                 <!-- Thumbnails-->
                 <td data-sort="<?= e($media_object->sortName()) ?>">
+                    <?php $arr_media_list = explode(',', $media_list) ?>
                     <?php foreach ($media_object->mediaFiles() as $media_file) : ?>
                         <?php
-                            $arr_media_list = explode(',', $media_list);
                             if (count($arr_media_list) > 0) {
                                 $checked = in_array($media_object->xref(), $arr_media_list) ? 'checked' : '';
                             } else {

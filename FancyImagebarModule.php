@@ -521,6 +521,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         }
 
+        // Cases have been reported where a false source image produces a fatal error at
+        // the imagecopyresampled function: imagecopyresampled() expects parameter 2 to be resource, bool given
+        // This source image got through the try/catch section
+        if ($source_image === false) {
+            return null;
+        }
+
         $source_x = 0;
         $source_y = 0;
 

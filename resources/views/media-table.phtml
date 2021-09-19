@@ -12,6 +12,7 @@ use Illuminate\Support\Collection;
  */
 
 // Get list of media xrefs (for select all checkbox)
+$arr_media_xrefs = array();
 foreach ($media_objects as $media_object) {
     $arr_media_xrefs[] = $media_object->xref();
 }

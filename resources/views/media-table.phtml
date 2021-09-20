@@ -56,20 +56,26 @@ $media_xrefs = implode(",", $arr_media_xrefs);
         <?php foreach ($media_objects as $media_object) : ?>
             <tr class="d-block float-left">
                 <!-- Thumbnails-->
-                <td data-sort="<?= e($media_object->sortName()) ?>">
-                    <?php $arr_media_list = explode(',', $media_list) ?>
-                    <?php foreach ($media_object->mediaFiles() as $media_file) : ?>
-                        <?php
-                            if (count($arr_media_list) > 0) {
-                                $checked = in_array($media_object->xref(), $arr_media_list) ? 'checked' : '';
-                            } else {
-                                $checked = 'checked';
-                            }
-                        ?>
+                <?php $arr_media_list = explode(',', $media_list) ?>
+                <?php $i = 0 ?>
+                <?php foreach ($media_object->mediaFiles() as $media_file) : ?>
+                    <?php $i++ ?>
+                    <td>
+                    <?php
+                        if (count($arr_media_list) > 0) {
+                            $checked = in_array($media_object->xref(), $arr_media_list) ? 'checked' : '';
+                        } else {
+                            $checked = 'checked';
+                        }
+                    ?>
+                    <?php if ($i > 1): ?>
+                        <?= $media_file->displayImage(100, 100, 'crop', ['data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => strip_tags($media_object->fullName()) . ' (' . $i . ')']) ?>
+                    <?php else: ?>
                         <?= $media_file->displayImage(100, 100, 'crop', ['data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => strip_tags($media_object->fullName())]) ?>
-                        <div class="text-center"><?= view('components/checkbox-inline', ['label' => '', 'name' => 'media-checkbox', 'value' => $media_object->xref() , 'checked' => $checked]) ?></div>
-                    <?php endforeach ?>
-                </td>
+                    <?php endif ?>
+                    <div class="text-center"><?= view('components/checkbox-inline', ['label' => '', 'name' => 'media-checkbox', 'value' => $media_object->xref() . '[' . $i . ']', 'checked' => $checked]) ?></div>
+                    </td>
+                <?php endforeach ?>
             </tr>
         <?php endforeach ?>
     </tbody>

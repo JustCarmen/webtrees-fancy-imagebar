@@ -347,9 +347,11 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $arr_media_list = explode(',', $media_list);
         foreach ($records as $record) {
             if (count($resources) < $num_thumbs) {
+                $i = 0; // counter for multiple media files in a media object
                 foreach ($record->mediaFiles() as $media_file) {
+                    $i++;
                     if (count($arr_media_list) > 0) {
-                        $process_image = in_array($record->xref(), $arr_media_list) ? true : false;
+                        $process_image = in_array($record->xref() . '[' . $i . ']', $arr_media_list) ? true : false;
                     } else {
                         $process_image = in_array($media_file->mimeType(), ['image/jpeg', 'image/png'], true) ? true : false;
                     }
@@ -373,6 +375,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         if (count($resources) < $num_thumbs) {
             // see: https://stackoverflow.com/questions/2963777/how-to-repeat-an-array-in-php
             // works in php 5.6+
+            shuffle($resources); // randomize the order of images in the Fancy imagebar before filling up
             $resources = array_merge(...array_fill(0, $num_thumbs - count($resources), $resources));
         }
 
@@ -387,6 +390,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      * @param string $folder
      * @param string $subfolders
      * @param string $type
+     * @param bool $random
      *
      * @return Collection<Media>
      */
@@ -411,7 +415,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         }
 
         return $query
-            ->inRandomOrder()->get()
+            ->get()
             ->map(Registry::mediaFactory()->mapper($tree))
             ->uniqueStrict()
             ->filter(GedcomRecord::accessFilter());

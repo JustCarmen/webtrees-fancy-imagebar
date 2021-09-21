@@ -160,7 +160,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $media_folder = $this->getPreference($tree_id . '-media-folder');
         $media_type = $this->getPreference($tree_id . '-media-type');
         $subfolders = $this->getPreference($tree_id . '-subfolders');
-        $media_objects = $this->allMedia($tree, str_replace($tree->getPreference('MEDIA_DIRECTORY', 'media/'), "", $media_folder), $subfolders, $media_type);
+        $media_objects = $this->allMedia($tree, str_replace($tree->getPreference('MEDIA_DIRECTORY', 'media/'), "", $media_folder), $subfolders, $media_type, false);
 
         return $this->viewResponse($this->name() . '::settings', [
             'all_trees'        => $this->tree_service->all(),
@@ -336,7 +336,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $subfolders = $subfolders === '1' ? 'include' : 'exclude';
 
         // pull the records from the database
-        $records = $this->allMedia($tree, $folder, $subfolders, $media_type);
+        $records = $this->allMedia($tree, $folder, $subfolders, $media_type, true);
 
         if (count($records) === 0) {
             return '';
@@ -394,7 +394,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @return Collection<Media>
      */
-    private function allMedia(Tree $tree, string $folder, string $subfolders, string $type): Collection
+    private function allMedia(Tree $tree, string $folder, string $subfolders, string $type, bool $random): Collection
     {
         $query = DB::table('media')
             ->join('media_file', static function (JoinClause $join): void {
@@ -412,6 +412,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         if ($type) {
             $query->where('source_media_type', '=', $type);
+        }
+
+        if ($random) {
+            $query->inRandomOrder();
         }
 
         return $query

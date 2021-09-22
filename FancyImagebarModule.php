@@ -89,7 +89,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function customModuleVersion(): string
     {
-        return '2.1.1';
+        return '2.1.2-dev';
     }
 
     /**

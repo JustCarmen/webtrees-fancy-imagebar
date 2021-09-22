@@ -148,6 +148,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $tree_id = $this->getPreference('last-tree-id');
         if ($tree_id === '') {
             $tree = $this->tree_service->all()->first();
+            $tree_id = $tree->id();
         } else {
             $tree = $this->tree_service->find((int)$tree_id);
         }
@@ -316,9 +317,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         // Set default values in case the settings are not stored in the database yet
         $subfolders      = $this->getPreference($tree->id() . '-subfolders', '1');
-        $media_type      = $this->getPreference($tree->id() . '-media-type', '');
+        $media_type      = $this->getPreference($tree->id() . '-media-type');
         $square_thumbs   = $this->getPreference($tree->id() . '-square-thumbs', '0');
-        $media_list      = $this->getPreference($tree->id() . '-media-list', '');
+        $media_list      = $this->getPreference($tree->id() . '-media-list');
 
         // how much thumbnails do we need at most to fill up the canvas.
         // If square is chosen as an option then we don't know the width of the thumbnails.
@@ -349,10 +350,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                 $i = 0; // counter for multiple media files in a media object
                 foreach ($record->mediaFiles() as $media_file) {
                     $i++;
-                    if (count($arr_media_list) > 0) {
-                        $process_image = in_array($record->xref() . '[' . $i . ']', $arr_media_list) ? true : false;
+                    if (count($arr_media_list) > 0 && !in_array("", $arr_media_list)) { // the array could contain one empty element if the default value is set ($media_list[0] = '').
+                        $process_image = in_array($record->xref() . '[' . $i . ']', $arr_media_list);
                     } else {
-                        $process_image = in_array($media_file->mimeType(), ['image/jpeg', 'image/png'], true) ? true : false;
+                        $process_image = in_array($media_file->mimeType(), ['image/jpeg','image/png'], true);
                     }
 
                     if ($process_image === true && $media_file->fileExists($data_filesystem)) {

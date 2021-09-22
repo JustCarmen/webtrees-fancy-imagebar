@@ -320,14 +320,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $media_type      = $this->getPreference($tree->id() . '-media-type');
         $square_thumbs   = $this->getPreference($tree->id() . '-square-thumbs', '0');
         $media_list      = $this->getPreference($tree->id() . '-media-list');
-
-        // how much thumbnails do we need at most to fill up the canvas.
-        // If square is chosen as an option then we don't know the width of the thumbnails.
-        // Play safe and use 0.5 * thumb height as thumb width. This means we assume an thumbnail with a height of 80px is 40px width.
-        // Most thumbnails will be larger than that. 3840 is the maximum screensize we will take into account.
-        $canvas_width  = 3840; // Add support for 4K displays
-        $canvas_height = $this->getPreference($tree->id() . '-canvas-height', '80');
-        $num_thumbs    = (int)ceil($canvas_width / ($canvas_height * 0.5));
+        $canvas_height   = $this->getPreference($tree->id() . '-canvas-height', '80');
+        $canvas_width    = 3840; // Add support for 4K displays
 
         // strip out the default media directory from the folder path. It is not stored in the database
         $folder = str_replace($wt_media_folder, "", $this->getPreference($tree->id() . '-media-folder'));
@@ -345,34 +339,39 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         // Get the thumbnail resources
         $resources = array();
         $arr_media_list = explode(',', $media_list);
+        $calculated_width = 0;
         foreach ($records as $record) {
-            if (count($resources) < $num_thumbs) {
-                $i = 0; // counter for multiple media files in a media object
-                foreach ($record->mediaFiles() as $media_file) {
-                    $i++;
-                    if (count($arr_media_list) > 0 && !in_array("", $arr_media_list)) { // the array could contain one empty element if the default value is set ($media_list[0] = '').
-                        $process_image = in_array($record->xref() . '[' . $i . ']', $arr_media_list);
-                    } else {
-                        $process_image = in_array($media_file->mimeType(), ['image/jpeg','image/png'], true);
-                    }
+            $i = 0; // counter for multiple media files in a media object
+            foreach ($record->mediaFiles() as $media_file) {
+                $i++;
+                if (count($arr_media_list) > 0 && !in_array("", $arr_media_list)) { // the array could contain one empty element if the default value is set ($media_list[0] = '').
+                    $process_image = in_array($record->xref() . '[' . $i . ']', $arr_media_list);
+                } else {
+                    $process_image = in_array($media_file->mimeType(), ['image/jpeg','image/png'], true);
+                }
 
-                    if ($process_image === true && $media_file->fileExists($data_filesystem)) {
-                        $file        = $data_folder . $wt_media_folder . $media_file->filename();
-                        $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
+                if ($process_image === true && $media_file->fileExists($data_filesystem)) {
+                    $file        = $data_folder . $wt_media_folder . $media_file->filename();
+                    $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
 
-                        if (!is_null($fancy_thumb)) {
-                            $resources[] = [
-                                'image'     => $fancy_thumb,
-                                'linked'    => $this->getLinkedObject($record)
-                            ];
-                        }
+                    if (!is_null($fancy_thumb)) {
+                        $calculated_width = $calculated_width + imagesx($fancy_thumb);
+                        $resources[] = [
+                            'image'     => $fancy_thumb,
+                            'linked'    => $this->getLinkedObject($record)
+                        ];
                     }
                 }
+            }
+            if ($calculated_width >= $canvas_width) {
+                break;
             }
         }
 
         // Repeat items if neccessary to fill up the Fancy Imagebar
-        if (count($resources) < $num_thumbs) {
+        if ($calculated_width < $canvas_width) {
+            $average_thumb_width = (float)$calculated_width / count($resources);
+            $num_thumbs = (int)ceil($canvas_width / $average_thumb_width);
             // see: https://stackoverflow.com/questions/2963777/how-to-repeat-an-array-in-php
             // works in php 5.6+
             shuffle($resources); // randomize the order of images in the Fancy imagebar before filling up

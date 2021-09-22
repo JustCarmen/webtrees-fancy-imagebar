@@ -315,7 +315,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $wt_media_folder = $tree->getPreference('MEDIA_DIRECTORY', 'media/');
 
         // Set default values in case the settings are not stored in the database yet
-        $canvas_height   = $this->getPreference($tree->id() . '-canvas-height', '80');
         $subfolders      = $this->getPreference($tree->id() . '-subfolders', '1');
         $media_type      = $this->getPreference($tree->id() . '-media-type', '');
         $square_thumbs   = $this->getPreference($tree->id() . '-square-thumbs', '0');

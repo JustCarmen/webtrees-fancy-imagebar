@@ -368,6 +368,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             }
         }
 
+        if (count($resources) === 0) {
+            return '';
+        }
+
         // Repeat items if neccessary to fill up the Fancy Imagebar
         if ($calculated_width < $canvas_width) {
             $average_thumb_width = (float)$calculated_width / count($resources);

@@ -482,29 +482,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     }
 
     /**
-     * load image from file
-     * return false if image could not be loaded
-     *
-     * @param string $file
-     */
-    private function loadImage($file)
-    {
-        $size = getimagesize($file);
-        switch ($size["mime"]) {
-            case "image/jpeg":
-                $image = imagecreatefromjpeg($file);
-                break;
-            case "image/png":
-                $image = imagecreatefrompng($file);
-                break;
-            default:
-                $image = false;
-                break;
-        }
-        return $image;
-    }
-
-    /**
      * Create a thumbnail
      *
      * @param string $file
@@ -562,6 +539,29 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         imagedestroy($source_image);
 
         return $thumb; // resource
+    }
+
+     /**
+     * load image from file
+     * return false if image could not be loaded
+     *
+     * @param string $file
+     */
+    private function loadImage($file)
+    {
+        $size = getimagesize($file);
+        switch ($size["mime"]) {
+            case "image/jpeg":
+                $image = imagecreatefromjpeg($file);
+                break;
+            case "image/png":
+                $image = imagecreatefrompng($file);
+                break;
+            default:
+                $image = false;
+                break;
+        }
+        return $image;
     }
 
     /**

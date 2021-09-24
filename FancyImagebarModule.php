@@ -4,18 +4,19 @@ declare(strict_types=1);
 
 namespace JustCarmen\Webtrees\Module;
 
+use Throwable;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
 use Fisharebest\Webtrees\Media;
 use Fisharebest\Webtrees\Registry;
+use Fisharebest\Webtrees\Webtrees;
 use Illuminate\Support\Collection;
 use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\GedcomRecord;
 use Fisharebest\Webtrees\FlashMessages;
 use Psr\Http\Message\ResponseInterface;
 use Fisharebest\Localization\Translation;
-use Fisharebest\Webtrees\Http\RequestHandlers\TreePage;
 use Illuminate\Database\Query\JoinClause;
 use Psr\Http\Message\ServerRequestInterface;
 use Fisharebest\Webtrees\Services\TreeService;
@@ -28,13 +29,15 @@ use Fisharebest\Webtrees\Services\MediaFileService;
 use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleGlobalInterface;
-use Throwable;
+use Fisharebest\Webtrees\Http\RequestHandlers\TreePage;
 
 class FancyImagebarModule extends AbstractModule implements ModuleCustomInterface, ModuleConfigInterface, ModuleGlobalInterface
 {
     use ModuleCustomTrait;
     use ModuleConfigTrait;
     use ModuleGlobalTrait;
+
+    private const CACHE_DIR = Webtrees::DATA_DIR . 'fib-cache/';
 
     /** @var MediaFileService */
     private $media_file_service;
@@ -205,6 +208,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             $this->setPreference($tree_id . '-homepage-only',  $params['homepage-only']);
             $this->setPreference($tree_id . '-media-list', $params['media-list']);
 
+            // remove previously cached images. The cache is recreated the first time the imagebar is loaded after the settings are changed
+            $tree = $this->tree_service->find((int)$tree_id);
+            $this->emptyCache($tree);
+
             $message = I18N::translate('The preferences for the module “%s” have been updated.', $this->title());
             FlashMessages::addMessage($message, 'success');
         }
@@ -315,6 +322,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         $wt_media_folder = $tree->getPreference('MEDIA_DIRECTORY', 'media/');
 
+        if (!file_exists(self::CACHE_DIR)) {
+			mkdir(self::CACHE_DIR);
+		}
+
         // Set default values in case the settings are not stored in the database yet
         $subfolders      = $this->getPreference($tree->id() . '-subfolders', '1');
         $media_type      = $this->getPreference($tree->id() . '-media-type');
@@ -340,19 +351,30 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $resources = array();
         $arr_media_list = explode(',', $media_list);
         $calculated_width = 0;
+
         foreach ($records as $record) {
             $i = 0; // counter for multiple media files in a media object
             foreach ($record->mediaFiles() as $media_file) {
                 $i++;
-                if (count($arr_media_list) > 0 && !in_array("", $arr_media_list)) { // the array could contain one empty element if the default value is set ($media_list[0] = '').
-                    $process_image = in_array($record->xref() . '[' . $i . ']', $arr_media_list);
+                $media_id = $record->xref() . '[' . $i . ']';
+
+				if (count($arr_media_list) > 0 && !in_array("", $arr_media_list)) { // the array could contain one empty element if the default value is set ($media_list[0] = '').
+                    $process_image = in_array($media_id, $arr_media_list);
                 } else {
                     $process_image = in_array($media_file->mimeType(), ['image/jpeg','image/png'], true);
                 }
 
                 if ($process_image === true && $media_file->fileExists($data_filesystem)) {
-                    $file        = $data_folder . $wt_media_folder . $media_file->filename();
-                    $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
+
+                    $file       = $data_folder . $wt_media_folder . $media_file->filename();
+                    $cache_file = $this->cacheFile($tree, $media_id, $file);
+
+                    if (is_file($cache_file)) {
+                        $fancy_thumb = $this->loadImage($cache_file);
+                    } else {
+                        $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
+                        imagejpeg($fancy_thumb, $cache_file);
+                    }
 
                     if (!is_null($fancy_thumb)) {
                         $calculated_width = $calculated_width + imagesx($fancy_thumb);
@@ -567,6 +589,34 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         }
         return $image;
     }
+
+    /**
+	 * Get the filename of the cached image
+	 *
+     * @param Tree $tree
+     * @param string $media_id
+     * @param string $file
+     *
+	 * @return string
+	 */
+	private function cacheFile(Tree $tree, string $media_id, string $file) {
+		return self::CACHE_DIR . $tree->id() . '-' . $media_id . '-' . filemtime($file) . '.jpg';
+	}
+
+    /**
+	 * remove all old cached files for this tree after changing settings in control panel
+	 */
+	protected function emptyCache(Tree $tree): void {
+		foreach (glob(self::CACHE_DIR . '*') as $cache_file) {
+			if (is_file($cache_file)) {
+				$tmp	 = explode('-', basename($cache_file));
+				$tree_id = intval($tmp[0]);
+				if ($tree_id === $tree->id()) {
+					unlink($cache_file);
+				}
+			}
+		}
+	}
 
     /**
      * Which objects are linked to this file?

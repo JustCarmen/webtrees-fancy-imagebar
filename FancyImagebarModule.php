@@ -373,7 +373,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                         $fancy_thumb = $this->loadImage($cache_file);
                     } else {
                         $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
-                        imagejpeg($fancy_thumb, $cache_file);
+                        if (!is_null($fancy_thumb)) {
+                            imagejpeg($fancy_thumb, $cache_file);
+                        }
                     }
 
                     if (!is_null($fancy_thumb)) {

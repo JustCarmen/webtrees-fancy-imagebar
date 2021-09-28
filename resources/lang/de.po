@@ -25,7 +25,7 @@ msgstr "Höhe der Fancy Imagebar"
 
 #: resources/views/settings.phtml:84
 msgid "Show the Fancy Imagebar on the homepage only"
-msgstr "Show the Fancy Imagebar on the homepage only"
+msgstr "Die Fancy Imagebar nur auf der Startseite anzeigen"
 
 #: resources/views/media-table.phtml:28
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."

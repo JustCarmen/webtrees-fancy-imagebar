@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace JustCarmen\Webtrees\Module;
+namespace JustCarmen\Webtrees\Module\FancyImagebar;
 
 use Throwable;
 use Fisharebest\Webtrees\I18N;

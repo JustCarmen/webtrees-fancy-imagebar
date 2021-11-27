@@ -198,9 +198,11 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $tree_id = $params['tree-id'];
         $this->setPreference('last-tree-id', $tree_id);
 
-        $this->setPreference($tree_id . '-media-folder', $params['media-folder']);
-        $this->setPreference($tree_id . '-subfolders', $params['subfolders'] ?? '0');
-        $this->setPreference($tree_id . '-media-type',  $params['media-type']);
+        if ($params['switch'] === '1') {
+            $this->setPreference($tree_id . '-media-folder', $params['media-folder']);
+            $this->setPreference($tree_id . '-subfolders', $params['subfolders'] ?? '0');
+            $this->setPreference($tree_id . '-media-type',  $params['media-type']);
+        }
 
         if ($params['save'] === '1') {
             $this->setPreference($tree_id . '-canvas-height',  $params['canvas-height']);

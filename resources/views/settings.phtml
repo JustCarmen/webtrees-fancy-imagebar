@@ -15,6 +15,7 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
     <form method="post">
         <?= csrf_field() ?>
         <input type="hidden" name="save" id="save" value="1">
+        <input type="hidden" name="switch" id="switch" value="1">
         <!-- TREE LIST -->
         <div class="row form-group">
             <label class="col-sm-3 col-form-label for=" tree"><?= I18N::translate('Family tree') ?></label>
@@ -103,6 +104,10 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
 
 <?php View::push('javascript') ?>
 <script>
+    $('#tree').on('change', function() {
+        $('#switch').val(0);
+    });
+
     $('#tree, #media-folder, #subfolders, #media-type').on('change', function() {
         $('#save').val('0');
         $('form').submit();

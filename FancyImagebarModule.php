@@ -111,7 +111,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function customModuleSupportUrl(): string
     {
-        return 'https://github.com/justcarmen/webtrees-fancy-imagebar/issues';
+        return 'https://justcarmen.nl/modules-webtrees-2/fancy-imagebar/';
     }
 
     /**

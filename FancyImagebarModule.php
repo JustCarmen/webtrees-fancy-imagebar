@@ -37,6 +37,19 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     use ModuleConfigTrait;
     use ModuleGlobalTrait;
 
+    /**
+     * @var string
+     */
+    public const CUSTOM_AUTHOR = 'JustCarmen';
+
+    /**
+     * @var string
+     */
+    public const CUSTOM_VERSION = '2.1.3-dev';
+
+     /**
+     * @var string
+     */
     private const CACHE_DIR = Webtrees::DATA_DIR . 'fib-cache/';
 
     /** @var MediaFileService */
@@ -83,7 +96,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function customModuleAuthorName(): string
     {
-        return 'JustCarmen';
+        return self::CUSTOM_AUTHOR;
     }
 
     /**
@@ -92,7 +105,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function customModuleVersion(): string
     {
-        return '2.1.3-dev';
+        return self::CUSTOM_VERSION;
     }
 
     /**

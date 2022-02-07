@@ -47,6 +47,20 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public const CUSTOM_VERSION = '2.1.4-dev';
 
+    /**
+     * @var string
+     */
+    public const GITHUB_REPO = 'webtrees-fancy-imagebar';
+
+    /**
+     * @var string
+     */
+    public const AUTHOR_WEBSITE = 'justcarmen.nl';
+
+     /**
+     * @var string
+     */
+    public const CUSTOM_SUPPORT_URL = self::AUTHOR_WEBSITE . '/modules-webtrees-2/fancy-imagebar/';
      /**
      * @var string
      */
@@ -115,7 +129,18 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function customModuleLatestVersionUrl(): string
     {
-        return 'https://raw.githubusercontent.com/JustCarmen/webtrees-fancy-imagebar/master/latest-version.txt';
+        return 'https://raw.githubusercontent.com/' . self::CUSTOM_AUTHOR . '/' . self::GITHUB_REPO . '/main/latest-version.txt';
+    }
+
+
+    /**
+     * Fetch the latest version of this module.
+     *
+     * @return string
+     */
+    public function customModuleLatestVersion(): string
+    {
+        return 'https://github.com/' . self::CUSTOM_AUTHOR . '/' . self::GITHUB_REPO . '/releases/latest';
     }
 
     /**
@@ -124,7 +149,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function customModuleSupportUrl(): string
     {
-        return 'https://justcarmen.nl/modules-webtrees-2/fancy-imagebar/';
+        return self::CUSTOM_SUPPORT_URL;
     }
 
     /**

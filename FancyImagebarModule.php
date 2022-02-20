@@ -55,7 +55,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /**
      * @var string
      */
-    public const AUTHOR_WEBSITE = 'justcarmen.nl';
+    public const AUTHOR_WEBSITE = 'https://justcarmen.nl';
 
      /**
      * @var string

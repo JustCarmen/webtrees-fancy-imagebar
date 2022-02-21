@@ -209,7 +209,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $data_filesystem = Registry::filesystem()->data();
 
         $media_folders = $this->media_file_service->allMediaFolders($data_filesystem);
-        $media_types = $this->media_file_service->mediaTypes();
+        $media_types = Registry::elementFactory()->make('OBJE:FILE:FORM:TYPE')->values();
 
         $media_folder = $this->getPreference($tree_id . '-media-folder');
         $media_type = $this->getPreference($tree_id . '-media-type');

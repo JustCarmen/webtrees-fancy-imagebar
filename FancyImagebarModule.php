@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace JustCarmen\Webtrees\Module\FancyImagebar;
 
+use Exception;
 use Throwable;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Tree;
@@ -187,11 +188,22 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $this->layout = 'layouts/administration';
 
         $tree_id = $this->getPreference('last-tree-id');
-        if ($tree_id === '') {
+
+        try {
+            $tree = $this->tree_service->find((int)$tree_id);
+        } catch (Exception $ex) {
+            // the last tree saved doesn't exist anymore. Use the first tree instead.
             $tree = $this->tree_service->all()->first();
             $tree_id = $tree->id();
-        } else {
-            $tree = $this->tree_service->find((int)$tree_id);
+
+            // remove settings from non existing tree from the database
+            DB::table('module_setting')
+                ->where('module_name', '=', $this->name())
+                ->where('setting_name', 'LIKE', '' . $this->getPreference('last-tree-id') . '-%' )
+                ->delete();
+
+            // reset the last tree id
+            $this->setPreference('last-tree-id', '');
         }
 
         $data_filesystem = Registry::filesystem()->data();

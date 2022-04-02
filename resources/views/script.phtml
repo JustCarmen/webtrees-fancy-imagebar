@@ -17,7 +17,7 @@ use Fisharebest\Webtrees\View;
         var height = $('.jc-fancy-imagebar img').height(); // current height of the imagebar
         var setting = $('.jc-fancy-imagebar').attr('data-height'); // original height (from the settings in control panel)
         var ratio = height / setting
-        $('area').each(function() {
+        $('.jc-fancy-imagebar-map area').each(function() {
             // save the original coords
             if (!$(this).attr('data-coords')) {
                 $(this).attr('data-coords', $(this).attr('coords'));

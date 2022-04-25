@@ -30,6 +30,7 @@ use Fisharebest\Webtrees\Services\MediaFileService;
 use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
 use Fisharebest\Webtrees\Module\ModuleGlobalInterface;
+use Fisharebest\Webtrees\Services\LinkedRecordService;
 use Fisharebest\Webtrees\Http\RequestHandlers\TreePage;
 
 class FancyImagebarModule extends AbstractModule implements ModuleCustomInterface, ModuleConfigInterface, ModuleGlobalInterface
@@ -73,16 +74,20 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /** @var TreeService */
     private $tree_service;
 
+    /** @var LinkedRecordService */
+    private $linked_record_service;
+
     /**
      * FancyImagebar constructor.
      *
      * @param MediaFileService  $media_file_service
      * @param TreeService       $tree_service
      */
-    public function __construct(MediaFileService $media_file_service, TreeService $tree_service)
+    public function __construct(MediaFileService $media_file_service, TreeService $tree_service, LinkedRecordService $linked_record_service)
     {
-        $this->media_file_service = $media_file_service;
-        $this->tree_service       = $tree_service;
+        $this->media_file_service       = $media_file_service;
+        $this->tree_service             = $tree_service;
+        $this->linked_record_service    = $linked_record_service;
     }
 
     /**
@@ -683,8 +688,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         // return the first link found
         return
-            $media->linkedIndividuals('OBJE')->first() ??
-            $media->linkedFamilies('OBJE')->first() ??
-            $media->linkedsources('OBJE')->first();
+            $this->linked_record_service->linkedIndividuals($media)->first() ??
+            $this->linked_record_service->linkedFamilies($media)->first() ??
+            $this->linked_record_service->linkedSources($media)->first();
     }
 };

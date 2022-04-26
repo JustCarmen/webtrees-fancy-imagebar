@@ -47,7 +47,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /**
      * @var string
      */
-    public const CUSTOM_VERSION = '2.1.4-dev';
+    public const CUSTOM_VERSION = '2.2.0';
 
     /**
      * @var string

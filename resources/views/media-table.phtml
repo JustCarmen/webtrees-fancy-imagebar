@@ -27,12 +27,10 @@ $media_xrefs = implode(",", $arr_media_xrefs);
 <input id="media-list" type="hidden" name="media-list" value = "<?= $media_list ?>">
 <!-- INFO-->
 <div class="alert alert-info alert-dismissible" role="alert">
-    <button type="button" class="close" data-dismiss="alert" aria-label="' . I18N::translate('close') . '">
-        <span aria-hidden="true">&times;</span>
-    </button>
     <p class="small"><?= I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated.') ?></p>
     <p class="small"><?= I18N::translate('Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications.') ?></p>
     <p class="small"><?= I18N::translate('The Fancy Imagebar module respects privacy settings!') ?></p>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="' . I18N::translate('close') . '"></button>
 </div>
 <!-- SELECT ALL -->
 <div class="col">
@@ -58,7 +56,7 @@ $media_xrefs = implode(",", $arr_media_xrefs);
 
     <tbody>
         <?php foreach ($media_objects as $media_object) : ?>
-            <tr class="d-block float-left">
+            <tr class="d-block float-start">
                 <!-- Thumbnails-->
                 <?php $arr_media_list = explode(',', $media_list) ?>
                 <?php $i = 0 ?>

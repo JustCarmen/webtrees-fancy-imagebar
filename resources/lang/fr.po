@@ -19,31 +19,31 @@ msgstr "Recadrer les miniatures en carré"
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
 
-#: resources/views/settings.phtml:62
+#: resources/views/settings.phtml:63
 msgid "Height of the Fancy Imagebar"
 msgstr "Hauteur de Fancy Imagebar"
 
-#: resources/views/settings.phtml:84
+#: resources/views/settings.phtml:85
 msgid "Show the Fancy Imagebar on the homepage only"
 msgstr "Show the Fancy Imagebar on the homepage only"
 
-#: resources/views/media-table.phtml:28
+#: resources/views/media-table.phtml:30
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
 msgstr "Ici, vous pouvez choisir quelles images doivent être affichées dans la barre d'images fantaisie. Si moins d'images sont sélectionnées que nécessaire pour remplir toute la barre d'images fantaisie, les images seront répétées."
 
-#: resources/views/media-table.phtml:29
+#: resources/views/media-table.phtml:31
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
 msgstr "Remarque : Seules les images locales « jpg » ou « png » sont prises en charge par ce module. Les images externes ne sont pas prises en charge. Il n'est pas possible de conserver la transparence des vignettes png dans la barre d'images fantaisie. Les vignettes png transparentes auront un fond noir. Les images de ce tableau ont déjà les spécifications correctes."
 
-#: resources/views/media-table.phtml:34
+#: resources/views/media-table.phtml:37
 msgid "Select/unselect all"
 msgstr "Tout sélectionner/désélectionner"
 
-#: resources/views/media-table.phtml:30
+#: resources/views/media-table.phtml:32
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Le module Fancy Imagebar respecte les paramètres de confidentialité !"
 
-#: resources/views/media-table.phtml:35
+#: resources/views/media-table.phtml:38
 msgid "Toggle this checkbox to select all images."
 msgstr "Cochez cette case pour sélectionner toutes les images."
 

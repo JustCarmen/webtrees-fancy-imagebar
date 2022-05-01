@@ -19,31 +19,31 @@ msgstr "Przytnij miniatury do kwadratu"
 msgid "Fancy Imagebar"
 msgstr "Ozdobny pasek zdjęć"
 
-#: resources/views/settings.phtml:62
+#: resources/views/settings.phtml:63
 msgid "Height of the Fancy Imagebar"
 msgstr "Wysokość paska zdjęć"
 
-#: resources/views/settings.phtml:84
+#: resources/views/settings.phtml:85
 msgid "Show the Fancy Imagebar on the homepage only"
 msgstr "Pokaż pasek zdjęć tylko na stronie głównej"
 
-#: resources/views/media-table.phtml:28
+#: resources/views/media-table.phtml:30
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
 msgstr "Tutaj możesz wybrać, które obrazy powinny być wyświetlane w Fancy Imagebar. Jeśli wybrano mniej obrazów niż potrzeba do wypełnienia całego paska Fancy Imagebar, obrazy zostaną powtórzone."
 
-#: resources/views/media-table.phtml:29
+#: resources/views/media-table.phtml:31
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
 msgstr "Uwaga: Tylko lokalne obrazy \"jpg\" lub \"png\" są obsługiwane przez ten moduł. Obrazy zewnętrzne nie są obsługiwane. Nie jest możliwe zachowanie przezroczystości dla miniaturek png w Fancy Imagebar. Przezroczyste miniaturki png będą miały czarne tło. Obrazy w tej tabeli mają już prawidłowe specyfikacje."
 
-#: resources/views/media-table.phtml:34
+#: resources/views/media-table.phtml:37
 msgid "Select/unselect all"
 msgstr "Zaznacz/odznacz wszystko"
 
-#: resources/views/media-table.phtml:30
+#: resources/views/media-table.phtml:32
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Moduł Fancy Imagebar szanuje ustawienia prywatności!"
 
-#: resources/views/media-table.phtml:35
+#: resources/views/media-table.phtml:38
 msgid "Toggle this checkbox to select all images."
 msgstr "Przełącz to pole wyboru, aby wybrać wszystkie obrazy."
 

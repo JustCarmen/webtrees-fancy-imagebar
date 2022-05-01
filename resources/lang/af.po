@@ -19,31 +19,31 @@ msgstr "Sny duimnaels na vierkant"
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
 
-#: resources/views/settings.phtml:62
+#: resources/views/settings.phtml:63
 msgid "Height of the Fancy Imagebar"
 msgstr "Hoogte van die Fancy Imagebar"
 
-#: resources/views/settings.phtml:84
+#: resources/views/settings.phtml:85
 msgid "Show the Fancy Imagebar on the homepage only"
 msgstr "Show the Fancy Imagebar on the homepage only"
 
-#: resources/views/media-table.phtml:28
+#: resources/views/media-table.phtml:30
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
 msgstr "Hier kan u kies watter beelde in die Fancy Imagebar vertoon moet word. As minder beelde gekies word as wat nodig is om die hele Fancy Imagebar te vul, word die beelde herhaal."
 
-#: resources/views/media-table.phtml:29
+#: resources/views/media-table.phtml:31
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
 msgstr "Let wel: Hierdie module ondersteun slegs plaaslike \"jpg\" - of \"png\" -beelde. Eksterne beelde word nie ondersteun nie. Dit is nie moontlik om deursigtigheid te behou vir png -kleinkiekies in die Fancy Imagebar nie. Deursigtige png-duimnaels kry 'n swart agtergrond. Die beelde in hierdie tabel het reeds die korrekte spesifikasies."
 
-#: resources/views/media-table.phtml:34
+#: resources/views/media-table.phtml:37
 msgid "Select/unselect all"
 msgstr "Kies/ontkies alles"
 
-#: resources/views/media-table.phtml:30
+#: resources/views/media-table.phtml:32
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Die Fancy Imagebar -module respekteer privaatheidsinstellings!"
 
-#: resources/views/media-table.phtml:35
+#: resources/views/media-table.phtml:38
 msgid "Toggle this checkbox to select all images."
 msgstr "Skakel hierdie boks om alle prente te kies."
 

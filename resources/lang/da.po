@@ -19,31 +19,31 @@ msgstr "Beskær miniaturebilleder til firkantet"
 msgid "Fancy Imagebar"
 msgstr "Fancy Billedegalleri"
 
-#: resources/views/settings.phtml:62
+#: resources/views/settings.phtml:63
 msgid "Height of the Fancy Imagebar"
 msgstr "Højde på galleriet"
 
-#: resources/views/settings.phtml:84
+#: resources/views/settings.phtml:85
 msgid "Show the Fancy Imagebar on the homepage only"
 msgstr "Show the Fancy Imagebar on the homepage only"
 
-#: resources/views/media-table.phtml:28
+#: resources/views/media-table.phtml:30
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
 msgstr "Her kan du vælge, hvilke billeder der skal vises i Fancy Imagebar. Hvis der vælges færre billeder end nødvendigt for at fylde hele Fancy Imagebar, gentages billederne."
 
-#: resources/views/media-table.phtml:29
+#: resources/views/media-table.phtml:31
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
 msgstr "Bemærk: Kun lokale “jpg” eller “png” billeder understøttes af dette modul. Eksterne billeder understøttes ikke. Det er ikke muligt at bevare gennemsigtighed for png -miniaturebilleder i Fancy Imagebar. Gennemsigtige png-miniaturer får en sort baggrund. Billederne i denne tabel har allerede de korrekte specifikationer."
 
-#: resources/views/media-table.phtml:34
+#: resources/views/media-table.phtml:37
 msgid "Select/unselect all"
 msgstr "Vælg/fjern markeringen af alle"
 
-#: resources/views/media-table.phtml:30
+#: resources/views/media-table.phtml:32
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Fancy Imagebar -modulet respekterer privatlivsindstillinger!"
 
-#: resources/views/media-table.phtml:35
+#: resources/views/media-table.phtml:38
 msgid "Toggle this checkbox to select all images."
 msgstr "Skift dette afkrydsningsfelt for at vælge alle billeder."
 

@@ -26,7 +26,7 @@ msgstr "Altura de la Barra Elegante"
 
 #: resources/views/settings.phtml:85
 msgid "Show the Fancy Imagebar on the homepage only"
-msgstr "Barra Elegante sólo en página de inicio\n"
+msgstr "Barra Elegante sólo en página de inicio"
 ""
 
 #: resources/views/media-table.phtml:30

@@ -4,12 +4,22 @@
 .jc-fancy-imagebar {
   overflow: hidden;
 }
+
 .jc-fancy-imagebar img {
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+[dir="ltr"] .jc-fancy-imagebar img {
   -o-object-position: left;
      object-position: left;
 }
+
+[dir="rtl"] .jc-fancy-imagebar img {
+  -o-object-position: right;
+     object-position: right;
+}
+
 .jc-fancy-imagebar-map area {
   outline: none;
 }
@@ -34,26 +44,18 @@
 
 [dir] .wt-theme-fab .jc-fancy-imagebar {
   border: 5px solid #EEE;
-}
-
-[dir=ltr] .wt-theme-fab .jc-fancy-imagebar {
   border-bottom-right-radius: 0.25rem;
   border-bottom-left-radius: 0.25rem;
   margin-left: auto;
   margin-right: auto;
 }
 
-[dir=rtl] .wt-theme-fab .jc-fancy-imagebar {
-  border-bottom-left-radius: 0.25rem;
-  border-bottom-right-radius: 0.25rem;
-  margin-right: auto;
-  margin-left: auto;
-}
 @media (min-width: 992px) {
   .wt-theme-fab .jc-fancy-imagebar {
     max-width: 960px;
   }
 }
+
 @media (min-width: 1200px) {
   .wt-theme-fab .jc-fancy-imagebar {
     max-width: 1140px;
@@ -71,9 +73,11 @@
 [dir] .wt-theme-webtrees .jc-fancy-imagebar {
   margin-top: 3px;
 }
+
 .wt-theme-webtrees .jc-fancy-imagebar-divider {
   height: 1px;
 }
+
 [dir] .wt-theme-webtrees .jc-fancy-imagebar-divider {
   background-color: #81A9CB;
   margin-top: 3px;
@@ -82,9 +86,11 @@
 [dir] .wt-theme-xenea .jc-fancy-imagebar {
   margin-top: 5px;
 }
+
 .wt-theme-xenea .jc-fancy-imagebar-divider {
   height: 2px;
 }
+
 [dir] .wt-theme-xenea .jc-fancy-imagebar-divider {
   background-color: #0073CF;
   margin: 5px;
@@ -95,38 +101,33 @@
   width: 100%;
   max-width: 95vw;
 }
-[dir=ltr] .wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
+
+[dir] .wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
   margin-left: auto;
   margin-right: auto;
   border-left: 15px solid white;
   border-right: 15px solid white;
 }
-[dir=rtl] .wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
-  margin-right: auto;
-  margin-left: auto;
-  border-right: 15px solid white;
-  border-left: 15px solid white;
-}
+
 @media (min-width: 992px) {
   .wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
     max-width: 960px;
   }
 }
+
 @media (min-width: 1200px) {
   .wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
     max-width: 1140px;
   }
 }
+
 @media (min-width: 768px) {
   .wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
     max-width: 85vw;
   }
 }
-[dir=ltr] .wt-theme-_myartjaub_ruraltheme_ .container-lg {
+
+[dir] .wt-theme-_myartjaub_ruraltheme_ .container-lg {
   padding-left: 15px !important;
   padding-right: 15px !important;
-}
-[dir=rtl] .wt-theme-_myartjaub_ruraltheme_ .container-lg {
-  padding-right: 15px !important;
-  padding-left: 15px !important;
 }

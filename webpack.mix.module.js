@@ -18,10 +18,10 @@ let mix = require('laravel-mix');
 let config = require('./webpack.mix.config');
 
 // https://github.com/postcss/autoprefixer
-const postcss_autoprefixer = require("autoprefixer")();
+const postcssAutoprefixer = require("autoprefixer")();
 
-//https://github.com/jakob101/postcss-inline-rtl
-const postcss_rtl = require("@mjhenkes/postcss-rtl")();
+// https://github.com/elchininet/postcss-rtlcss
+const postcssRTLCSS = require('postcss-rtlcss')({safeBothPrefix: true});
 
 const dist_dir = 'dist/jc-fancy-imagebar';
 
@@ -37,8 +37,8 @@ if (process.env.NODE_ENV === 'production') {
         .options({
             processCssUrls: false,
             postCss: [
-                postcss_rtl,
-                postcss_autoprefixer
+                postcssRTLCSS,
+                postcssAutoprefixer
             ]
         });
 }

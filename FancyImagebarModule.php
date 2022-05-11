@@ -192,7 +192,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         $this->layout = 'layouts/administration';
 
-        $tree_id = $this->getPreference('last-tree-id');
+        $tree_id = $this->getPreference('last-tree-id', '');
 
         try {
             $tree = $this->tree_service->find((int)$tree_id);

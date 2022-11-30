@@ -19,7 +19,7 @@ A cool new feature is that the images in the imagebar are clickable now. By clic
 
 Translations
 ------------
-You can help to translate this module. The language files are at [POEditor][3] where you can update them. Or use a local editor, like poeditor or notepad++ to make the translations and send them back to me. You can do this via a pull request (if you know how) or by e-mail. Updated translations will be included in the next release of this module.
+You can help to translate this module. The language files are at [POEditor][3] where you can update them. Or use a local editor, like Poedit or Notepad++ to make the translations and send them back to me. You can do this via a pull request (if you know how) or by e-mail. Updated translations will be included in the next release of this module.
 
 Installation & upgrading
 ------------------------

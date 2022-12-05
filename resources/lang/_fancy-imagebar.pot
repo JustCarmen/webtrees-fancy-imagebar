@@ -1,7 +1,8 @@
+#, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
-"POT-Creation-Date: 2022-05-01 09:18+0200\n"
+"POT-Creation-Date: 2022-12-05 07:16+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Carmen <carmen@justcarmen.nl>\n"
 "Language-Team: \n"
@@ -10,25 +11,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.0.1\n"
+"X-Generator: Poedit 3.2.2\n"
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
+"X-Poedit-Flags-xgettext: --add-comments\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: .git\n"
 "X-Poedit-SearchPathExcluded-1: dist\n"
 "X-Poedit-SearchPathExcluded-2: node_modules\n"
 "X-Poedit-SearchPathExcluded-3: src\n"
 
-#: FancyImagebarModule.php:74
+#: FancyImagebarModule.php:110
 msgid "An imagebar with small images between header and content."
 msgstr ""
 
-#: resources/views/settings.phtml:73
+#: resources/views/settings.phtml:74
 msgid "Crop thumbnails to square"
 msgstr ""
 
-#: FancyImagebarModule.php:64
+#: FancyImagebarModule.php:100
 msgid "Fancy Imagebar"
 msgstr ""
 

@@ -7,27 +7,22 @@ msgstr ""
 "Project-Id-Version: Fancy Imagebar for webtrees 2\n"
 "Language: es\n"
 
-#: FancyImagebarModule.php:74
+#: FancyImagebarModule.php:110
 msgid "An imagebar with small images between header and content."
 msgstr "Barra con mini-imágenes  entre encabezado y contenido"
 
-#: resources/views/settings.phtml:73
+#: resources/views/settings.phtml:74
 msgid "Crop thumbnails to square"
 msgstr "Recorte imágenes a cuadro"
 
 #. I have removed "de Imágenes¨ to fit the alloted space.
-#: FancyImagebarModule.php:64
+#: FancyImagebarModule.php:100
 msgid "Fancy Imagebar"
 msgstr "Barra Elegante"
 
 #: resources/views/settings.phtml:63
 msgid "Height of the Fancy Imagebar"
 msgstr "Altura de la Barra Elegante"
-
-#: resources/views/settings.phtml:85
-msgid "Show the Fancy Imagebar on the homepage only"
-msgstr "Barra Elegante sólo en página de inicio"
-""
 
 #: resources/views/media-table.phtml:30
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
@@ -40,6 +35,11 @@ msgstr "Nota: Este módulo soporta sólo imágenes “jpg” or “png” locale
 #: resources/views/media-table.phtml:37
 msgid "Select/unselect all"
 msgstr "Optar/no optar todo"
+
+#: resources/views/settings.phtml:85
+msgid "Show the Fancy Imagebar on the homepage only"
+msgstr "Barra Elegante sólo en página de inicio\n"
+""
 
 #: resources/views/media-table.phtml:32
 msgid "The Fancy Imagebar module respects privacy settings!"

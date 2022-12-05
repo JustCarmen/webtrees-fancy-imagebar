@@ -7,25 +7,21 @@ msgstr ""
 "Project-Id-Version: Fancy Imagebar for webtrees 2\n"
 "Language: nl\n"
 
-#: FancyImagebarModule.php:74
+#: FancyImagebarModule.php:110
 msgid "An imagebar with small images between header and content."
 msgstr "Een galerij met kleine afbeeldingen tussen koptekst en inhoud."
 
-#: resources/views/settings.phtml:73
+#: resources/views/settings.phtml:74
 msgid "Crop thumbnails to square"
 msgstr "Miniaturen bijsnijden tot vierkant"
 
-#: FancyImagebarModule.php:64
+#: FancyImagebarModule.php:100
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
 
 #: resources/views/settings.phtml:63
 msgid "Height of the Fancy Imagebar"
 msgstr "Hoogte van de Fancy Imagebar"
-
-#: resources/views/settings.phtml:85
-msgid "Show the Fancy Imagebar on the homepage only"
-msgstr "Toon de Fancy Imagebar alleen op de homepage"
 
 #: resources/views/media-table.phtml:30
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
@@ -38,6 +34,10 @@ msgstr "Opmerking: alleen lokale \"jpg\"- of \"png\"-afbeeldingen worden door de
 #: resources/views/media-table.phtml:37
 msgid "Select/unselect all"
 msgstr "Alles selecteren/deselecteren"
+
+#: resources/views/settings.phtml:85
+msgid "Show the Fancy Imagebar on the homepage only"
+msgstr "Toon de Fancy Imagebar alleen op de homepage"
 
 #: resources/views/media-table.phtml:32
 msgid "The Fancy Imagebar module respects privacy settings!"

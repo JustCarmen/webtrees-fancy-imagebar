@@ -7,25 +7,21 @@ msgstr ""
 "Project-Id-Version: Fancy Imagebar for webtrees 2\n"
 "Language: ru\n"
 
-#: FancyImagebarModule.php:74
+#: FancyImagebarModule.php:110
 msgid "An imagebar with small images between header and content."
 msgstr "Панель изображений с небольшими изображениями между заголовком и содержимым."
 
-#: resources/views/settings.phtml:73
+#: resources/views/settings.phtml:74
 msgid "Crop thumbnails to square"
 msgstr "Обрезать миниатюры до квадрата"
 
-#: FancyImagebarModule.php:64
+#: FancyImagebarModule.php:100
 msgid "Fancy Imagebar"
 msgstr "Необычная панель изображений"
 
 #: resources/views/settings.phtml:63
 msgid "Height of the Fancy Imagebar"
 msgstr "Высота необычной панели изображений"
-
-#: resources/views/settings.phtml:85
-msgid "Show the Fancy Imagebar on the homepage only"
-msgstr "Показывать Fancy Imagebar только на главной странице"
 
 #: resources/views/media-table.phtml:30
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
@@ -38,6 +34,10 @@ msgstr "Примечание. Этот модуль поддерживает т�
 #: resources/views/media-table.phtml:37
 msgid "Select/unselect all"
 msgstr "Выбрать все / отменить выбор"
+
+#: resources/views/settings.phtml:85
+msgid "Show the Fancy Imagebar on the homepage only"
+msgstr "Показывать Fancy Imagebar только на главной странице"
 
 #: resources/views/media-table.phtml:32
 msgid "The Fancy Imagebar module respects privacy settings!"

@@ -39,33 +39,14 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     use ModuleConfigTrait;
     use ModuleGlobalTrait;
 
-    /**
-     * @var string
-     */
+    // Module constants
     public const CUSTOM_AUTHOR = 'JustCarmen';
-
-    /**
-     * @var string
-     */
     public const CUSTOM_VERSION = '2.2.0';
-
-    /**
-     * @var string
-     */
     public const GITHUB_REPO = 'webtrees-fancy-imagebar';
-
-    /**
-     * @var string
-     */
     public const AUTHOR_WEBSITE = 'https://justcarmen.nl';
-
-     /**
-     * @var string
-     */
     public const CUSTOM_SUPPORT_URL = self::AUTHOR_WEBSITE . '/modules-webtrees-2/fancy-imagebar/';
-     /**
-     * @var string
-     */
+
+    // Image cache dir
     private const CACHE_DIR = Webtrees::DATA_DIR . 'fib-cache/';
 
     /** @var MediaFileService */

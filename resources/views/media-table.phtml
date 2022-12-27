@@ -41,8 +41,9 @@ $media_xrefs = implode(",", $arr_media_xrefs);
     class="table table-bordered table-sm wt-table-media datatables d-none"
     <?= view('lists/datatables-attributes') ?>
     data-columns="<?= e(json_encode([
-        null
-    ])) ?>"
+        null,
+        ['visible' => false],
+    ], JSON_THROW_ON_ERROR)) ?>"
 >
     <caption class="sr-only">
         <?= $caption ?? I18N::translate('Media objects') ?>
@@ -51,6 +52,7 @@ $media_xrefs = implode(",", $arr_media_xrefs);
     <thead>
         <tr>
             <th><?= I18N::translate('Media') ?></th>
+            <th></th>
         </tr>
     </thead>
 
@@ -77,6 +79,7 @@ $media_xrefs = implode(",", $arr_media_xrefs);
                     <?php endif ?>
                     <div class="text-center"><?= view('components/checkbox-inline', ['label' => '', 'name' => 'media-checkbox', 'value' => $media_object->xref() . '[' . $i . ']', 'checked' => $checked]) ?></div>
                     </td>
+                    <td><?= $media_file->title() ?></td>
                 <?php endforeach ?>
             </tr>
         <?php endforeach ?>

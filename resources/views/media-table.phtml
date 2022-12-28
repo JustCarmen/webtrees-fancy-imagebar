@@ -57,13 +57,11 @@ $media_xrefs = implode(",", $arr_media_xrefs);
     </thead>
 
     <tbody>
+        <!-- Thumbnails-->
         <?php foreach ($media_objects as $media_object) : ?>
-            <tr class="d-block float-start">
-                <!-- Thumbnails-->
-                <?php $arr_media_list = explode(',', $media_list) ?>
-                <?php $i = 0 ?>
-                <?php foreach ($media_object->mediaFiles() as $media_file) : ?>
-                    <?php $i++ ?>
+            <?php $arr_media_list = explode(',', $media_list) ?>
+            <?php foreach ($media_object->mediaFiles() as $media_file) : ?>
+                <tr class="d-block float-start">
                     <td>
                     <?php
                         if (count($arr_media_list) > 0) {
@@ -72,16 +70,12 @@ $media_xrefs = implode(",", $arr_media_xrefs);
                             $checked = 'checked';
                         }
                     ?>
-                    <?php if ($i > 1): ?>
-                        <?= $media_file->displayImage(100, 100, 'crop', ['data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => strip_tags($media_object->fullName()) . ' (' . $i . ')']) ?>
-                    <?php else: ?>
-                        <?= $media_file->displayImage(100, 100, 'crop', ['data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => strip_tags($media_object->fullName())]) ?>
-                    <?php endif ?>
+                    <?= $media_file->displayImage(100, 100, 'crop', ['data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => $media_file->title()]) ?>
                     <div class="text-center"><?= view('components/checkbox-inline', ['label' => '', 'name' => 'media-checkbox', 'value' => $media_object->xref() . '[' . $i . ']', 'checked' => $checked]) ?></div>
                     </td>
                     <td><?= $media_file->title() ?></td>
-                <?php endforeach ?>
-            </tr>
+                </tr>
+            <?php endforeach ?>
         <?php endforeach ?>
     </tbody>
 </table>

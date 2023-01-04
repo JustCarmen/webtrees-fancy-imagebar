@@ -200,7 +200,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $media_folder = $this->getPreference($tree_id . '-media-folder');
         $media_type = $this->getPreference($tree_id . '-media-type');
         $subfolders = $this->getPreference($tree_id . '-subfolders');
-        $media_objects = $this->allMedia($tree, str_replace($tree->getPreference('MEDIA_DIRECTORY', 'media/'), "", $media_folder), $subfolders, $media_type, false);
+        $media_objects = $this->allMedia($tree, str_replace($tree->getPreference('MEDIA_DIRECTORY', 'media/'), "", $media_folder), $subfolders, $media_type);
 
         return $this->viewResponse($this->name() . '::settings', [
             'all_trees'        => $this->tree_service->all(),
@@ -372,11 +372,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $canvas_height   = $this->getPreference($tree->id() . '-canvas-height', '80');
         $canvas_width    = 3840; // Add support for 4K displays
 
-        // We cannot determine how much images we need at this point but we have to set a limit
-        // because people are complaining about performance. So the best we can do is assuming
-        // a 4K display and a portrait ratio of 3/4 (e.g. w60 h80)
-        $limit           = (int)($canvas_width / ($canvas_height * 3/4));
-
         // strip out the default media directory from the folder path. It is not stored in the database
         $folder = str_replace($wt_media_folder, "", $this->getPreference($tree->id() . '-media-folder'));
 
@@ -384,11 +379,21 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $subfolders = $subfolders === '1' ? 'include' : 'exclude';
 
         // pull the records from the database
-        $records = $this->allMedia($tree, $folder, $subfolders, $media_type, true, $limit);
+        $records = $this->allMedia($tree, $folder, $subfolders, $media_type, true);
 
         if (count($records) === 0) {
             return '';
         }
+
+        // randomize the collection
+        $records = $records->shuffle();
+
+        // We cannot determine how much images we need at this point but we have to set a limit
+        // because people are complaining about performance. So the best we can do is assuming
+        // a 4K display and a portrait ratio of 3/4 (e.g. w60 h80)
+        $limit = (int)($canvas_width / ($canvas_height * 3/4));
+
+        $records = $records->slice(0, $limit);
 
         // Get the thumbnail resources
         $resources = array();
@@ -443,9 +448,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         if ($calculated_width < $canvas_width) {
             $average_thumb_width = (float)$calculated_width / count($resources);
             $num_thumbs = (int)ceil($canvas_width / $average_thumb_width);
-            // see: https://stackoverflow.com/questions/2963777/how-to-repeat-an-array-in-php
-            // works in php 5.6+
-            shuffle($resources); // randomize the order of images in the Fancy imagebar before filling up
+            // see: https://stackoverflow.com/questions/2963777/how-to-repeat-an-array-in-php            
             $resources = array_merge(...array_fill(0, $num_thumbs - count($resources), $resources));
         }
 
@@ -464,7 +467,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @return Collection<Media>
      */
-    private function allMedia(Tree $tree, string $folder, string $subfolders, string $type, bool $random, int $limit = 0): Collection
+    private function allMedia(Tree $tree, string $folder, string $subfolders, string $type, bool $select = false): Collection
     {
         $query = DB::table('media')
             ->join('media_file', static function (JoinClause $join): void {
@@ -476,20 +479,23 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             ->where('multimedia_file_refn', 'LIKE', $folder . '%')
             ->whereIn('multimedia_format', ['jpg', 'jpeg', 'png']);
 
+
+        if ($select && $this->getPreference($tree->id() . '-media-list')) {
+            $media_list = collect(explode(',', $this->getPreference($tree->id() . '-media-list')))->map(function ($xref) {
+                return substr($xref, 0, strpos($xref, "["));;
+            });
+
+            if ($media_list->count() > 0) {
+                $query->whereIn('media_file.m_id', $media_list);
+            }
+        }
+
         if ($subfolders === 'exclude') {
             $query->where('multimedia_file_refn', 'NOT LIKE', $folder . '%/%');
         }
 
         if ($type) {
             $query->where('source_media_type', '=', $type);
-        }
-
-        if ($random) {
-            $query->inRandomOrder();
-        }
-
-        if ($limit > 0) {
-            $query->limit($limit);
         }
 
         return $query

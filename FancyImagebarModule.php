@@ -448,8 +448,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         if ($calculated_width < $canvas_width) {
             $average_thumb_width = (float)$calculated_width / count($resources);
             $num_thumbs = (int)ceil($canvas_width / $average_thumb_width);
-            // see: https://stackoverflow.com/questions/2963777/how-to-repeat-an-array-in-php            
-            $resources = array_merge(...array_fill(0, $num_thumbs - count($resources), $resources));
+            // see: https://stackoverflow.com/questions/2963777/how-to-repeat-an-array-in-php
+            $resources = array_merge(...array_fill(0, (int)ceil($num_thumbs/count($resources)), $resources));
         }
 
         return $this->createFancyImagebar($resources, $canvas_width, $canvas_height);

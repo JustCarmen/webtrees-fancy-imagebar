@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Fancy Imagebar for webtrees 2\n"
 "Language: is\n"
 
-#: FancyImagebarModule.php:110
+#: FancyImagebarModule.php:91
 msgid "An imagebar with small images between header and content."
 msgstr "Myndastika með smámyndum á milli haus og efnis."
 
@@ -15,7 +15,7 @@ msgstr "Myndastika með smámyndum á milli haus og efnis."
 msgid "Crop thumbnails to square"
 msgstr "Kroppa smámyndir í ferning"
 
-#: FancyImagebarModule.php:100
+#: FancyImagebarModule.php:81
 msgid "Fancy Imagebar"
 msgstr "Flott myndastika"
 

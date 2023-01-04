@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Fancy Imagebar for webtrees 2\n"
 "Language: hu\n"
 
-#: FancyImagebarModule.php:110
+#: FancyImagebarModule.php:91
 msgid "An imagebar with small images between header and content."
 msgstr "Egy képsáv bélyegképekkel a fejléc és tartalom között."
 
@@ -15,7 +15,7 @@ msgstr "Egy képsáv bélyegképekkel a fejléc és tartalom között."
 msgid "Crop thumbnails to square"
 msgstr "Körbevágja az indexképeket"
 
-#: FancyImagebarModule.php:100
+#: FancyImagebarModule.php:81
 msgid "Fancy Imagebar"
 msgstr "Fancy képsáv"
 

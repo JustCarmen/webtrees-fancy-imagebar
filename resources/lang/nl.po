@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Fancy Imagebar for webtrees 2\n"
 "Language: nl\n"
 
-#: FancyImagebarModule.php:110
+#: FancyImagebarModule.php:91
 msgid "An imagebar with small images between header and content."
 msgstr "Een galerij met kleine afbeeldingen tussen koptekst en inhoud."
 
@@ -15,7 +15,7 @@ msgstr "Een galerij met kleine afbeeldingen tussen koptekst en inhoud."
 msgid "Crop thumbnails to square"
 msgstr "Miniaturen bijsnijden tot vierkant"
 
-#: FancyImagebarModule.php:100
+#: FancyImagebarModule.php:81
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
 

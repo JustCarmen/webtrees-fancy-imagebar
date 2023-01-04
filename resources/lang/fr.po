@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: Fancy Imagebar for webtrees 2\n"
 "Language: fr\n"
 
-#: FancyImagebarModule.php:110
+#: FancyImagebarModule.php:91
 msgid "An imagebar with small images between header and content."
 msgstr "Une barre d'image avec de petites images entre l'en-tête et le contenu."
 
@@ -15,7 +15,7 @@ msgstr "Une barre d'image avec de petites images entre l'en-tête et le contenu.
 msgid "Crop thumbnails to square"
 msgstr "Recadrer les miniatures en carré"
 
-#: FancyImagebarModule.php:100
+#: FancyImagebarModule.php:81
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
 

@@ -482,7 +482,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         if ($select && $this->getPreference($tree->id() . '-media-list')) {
             $media_list = collect(explode(',', $this->getPreference($tree->id() . '-media-list')))->map(function ($xref) {
-                return substr($xref, 0, strpos($xref, "["));;
+                return substr($xref, 0, (int)strpos($xref, "["));
             });
 
             if ($media_list->count() > 0) {

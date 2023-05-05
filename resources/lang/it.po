@@ -9,7 +9,7 @@ msgstr ""
 
 #: FancyImagebarModule.php:91
 msgid "An imagebar with small images between header and content."
-msgstr "Una Imagebar con piccole immagini tra intestazione e contenuti."
+msgstr "Una barra con piccole immagini tra intestazione e contenuti."
 
 #: resources/views/settings.phtml:74
 msgid "Crop thumbnails to square"
@@ -17,11 +17,11 @@ msgstr "Ritaglia le miniature in un quadrato"
 
 #: FancyImagebarModule.php:81
 msgid "Fancy Imagebar"
-msgstr "Fancy-Imagebar"
+msgstr "Fancy Imagebar"
 
 #: resources/views/settings.phtml:63
 msgid "Height of the Fancy Imagebar"
-msgstr "Altezza della Fancy Imagebar"
+msgstr "Altezza di Fancy Imagebar"
 
 #: resources/views/media-table.phtml:30
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
@@ -37,7 +37,7 @@ msgstr "Seleziona/deseleziona tutto"
 
 #: resources/views/settings.phtml:85
 msgid "Show the Fancy Imagebar on the homepage only"
-msgstr "Show the Fancy Imagebar on the homepage only"
+msgstr "Mostra Fancy Imagebar solo in homepage"
 
 #: resources/views/media-table.phtml:32
 msgid "The Fancy Imagebar module respects privacy settings!"
@@ -45,5 +45,5 @@ msgstr "Il modulo Fancy Imagebar rispetta le impostazioni sulla privacy!"
 
 #: resources/views/media-table.phtml:38
 msgid "Toggle this checkbox to select all images."
-msgstr "Attiva o disattiva questa casella di controllo per selezionare tutte le immagini."
+msgstr "Seleziona/Deseleziona tutte le immagini."
 

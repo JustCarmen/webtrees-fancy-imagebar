@@ -13,7 +13,7 @@ msgstr "Eine Bildleiste mit kleinen Fotos zwischen dem Seitenkopf und dem Seiten
 
 #: resources/views/settings.phtml:74
 msgid "Crop thumbnails to square"
-msgstr "Schneiden Sie die Miniaturansichten auf das Quadrat"
+msgstr "Miniaturansichten auf eine quadratische Form zuschneiden"
 
 #: FancyImagebarModule.php:81
 msgid "Fancy Imagebar"
@@ -29,7 +29,7 @@ msgstr "Hier können Sie auswählen, welche Bilder in der Fancy Imagebar angezei
 
 #: resources/views/media-table.phtml:31
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
-msgstr "Hinweis: Dieses Modul unterstützt nur lokale „jpg“- oder „png“-Bilder. Externe Bilder werden nicht unterstützt. Es ist nicht möglich, die Transparenz für PNG-Miniaturansichten in der Fancy Imagebar beizubehalten. Transparente PNG-Thumbnails erhalten einen schwarzen Hintergrund. Die Bilder in dieser Tabelle haben bereits die richtigen Spezifikationen."
+msgstr "Hinweis: Dieses Modul unterstützt nur lokale „jpg“- oder „png“-Bilder. Externe Bilder werden nicht unterstützt. Es ist nicht möglich, die Transparenz für PNG-Miniaturansichten in der Fancy Imagebar zu nutzen. Transparente PNG-Miniaturansichten erhalten einen schwarzen Hintergrund. Die Bilder in dieser Tabelle haben bereits die richtigen Spezifikationen."
 
 #: resources/views/media-table.phtml:37
 msgid "Select/unselect all"
@@ -37,7 +37,7 @@ msgstr "Alle auswählen/abwählen"
 
 #: resources/views/settings.phtml:85
 msgid "Show the Fancy Imagebar on the homepage only"
-msgstr "Die Fancy Imagebar nur auf der Startseite anzeigen"
+msgstr "Fancy Imagebar nur auf der Startseite anzeigen"
 
 #: resources/views/media-table.phtml:32
 msgid "The Fancy Imagebar module respects privacy settings!"

@@ -370,7 +370,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $square_thumbs   = $this->getPreference($tree->id() . '-square-thumbs', '0');
         $media_list      = $this->getPreference($tree->id() . '-media-list');
         $canvas_height   = $this->getPreference($tree->id() . '-canvas-height', '80');
-        $canvas_width    = 3840; // Add support for 4K displays
 
         // strip out the default media directory from the folder path. It is not stored in the database
         $folder = str_replace($wt_media_folder, "", $this->getPreference($tree->id() . '-media-folder'));
@@ -388,10 +387,11 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         // randomize the collection
         $records = $records->shuffle();
 
-        // We cannot determine how much images we need at this point but we have to set a limit
-        // because people are complaining about performance. So the best we can do is assuming
-        // a 4K display and a portrait ratio of 3/4 (e.g. w60 h80)
-        $limit = (int)($canvas_width / ($canvas_height * 3/4));
+        // We cannot currently determine exactly how many images we need, but we need to set a limit due to performance.
+        // The best we can do is to set a cookie based on the user's screen width.
+        // Use a default value equal to a 4K screen and a portrait ratio of 3/4 (e.g. w60 h80)
+        $canvas_width = isset($_COOKIE["FIB_WIDTH"]) ? $_COOKIE["FIB_WIDTH"] : "3840";
+        $limit        = (int)($canvas_width / ($canvas_height * 3/4));
 
         $records = $records->slice(0, $limit);
 

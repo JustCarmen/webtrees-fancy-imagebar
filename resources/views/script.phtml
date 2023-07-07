@@ -1,13 +1,40 @@
 <?php
 
-// script to keep map coords and images in sync
-
 use Fisharebest\Webtrees\View;
 
 ?>
 
 <?php View::push('javascript') ?>
 <script>
+    // Detect browser screen width and store it in a session cookie
+    // https://www.w3schools.com/js/js_cookies.asp
+    // https://stackoverflow.com/questions/14196671/session-only-cookies-with-javascript
+    function setCookie(cname, cvalue) {
+        document.cookie = cname + "=" + cvalue + ";path=/";
+    }
+
+    function getCookie(cname) {
+        let name = cname + "=";
+        let ca = document.cookie.split(';');
+        for(let i = 0; i < ca.length; i++) {
+            let c = ca[i];
+            while (c.charAt(0) === ' ') {
+                c = c.substring(1);
+            }
+            if (c.indexOf(name) == 0) {
+                return c.substring(name.length, c.length);
+            }
+        }
+        return "";
+    }
+
+    if (window.innerWidth !== getCookie("FIB_WIDTH")) {
+        setCookie("FIB_WIDTH", window.innerWidth);
+    }
+
+    // Script to keep map coords and images in sync
+
+    // Map coordinates
     mapcoords();
     $(window).resize(function() {
         mapcoords();

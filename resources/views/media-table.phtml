@@ -60,12 +60,14 @@ $media_xrefs = implode(",", $arr_media_xrefs);
         <!-- Thumbnails-->
         <?php foreach ($media_objects as $media_object) : ?>
             <?php $arr_media_list = explode(',', $media_list) ?>
+            <?php $i = 0 ?>
             <?php foreach ($media_object->mediaFiles() as $media_file) : ?>
+                <?php $i++ ?>
                 <tr class="d-block float-start">
                     <td>
                     <?php
                         if (count($arr_media_list) > 0) {
-                            $checked = in_array($media_object->xref(), $arr_media_list) ? 'checked' : '';
+                            $checked = in_array($media_object->xref(). '[' . $i . ']', $arr_media_list) ? 'checked' : '';
                         } else {
                             $checked = 'checked';
                         }

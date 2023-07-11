@@ -376,15 +376,20 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         // include or exclude subfolders
         $subfolders = $subfolders === '1' ? 'include' : 'exclude';
 
-        // pull the records from the database
-        $records = $this->allMedia($tree, $folder, $subfolders, $media_type, true);
+        // Pull the user defined medialist from the database module settings
+        $media_list = $this->getMediaList($tree);
 
-        if (count($records) === 0) {
-            return '';
+         // Get the collection of xrefs to work with
+         if ($media_list->isEmpty()) {
+            $xrefs = $this->getMediaXrefs($tree, $folder, $subfolders, $media_type);
+        } else {
+            $xrefs = $media_list->map(function ($xref) {
+                return substr($xref, 0, (int)strpos($xref, "["));
+            })->unique();
         }
 
         // randomize the collection
-        $records = $records->shuffle();
+        $xrefs = $xrefs->shuffle();
 
         // We cannot currently determine exactly how many images we need, but we need to set a limit due to performance.
         // The best we can do is to set a cookie based on the user's screen width.
@@ -392,49 +397,49 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $canvas_width = isset($_COOKIE["FIB_WIDTH"]) ? $_COOKIE["FIB_WIDTH"] : "3840";
         $limit        = (int)($canvas_width / ($canvas_height * 3/4));
 
-        $records = $records->slice(0, $limit);
+        $xrefs = $xrefs->slice(0, $limit);
 
         // Get the thumbnail resources
         $resources = array();
         $calculated_width = 0;
 
-        $media_list = $this->getMediaList($tree);
+        foreach ($xrefs as $xref) {
 
-        foreach ($records as $record) {
-            $i = 0; // counter for multiple media files in a media object
-            foreach ($record->mediaFiles() as $media_file) {
-                $i++;
-                $media_id = $record->xref() . '[' . $i . ']';
+            $media = Registry::mediaFactory()->make($xref, $tree);
 
-				if ($media_list->count() > 0 && $media_list->isNotEmpty()) {
-                    $process_image = $media_list->contains($media_id);
-                } else {
-                    $process_image = in_array($media_file->mimeType(), ['image/jpeg','image/png'], true);
-                }
+            if ($media->canShow()) {
+                $i = 0; // counter for multiple media files in a media object
+                foreach ($media->mediaFiles() as $media_file) {
+                    $i++;
+                    $media_id = $xref . '[' . $i. ']';
 
-                if ($process_image === true && $media_file->fileExists($data_filesystem)) {
+                    $process_image = $media->mediaFiles()->count() > 1 ? $media_list->contains($media_id) : true;
 
-                    $file       = $data_folder . $wt_media_folder . $media_file->filename();
-                    $cache_file = $this->cacheFile($tree, $media_id, $file);
+                    if ($process_image && $media_file->fileExists($data_filesystem)) {
 
-                    if (is_file($cache_file)) {
-                        $fancy_thumb = $this->loadImage($cache_file);
-                    } else {
-                        $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
-                        if (!is_null($fancy_thumb)) {
-                            imagejpeg($fancy_thumb, $cache_file);
+                        $file       = $data_folder . $wt_media_folder . $media_file->filename();
+                        $cache_file = $this->cacheFile($tree, $media_id, $file);
+
+                        if (is_file($cache_file)) {
+                            $fancy_thumb = $this->loadImage($cache_file);
+                        } else {
+                            $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
+                            if (!is_null($fancy_thumb)) {
+                                imagejpeg($fancy_thumb, $cache_file);
+                            }
                         }
-                    }
 
-                    if (!is_null($fancy_thumb)) {
-                        $calculated_width = $calculated_width + imagesx($fancy_thumb);
-                        $resources[] = [
-                            'image'     => $fancy_thumb,
-                            'linked'    => $this->getLinkedObject($record)
-                        ];
+                        if (!is_null($fancy_thumb)) {
+                            $calculated_width = $calculated_width + imagesx($fancy_thumb);
+                            $resources[] = [
+                                'image'     => $fancy_thumb,
+                                'linked'    => $this->getLinkedObject($media)
+                            ];
+                        }
                     }
                 }
             }
+
             if ($calculated_width >= $canvas_width) {
                 break;
             }
@@ -460,6 +465,32 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         return collect(explode(',', $this->getPreference($tree->id() . '-media-list')))->filter(function (string $value) {
             return $value <> "";
         });
+    }
+
+    /**
+     * @param Tree $tree
+     * @param string $folder
+     * @param string $subfolders
+     * @param string $type
+     *
+     * @return Collection
+     */
+    private function getMediaXrefs(Tree $tree, string $folder, string $subfolders, string $type): Collection
+    {
+        $query = DB::table('media_file')
+            ->where('m_file', '=', $tree->id())
+            ->where('multimedia_file_refn', 'LIKE', $folder . '%')
+            ->whereIn('multimedia_format', ['jpg', 'jpeg', 'png']);
+
+        if ($subfolders === 'exclude') {
+            $query->where('multimedia_file_refn', 'NOT LIKE', $folder . '%/%');
+        }
+
+        if ($type) {
+            $query->where('source_media_type', '=', $type);
+        }
+
+        return $query->pluck('m_id')->unique();
     }
 
     /**

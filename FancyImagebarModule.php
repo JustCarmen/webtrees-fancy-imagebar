@@ -208,7 +208,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             'homepage_only'    => $this->getPreference($tree_id . '-homepage-only'),
             'media_folder'     => $media_folder,
             'media_folders'    => $media_folders,
-            'media_list'       => $this->getPreference($tree_id . '-media-list', ''),
+            'media_list'       => $this->getMediaList($tree),
             'media_objects'    => $media_objects,
             'media_type'       => $media_type,
             'media_types'      => $media_types,
@@ -368,7 +368,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $subfolders      = $this->getPreference($tree->id() . '-subfolders', '1');
         $media_type      = $this->getPreference($tree->id() . '-media-type');
         $square_thumbs   = $this->getPreference($tree->id() . '-square-thumbs', '0');
-        $media_list      = $this->getPreference($tree->id() . '-media-list');
         $canvas_height   = $this->getPreference($tree->id() . '-canvas-height', '80');
 
         // strip out the default media directory from the folder path. It is not stored in the database
@@ -397,8 +396,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         // Get the thumbnail resources
         $resources = array();
-        $arr_media_list = explode(',', $media_list);
         $calculated_width = 0;
+
+        $media_list = $this->getMediaList($tree);
 
         foreach ($records as $record) {
             $i = 0; // counter for multiple media files in a media object
@@ -406,8 +406,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                 $i++;
                 $media_id = $record->xref() . '[' . $i . ']';
 
-				if (count($arr_media_list) > 0 && !in_array("", $arr_media_list)) { // the array could contain one empty element if the default value is set ($media_list[0] = '').
-                    $process_image = in_array($media_id, $arr_media_list);
+				if ($media_list->count() > 0 && $media_list->isNotEmpty()) {
+                    $process_image = $media_list->contains($media_id);
                 } else {
                     $process_image = in_array($media_file->mimeType(), ['image/jpeg','image/png'], true);
                 }
@@ -453,6 +453,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         }
 
         return $this->createFancyImagebar($resources, $canvas_width, $canvas_height);
+    }
+
+    private function getMediaList(Tree $tree): Collection
+    {
+        return collect(explode(',', $this->getPreference($tree->id() . '-media-list')))->filter(function (string $value) {
+            return $value <> "";
+        });
     }
 
     /**

@@ -23,8 +23,6 @@ foreach ($media_objects as $media_object) {
 $media_xrefs = implode(",", $arr_media_xrefs);
 
 ?>
-
-<input id="media-list" type="hidden" name="media-list" value = "<?= $media_list ?>">
 <!-- INFO-->
 <div class="alert alert-info alert-dismissible" role="alert">
     <p class="small"><?= I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated.') ?></p>
@@ -59,21 +57,21 @@ $media_xrefs = implode(",", $arr_media_xrefs);
     <tbody>
         <!-- Thumbnails-->
         <?php foreach ($media_objects as $media_object) : ?>
-            <?php $arr_media_list = explode(',', $media_list) ?>
             <?php $i = 0 ?>
             <?php foreach ($media_object->mediaFiles() as $media_file) : ?>
                 <?php $i++ ?>
                 <tr class="d-block float-start">
                     <td>
                     <?php
-                        if (count($arr_media_list) > 0) {
-                            $checked = in_array($media_object->xref(). '[' . $i . ']', $arr_media_list) ? 'checked' : '';
+                        $media_id = $media_object->xref(). '[' . $i . ']';
+                        if ($media_list->count() > 0) {
+                            $checked = $media_list->contains($media_id) ? 'checked' : '';
                         } else {
                             $checked = 'checked';
                         }
                     ?>
                     <?= $media_file->displayImage(100, 100, 'crop', ['data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => $media_file->title()]) ?>
-                    <div class="text-center"><?= view('components/checkbox-inline', ['label' => '', 'name' => 'media-checkbox', 'value' => $media_object->xref() . '[' . $i . ']', 'checked' => $checked]) ?></div>
+                    <div class="text-center"><?= view('components/checkbox-inline', ['label' => '', 'name' => 'media-checkbox', 'value' => $media_id, 'checked' => $checked]) ?></div>
                     </td>
                     <td><?= $media_file->title() ?></td>
                 </tr>
@@ -117,10 +115,10 @@ $media_xrefs = implode(",", $arr_media_xrefs);
 
     $('#select-all-1').change(function(e) {
         if (e.currentTarget.checked) {
-            $("#media-list").val("<?= $media_xrefs ?>");
+            $('#media-list').val('<?= $media_xrefs ?>');
             $('input[type="checkbox"]').prop('checked', true);
         } else {
-            $("#media-list").val("");
+            $('#media-list').val("");
             $('input[type="checkbox"]').prop('checked', false);
         }
     });

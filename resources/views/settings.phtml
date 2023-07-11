@@ -16,6 +16,7 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
         <?= csrf_field() ?>
         <input type="hidden" name="save" id="save" value="1">
         <input type="hidden" name="switch" id="switch" value="1">
+        <input id="media-list" type="hidden" name="media-list" value = "<?= $media_list->implode(',') ?>">
         <!-- TREE LIST -->
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label for=" tree"><?= I18N::translate('Family tree') ?></label>

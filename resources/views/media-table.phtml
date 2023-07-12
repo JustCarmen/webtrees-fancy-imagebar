@@ -57,7 +57,7 @@ $arr_media_xrefs = array();
                     <td>
                     <?php
                         $media_id = $xref. '[' . $i . ']';
-                        if ($media_list->count() > 0) {
+                        if ($media_list->isNotEmpty()) {
                             $checked = $media_list->contains($media_id) ? 'checked' : '';
                         } else {
                             $checked = 'checked';
@@ -90,7 +90,8 @@ $arr_media_xrefs = array();
                 }
             });
         } else {
-            $('input[type="checkbox"]').prop('checked', false);
+            $("input[type=checkbox]", this).prop('checked', true);
+            $('#media-list').val('<?= $media_xrefs ?>');
         }
     });
 

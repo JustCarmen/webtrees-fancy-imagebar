@@ -113,10 +113,10 @@ $arr_media_xrefs = array();
     $('#select-all-1').change(function(e) {
         if (e.currentTarget.checked) {
             $('#media-list').val('<?= $media_xrefs ?>');
-            $('input[type="checkbox"]').prop('checked', true);
+            $('#fancy-imagebar-media-table input[type="checkbox"]').prop('checked', true);
         } else {
             $('#media-list').val("");
-            $('input[type="checkbox"]').prop('checked', false);
+            $('#fancy-imagebar-media-table input[type="checkbox"]').prop('checked', false);
         }
     });
 </script>

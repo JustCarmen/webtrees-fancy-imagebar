@@ -90,12 +90,25 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
                 </div>
             </div>
         </fieldset>
-        <!-- IMAGE TABLE -->
-        <hr/>
-        <?php $module = app(ModuleService::class)->findByName('_jc-fancy-imagebar_'); ?>
-        <?= view($module->name() . '::media-table', ['tree' => $tree, 'xrefs' => $xrefs, 'media_list' => $media_list]) ?>
-        <!-- SAVE BUTTON -->
-        <hr/>
+        <!-- DISPLAY ALL IMAGES IN THE FANCY IMAGEBAR OR USE THE IMAGETABLE TO CHOOSE THE IMAGES TO DISPLAY -->
+        <fieldset class="mb-3">
+            <div class="row">
+                <legend class="col-form-label col-sm-3">
+                    <?= I18N::translate('Display the image table to refine the selection of images') ?>
+                </legend>
+                <div class="col-sm-9">
+                    <?= view('components/radios-inline', ['name' => 'display-all', 'options' => [I18N::translate('no'), I18N::translate('yes')], 'selected' => (int)$display_all]) ?>
+                </div>
+            </div>
+        </fieldset>
+        <?php if ($display_all === '1'): ?>
+            <!-- IMAGE TABLE -->
+            <hr/>
+            <?php $module = app(ModuleService::class)->findByName('_jc-fancy-imagebar_'); ?>
+            <?= view($module->name() . '::media-table', ['tree' => $tree, 'xrefs' => $xrefs, 'media_list' => $media_list]) ?>
+            <!-- SAVE BUTTON -->
+            <hr/>
+        <?php endif ?>
         <button type="submit" class="btn btn-primary">
             <?= view('icons/save') ?>
             <?= I18N::translate('save') ?>
@@ -109,10 +122,15 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
         $('#switch').val(0);
     });
 
-    $('#tree, #media-folder, #subfolders, #media-type').on('change', function() {
+    $('#tree, #media-folder, #subfolders, #media-type, #display-all-0, #display-all-1').on('change', function() {
         $('#save').val('0');
         $('form').submit();
         return false;
     });
+
+    if($('#display-all-0').is(':checked')) {
+        $('#media-list').val("");
+    }
+
 </script>
 <?php View::endpush() ?>

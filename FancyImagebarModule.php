@@ -204,6 +204,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         return $this->viewResponse($this->name() . '::settings', [
             'all_trees'        => $this->tree_service->all(),
             'canvas_height'    => $this->getPreference($tree_id . '-canvas-height', '80'),
+            'display_all'      => $this->getPreference($tree_id . '-display-all'),
             'homepage_only'    => $this->getPreference($tree_id . '-homepage-only'),
             'media_folder'     => $media_folder,
             'media_folders'    => $media_folders,
@@ -237,6 +238,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             $this->setPreference($tree_id . '-media-folder', $params['media-folder']);
             $this->setPreference($tree_id . '-subfolders', $params['subfolders'] ?? '0');
             $this->setPreference($tree_id . '-media-type',  $params['media-type']);
+            $this->setPreference($tree_id . '-display-all',  $params['display-all']);
         }
 
         if ($params['save'] === '1') {

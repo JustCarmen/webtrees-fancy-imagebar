@@ -33,6 +33,7 @@ $arr_media_xrefs = array();
     data-columns="<?= e(json_encode([
         ['type' => 'html'],
         ['visible' => false],
+        ['visible' => false]
     ], JSON_THROW_ON_ERROR)) ?>"
 >
     <caption class="sr-only">
@@ -43,6 +44,7 @@ $arr_media_xrefs = array();
         <tr>
             <th><?= I18N::translate('Media') ?></th>
             <th></th>
+            <th><th>
         </tr>
     </thead>
 
@@ -68,6 +70,7 @@ $arr_media_xrefs = array();
                     <?= $media_file->displayImage(100, 100, 'crop', ['data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => $media_file->title()]) ?>
                     <div class="text-center"><?= view('components/checkbox-inline', ['label' => '', 'name' => 'media-checkbox', 'value' => $media_id, 'checked' => $checked]) ?></div>
                     </td>
+                    <td><?= $media_id ?></td>
                     <td><?= $media_file->title() ?></td>
                 </tr>
             <?php endforeach ?>

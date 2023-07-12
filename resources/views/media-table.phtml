@@ -31,7 +31,7 @@ $arr_media_xrefs = array();
     class="table table-bordered table-sm wt-table-media datatables d-none"
     <?= view('lists/datatables-attributes') ?>
     data-columns="<?= e(json_encode([
-        null,
+        ['type' => 'html'],
         ['visible' => false],
     ], JSON_THROW_ON_ERROR)) ?>"
 >

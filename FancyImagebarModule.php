@@ -18,7 +18,6 @@ use Fisharebest\Webtrees\GedcomRecord;
 use Fisharebest\Webtrees\FlashMessages;
 use Psr\Http\Message\ResponseInterface;
 use Fisharebest\Localization\Translation;
-use Illuminate\Database\Query\JoinClause;
 use Psr\Http\Message\ServerRequestInterface;
 use Fisharebest\Webtrees\Services\TreeService;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -200,7 +199,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $media_folder = $this->getPreference($tree_id . '-media-folder');
         $media_type = $this->getPreference($tree_id . '-media-type');
         $subfolders = $this->getPreference($tree_id . '-subfolders');
-        $media_objects = $this->allMedia($tree, str_replace($tree->getPreference('MEDIA_DIRECTORY', 'media/'), "", $media_folder), $subfolders, $media_type);
+        $xrefs = $this->getMediaXrefs($tree, str_replace($tree->getPreference('MEDIA_DIRECTORY', 'media/'), "", $media_folder), $subfolders, $media_type);
 
         return $this->viewResponse($this->name() . '::settings', [
             'all_trees'        => $this->tree_service->all(),
@@ -209,13 +208,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             'media_folder'     => $media_folder,
             'media_folders'    => $media_folders,
             'media_list'       => $this->getMediaList($tree),
-            'media_objects'    => $media_objects,
             'media_type'       => $media_type,
             'media_types'      => $media_types,
             'square_thumbs'    => $this->getPreference($tree_id . '-square-thumbs'),
             'subfolders'       => $subfolders,
             'title'            => $this->title(),
-            'tree_id'          => $tree_id
+            'tree_id'          => $tree_id,
+            'xrefs'            => $xrefs
         ]);
     }
 
@@ -491,56 +490,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         }
 
         return $query->pluck('m_id')->unique();
-    }
-
-    /**
-     * Generate a list of all the media objects matching the criteria in a current tree.
-     * Source: app\Module\MediaListModule.php
-     *
-     * @param Tree   $tree
-     * @param string $folder
-     * @param string $subfolders
-     * @param string $type
-     * @param bool $random
-     *
-     * @return Collection<Media>
-     */
-    private function allMedia(Tree $tree, string $folder, string $subfolders, string $type, bool $select = false): Collection
-    {
-        $query = DB::table('media')
-            ->join('media_file', static function (JoinClause $join): void {
-                $join
-                    ->on('media_file.m_file', '=', 'media.m_file')
-                    ->on('media_file.m_id', '=', 'media.m_id');
-            })
-            ->where('media.m_file', '=', $tree->id())
-            ->where('multimedia_file_refn', 'LIKE', $folder . '%')
-            ->whereIn('multimedia_format', ['jpg', 'jpeg', 'png']);
-
-
-        if ($select && $this->getPreference($tree->id() . '-media-list')) {
-            $media_list = collect(explode(',', $this->getPreference($tree->id() . '-media-list')))->map(function ($xref) {
-                return substr($xref, 0, (int)strpos($xref, "["));
-            });
-
-            if ($media_list->count() > 0) {
-                $query->whereIn('media_file.m_id', $media_list);
-            }
-        }
-
-        if ($subfolders === 'exclude') {
-            $query->where('multimedia_file_refn', 'NOT LIKE', $folder . '%/%');
-        }
-
-        if ($type) {
-            $query->where('source_media_type', '=', $type);
-        }
-
-        return $query
-            ->get()
-            ->map(Registry::mediaFactory()->mapper($tree))
-            ->uniqueStrict()
-            ->filter(GedcomRecord::accessFilter());
     }
 
     /**

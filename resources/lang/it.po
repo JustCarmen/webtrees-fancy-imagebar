@@ -15,35 +15,39 @@ msgstr "Una barra con piccole immagini tra intestazione e contenuti."
 msgid "Crop thumbnails to square"
 msgstr "Ritaglia le miniature in un quadrato"
 
-#: FancyImagebarModule.php:81
+#: resources/views/settings.phtml:97
+msgid "Display the image table to refine the selection of images"
+msgstr "Display the image table to refine the selection of images"
+
+#: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
 
-#: resources/views/settings.phtml:63
+#: resources/views/settings.phtml:64
 msgid "Height of the Fancy Imagebar"
 msgstr "Altezza di Fancy Imagebar"
 
-#: resources/views/media-table.phtml:30
+#: resources/views/media-table.phtml:20
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
 msgstr "Qui puoi scegliere quali immagini devono essere mostrate nella Fancy Imagebar. Se vengono selezionate meno immagini del necessario per riempire l'intera Fancy Imagebar, le immagini verranno ripetute."
 
-#: resources/views/media-table.phtml:31
+#: resources/views/media-table.phtml:21
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
 msgstr "Nota: solo le immagini locali \"jpg\" o \"png\" sono supportate da questo modulo. Le immagini esterne non sono supportate. Non è possibile mantenere la trasparenza per le miniature png nella Fancy Imagebar. Le miniature png trasparenti avranno uno sfondo nero. Le immagini in questa tabella hanno già le specifiche corrette."
 
-#: resources/views/media-table.phtml:37
+#: resources/views/media-table.phtml:27
 msgid "Select/unselect all"
 msgstr "Seleziona/deseleziona tutto"
 
-#: resources/views/settings.phtml:85
+#: resources/views/settings.phtml:86
 msgid "Show the Fancy Imagebar on the homepage only"
 msgstr "Mostra Fancy Imagebar solo in homepage"
 
-#: resources/views/media-table.phtml:32
+#: resources/views/media-table.phtml:22
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Il modulo Fancy Imagebar rispetta le impostazioni sulla privacy!"
 
-#: resources/views/media-table.phtml:38
+#: resources/views/media-table.phtml:28
 msgid "Toggle this checkbox to select all images."
 msgstr "Seleziona/Deseleziona tutte le immagini."
 

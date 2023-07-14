@@ -15,35 +15,39 @@ msgstr "Панель зображень із невеликими фото мі�
 msgid "Crop thumbnails to square"
 msgstr "Обрізати ескізи до квадрата"
 
-#: FancyImagebarModule.php:81
+#: resources/views/settings.phtml:97
+msgid "Display the image table to refine the selection of images"
+msgstr "Display the image table to refine the selection of images"
+
+#: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"
 msgstr "Витончена панель зображень"
 
-#: resources/views/settings.phtml:63
+#: resources/views/settings.phtml:64
 msgid "Height of the Fancy Imagebar"
 msgstr "Висота панелі зображень"
 
-#: resources/views/media-table.phtml:30
+#: resources/views/media-table.phtml:20
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
 msgstr "Тут ви можете вибрати, які зображення слід показувати на панелі фантазійних зображень. Якщо вибрано менше зображень, ніж потрібно, щоб заповнити всю фантастичну панель зображень, зображення будуть повторюватися."
 
-#: resources/views/media-table.phtml:31
+#: resources/views/media-table.phtml:21
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
 msgstr "Примітка: Цей модуль підтримує лише локальні зображення \"jpg\" або \"png\". Зовнішні зображення не підтримуються. Неможливо зберегти прозорість ескізів png на фантазійній панелі зображень. Прозорі png-ескізи отримають чорний фон. Зображення в цій таблиці вже мають правильні технічні характеристики."
 
-#: resources/views/media-table.phtml:37
+#: resources/views/media-table.phtml:27
 msgid "Select/unselect all"
 msgstr "Виділити/скасувати вибір усіх"
 
-#: resources/views/settings.phtml:85
+#: resources/views/settings.phtml:86
 msgid "Show the Fancy Imagebar on the homepage only"
 msgstr "Показати панель зображень лише на домашній сторінці"
 
-#: resources/views/media-table.phtml:32
+#: resources/views/media-table.phtml:22
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Модуль Fancy Imagebar поважає налаштування конфіденційності!"
 
-#: resources/views/media-table.phtml:38
+#: resources/views/media-table.phtml:28
 msgid "Toggle this checkbox to select all images."
 msgstr "Увімкніть цей прапорець, щоб вибрати всі зображення."
 

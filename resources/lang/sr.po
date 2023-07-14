@@ -15,35 +15,39 @@ msgstr "Traka slika sa malim slikama između zaglavlja i sadržaja."
 msgid "Crop thumbnails to square"
 msgstr "Izrežite sličice u kvadrat"
 
-#: FancyImagebarModule.php:81
+#: resources/views/settings.phtml:97
+msgid "Display the image table to refine the selection of images"
+msgstr "Display the image table to refine the selection of images"
+
+#: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"
 msgstr "Ukrasna traka slika"
 
-#: resources/views/settings.phtml:63
+#: resources/views/settings.phtml:64
 msgid "Height of the Fancy Imagebar"
 msgstr "Visina ukrasne trake slika"
 
-#: resources/views/media-table.phtml:30
+#: resources/views/media-table.phtml:20
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
 msgstr "Ovde možete izabrati koje slike treba da budu prikazane na ukrasnoj traci slika. Ako je izabrano manje slika nego što je potrebno da se popuni čitava ukrasna traka, slike će se ponoviti."
 
-#: resources/views/media-table.phtml:31
+#: resources/views/media-table.phtml:21
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
 msgstr "Napomena: Ovaj modul podržava samo lokalne “jpg” ili “png” slike. Spoljne slike nisu podržane. Nije moguće zadržati transparentnost za PNG sličice u ukrasnoj traci slika. Prozirne png sličice će dobiti crnu pozadinu. Slike u ovoj tabeli već imaju tačne specifikacije."
 
-#: resources/views/media-table.phtml:37
+#: resources/views/media-table.phtml:27
 msgid "Select/unselect all"
 msgstr "Izaberite/poništite izbor svih"
 
-#: resources/views/settings.phtml:85
+#: resources/views/settings.phtml:86
 msgid "Show the Fancy Imagebar on the homepage only"
 msgstr "Prikažite ukrasnu traku slika samo na početnoj stranici"
 
-#: resources/views/media-table.phtml:32
+#: resources/views/media-table.phtml:22
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Modul ukrasna traka slika poštuje podešavanja privatnosti!"
 
-#: resources/views/media-table.phtml:38
+#: resources/views/media-table.phtml:28
 msgid "Toggle this checkbox to select all images."
 msgstr "Uključite ovo polje  da biste izabrali sve slike."
 

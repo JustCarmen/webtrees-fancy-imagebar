@@ -28,16 +28,8 @@ use Fisharebest\Webtrees\View;
         return "";
     }
 
-    if (window.outerWidth < 768) {
-        canvas_width = window.outerWidth / 0.75;
-    } else if (window.outerWidth < 992) {
-        canvas_width = window.outerWidth / 0.85;
-    } else {
-        canvas_width = window.outerWidth;
-    }
-
-    if (canvas_width !== getCookie("FIB_WIDTH")) {
-        setCookie("FIB_WIDTH", canvas_width);
+    if (window.innerWidth !== getCookie("FIB_WIDTH")) {
+        setCookie("FIB_WIDTH", window.innerWidth);
     }
 
     // Script to keep map coords and images in sync

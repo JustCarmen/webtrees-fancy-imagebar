@@ -369,7 +369,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $subfolders      = $this->getPreference($tree->id() . '-subfolders', '1');
         $media_type      = $this->getPreference($tree->id() . '-media-type');
         $square_thumbs   = $this->getPreference($tree->id() . '-square-thumbs', '0');
-        $canvas_height   = $this->getPreference($tree->id() . '-canvas-height', '80');
+        $canvas_height   = (int)$this->getPreference($tree->id() . '-canvas-height', '80');
 
         // strip out the default media directory from the folder path. It is not stored in the database
         $folder = str_replace($wt_media_folder, "", $this->getPreference($tree->id() . '-media-folder'));
@@ -394,11 +394,18 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         // We cannot currently determine exactly how many images we need, but we need to set a limit due to performance.
         // The best we can do is to set a cookie based on the user's screen width.
-        // Use a default value equal to a 4K screen and a portrait ratio of 3/4 (e.g. w60 h80)
-        $canvas_width = isset($_COOKIE["FIB_WIDTH"]) ? $_COOKIE["FIB_WIDTH"] : "3840";
-        $limit        = (int)($canvas_width / ($canvas_height * 3/4));
+        // Use a default value equal to a 4K screen and a portrait ratio of 3/4 (e.g. w60 h80), not for square thumbs
+        $canvas_width = (int)isset($_COOKIE["FIB_WIDTH"]) ? $_COOKIE["FIB_WIDTH"] : "3840";
 
-        $xrefs = $xrefs->slice(0, $limit);
+        // add support for small screens (to be in sync with smaller height - see function HeadContent())
+        switch ($canvas_width) {
+            case $canvas_width < 768:
+                $canvas_width = $canvas_width / 0.75;
+                break;
+            case $canvas_width < 992:
+                $canvas_width = $canvas_width / 0.85;
+                break;
+        }
 
         // Get the thumbnail resources
         $resources = array();

@@ -392,9 +392,8 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         // randomize the collection
         $xrefs = $xrefs->shuffle();
 
-        // We cannot currently determine exactly how many images we need, but we need to set a limit due to performance.
-        // The best we can do is to set a cookie based on the user's screen width.
-        // Use a default value equal to a 4K screen and a portrait ratio of 3/4 (e.g. w60 h80), not for square thumbs
+        // We need to set a limit due to performance. We use a cookie based on the user's screen width to achieve that.
+        // The default value (3840) is equal to a 4K screen.
         $canvas_width = (int)isset($_COOKIE["FIB_WIDTH"]) ? $_COOKIE["FIB_WIDTH"] : "3840";
 
         // add support for small screens (to be in sync with smaller height - see function HeadContent())
@@ -448,6 +447,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                 }
             }
 
+            // Stop when we have enough thumbnails to fill the entire width of the screen with the Fancy Imagebar.
             if ($calculated_width >= $canvas_width) {
                 break;
             }

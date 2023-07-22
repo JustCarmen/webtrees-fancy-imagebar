@@ -17,7 +17,7 @@ msgstr "Miniaturansichten auf eine quadratische Form zuschneiden"
 
 #: resources/views/settings.phtml:97
 msgid "Display the image table to refine the selection of images"
-msgstr "Display the image table to refine the selection of images"
+msgstr "Bilderübersicht anzeigen zur verfeinerten Auswahl der Bilder"
 
 #: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"

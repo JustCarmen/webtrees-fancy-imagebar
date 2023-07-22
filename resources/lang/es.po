@@ -17,7 +17,7 @@ msgstr "Recorte imágenes a cuadro"
 
 #: resources/views/settings.phtml:97
 msgid "Display the image table to refine the selection of images"
-msgstr "Display the image table to refine the selection of images"
+msgstr "Muestre la tabla de imágenes para refinar su selección."
 
 #. I have removed "de Imágenes¨ to fit the alloted space.
 #: FancyImagebarModule.php:80
@@ -38,7 +38,7 @@ msgstr "Nota: Este módulo soporta sólo imágenes “jpg” or “png” locale
 
 #: resources/views/media-table.phtml:27
 msgid "Select/unselect all"
-msgstr "Optar/no optar todo"
+msgstr "Optar/No optar todo"
 
 #: resources/views/settings.phtml:86
 msgid "Show the Fancy Imagebar on the homepage only"

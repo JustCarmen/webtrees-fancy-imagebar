@@ -17,7 +17,7 @@ msgstr "Kroppa smámyndir í ferning"
 
 #: resources/views/settings.phtml:97
 msgid "Display the image table to refine the selection of images"
-msgstr "Display the image table to refine the selection of images"
+msgstr "Birtu myndatöfluna til að fínstilla úrval mynda"
 
 #: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"

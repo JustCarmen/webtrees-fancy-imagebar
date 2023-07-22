@@ -17,7 +17,7 @@ msgstr "Обрезать миниатюры до квадрата"
 
 #: resources/views/settings.phtml:97
 msgid "Display the image table to refine the selection of images"
-msgstr "Display the image table to refine the selection of images"
+msgstr "Отобразите таблицу изображений, чтобы уточнить выбор изображений"
 
 #: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"

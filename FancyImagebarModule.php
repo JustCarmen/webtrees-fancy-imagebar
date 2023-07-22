@@ -457,6 +457,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             return '';
         }
 
+        // prevent media files from one media object always stick together
+        shuffle($resources);
+
         // Repeat items if neccessary to fill up the Fancy Imagebar
         if ($calculated_width < $canvas_width) {
             $average_thumb_width = (float)$calculated_width / count($resources);

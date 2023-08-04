@@ -414,7 +414,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
             $media = Registry::mediaFactory()->make($xref, $tree);
 
-            if ($media->canShow()) {
+            if ($media && $media->canShow()) {
                 $i = 0; // counter for multiple media files in a media object
                 foreach ($media->mediaFiles() as $media_file) {
                     $i++;

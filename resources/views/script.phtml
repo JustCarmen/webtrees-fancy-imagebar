@@ -9,6 +9,7 @@ use Fisharebest\Webtrees\View;
     // Detect browser screen width and store it in a session cookie
     // https://www.w3schools.com/js/js_cookies.asp
     // https://stackoverflow.com/questions/14196671/session-only-cookies-with-javascript
+    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#samesitesamesite-value
     function setCookie(cname, cvalue) {
         if (window.location.protocol == 'http:') {
             document.cookie = cname + "=" + cvalue + ";path=/;SameSite=Lax";

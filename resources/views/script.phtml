@@ -10,7 +10,11 @@ use Fisharebest\Webtrees\View;
     // https://www.w3schools.com/js/js_cookies.asp
     // https://stackoverflow.com/questions/14196671/session-only-cookies-with-javascript
     function setCookie(cname, cvalue) {
-        document.cookie = cname + "=" + cvalue + ";path=/";
+        if (window.location.protocol == 'http:') {
+            document.cookie = cname + "=" + cvalue + ";path=/;SameSite=Lax";
+        } else {
+            document.cookie = cname + "=" + cvalue + ";path=/;SameSite=Lax;Secure";
+        }
     }
 
     function getCookie(cname) {

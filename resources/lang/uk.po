@@ -17,7 +17,7 @@ msgstr "Обрізати ескізи до квадрата"
 
 #: resources/views/settings.phtml:97
 msgid "Display the image table to refine the selection of images"
-msgstr "Display the image table to refine the selection of images"
+msgstr "Відобразити таблицю зображень для уточнення вибору зображень"
 
 #: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"

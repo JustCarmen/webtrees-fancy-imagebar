@@ -17,7 +17,7 @@ msgstr "Ritaglia le miniature in un quadrato"
 
 #: resources/views/settings.phtml:97
 msgid "Display the image table to refine the selection of images"
-msgstr "Display the image table to refine the selection of images"
+msgstr "Visualizza la tabella immagine per rifinire la selezione delle immagini"
 
 #: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"

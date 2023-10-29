@@ -17,7 +17,7 @@ msgstr "Przytnij miniatury do kwadratu"
 
 #: resources/views/settings.phtml:97
 msgid "Display the image table to refine the selection of images"
-msgstr "Display the image table to refine the selection of images"
+msgstr "Pokaż zdjęcia, aby wybrać zawężając ich ilość."
 
 #: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"

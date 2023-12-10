@@ -40,7 +40,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
     // Module constants
     public const CUSTOM_AUTHOR = 'JustCarmen';
-    public const CUSTOM_VERSION = '2.3.0';
+    public const CUSTOM_VERSION = '2.3.1';
     public const GITHUB_REPO = 'webtrees-fancy-imagebar';
     public const AUTHOR_WEBSITE = 'https://justcarmen.nl';
     public const CUSTOM_SUPPORT_URL = self::AUTHOR_WEBSITE . '/modules-webtrees-2/fancy-imagebar/';

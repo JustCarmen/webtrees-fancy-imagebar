@@ -1,6 +1,7 @@
 <?php
 
 use Fisharebest\Webtrees\I18N;
+use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
 use Fisharebest\Webtrees\Services\ModuleService;
 use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
@@ -19,7 +20,7 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
         <input id="media-list" type="hidden" name="media-list" value = "<?= $media_list->implode(',') ?>">
         <!-- TREE LIST -->
         <div class="row mb-3">
-            <label class="col-sm-3 col-form-label for=" tree"><?= I18N::translate('Family tree') ?></label>
+            <label class="col-sm-3 col-form-label" for="tree"><?= I18N::translate('Family tree') ?></label>
             <div class="col-sm-9">
                 <select class="form-control" id="tree" name="tree-id" type="text" required>
                     <option value=""><?= I18N::translate('&lt;select&gt;') ?></option>
@@ -31,6 +32,7 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
                         <?php else : ?>
                         <option value="<?= $tree->id() ?>">
                             <?= $tree->title() ?>
+                            <?php $selectedTree = $tree ?>
                         </option>
                         <?php endif; ?>
                     <?php endforeach ?>
@@ -105,7 +107,7 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
             <!-- IMAGE TABLE -->
             <hr/>
             <?php $module = app(ModuleService::class)->findByName('_jc-fancy-imagebar_'); ?>
-            <?= view($module->name() . '::media-table', ['tree' => $tree, 'xrefs' => $xrefs, 'media_list' => $media_list]) ?>
+            <?= view($module->name() . '::media-table', ['tree' => $selectedTree, 'xrefs' => $xrefs, 'media_list' => $media_list]) ?>
             <!-- SAVE BUTTON -->
             <hr/>
         <?php endif ?>

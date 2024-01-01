@@ -28,11 +28,11 @@ use Fisharebest\Webtrees\Http\RequestHandlers\ControlPanel;
                         <?php if($tree->id() === (int)$tree_id) : ?>
                         <option value="<?= $tree->id() ?>" selected="selected">
                             <?= $tree->title() ?>
+                            <?php $selectedTree = $tree ?>
                         </option>
                         <?php else : ?>
                         <option value="<?= $tree->id() ?>">
                             <?= $tree->title() ?>
-                            <?php $selectedTree = $tree ?>
                         </option>
                         <?php endif; ?>
                     <?php endforeach ?>

@@ -15,10 +15,6 @@ msgstr "Una barra d'imatges amb petites imatges entre capçalera i contingut."
 msgid "Crop thumbnails to square"
 msgstr "Retallar miniatures al quadrat"
 
-#: resources/views/settings.phtml:97
-msgid "Display the image table to refine the selection of images"
-msgstr "Mostra la taula d'imatges per refinar la selecció d'imatges"
-
 #: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"
 msgstr "Barra d'imatges de luxe"
@@ -26,6 +22,10 @@ msgstr "Barra d'imatges de luxe"
 #: resources/views/settings.phtml:64
 msgid "Height of the Fancy Imagebar"
 msgstr "Alçada de la barra d'imatges de luxe"
+
+#: resources/views/settings.phtml:86
+msgid "Show the Fancy Imagebar on the homepage only"
+msgstr "Mostra la barra d'imatges de luxe només a la pàgina d'inici"
 
 #: resources/views/media-table.phtml:20
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
@@ -39,10 +39,6 @@ msgstr "Nota: Aquest mòdul només admet imatges locals \"jpg\" o \"png\". No s'
 msgid "Select/unselect all"
 msgstr "Seleccionar/desmarcar-ho tot"
 
-#: resources/views/settings.phtml:86
-msgid "Show the Fancy Imagebar on the homepage only"
-msgstr "Mostra la barra d'imatges de luxe només a la pàgina d'inici"
-
 #: resources/views/media-table.phtml:22
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "El mòdul Fancy Imagebar respecta la configuració de privadesa."
@@ -50,4 +46,8 @@ msgstr "El mòdul Fancy Imagebar respecta la configuració de privadesa."
 #: resources/views/media-table.phtml:28
 msgid "Toggle this checkbox to select all images."
 msgstr "Activeu aquesta casella de selecció per seleccionar totes les imatges."
+
+#: resources/views/settings.phtml:97
+msgid "Display the image table to refine the selection of images"
+msgstr "Mostra la taula d'imatges per refinar la selecció d'imatges"
 

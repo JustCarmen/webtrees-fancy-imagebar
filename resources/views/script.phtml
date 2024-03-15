@@ -38,13 +38,6 @@ use Fisharebest\Webtrees\View;
     }
 
     // Script to keep map coords and images in sync
-
-    // Map coordinates
-    mapcoords();
-    $(window).resize(function() {
-        mapcoords();
-    });
-
     function mapcoords() {
         var height = $('.jc-fancy-imagebar img').height(); // current height of the imagebar
         var setting = $('.jc-fancy-imagebar').attr('data-height'); // original height (from the settings in control panel)
@@ -63,5 +56,16 @@ use Fisharebest\Webtrees\View;
             $(this).attr("coords", new_coords.join(', '));
         });
     }
+
+    // Map coordinates as soon as html is parsed, so that data-coords can be stored in area
+    document.addEventListener('DOMContentLoaded', mapcoords);
+
+    // Listen for window resizing
+    $(window).resize(function() {
+        if (window.innerWidth !== getCookie("FIB_WIDTH")) {
+            setCookie("FIB_WIDTH", window.innerWidth);
+            mapcoords();
+        }
+    });   
 </script>
 <?php View::endpush() ?>

@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace JustCarmen\Webtrees\Module\FancyImagebar;
 
+use Fisharebest\Webtrees\Registry;
+
 require __DIR__ . '/FancyImagebarModule.php';
 
-return app(FancyImagebarModule::class);
+return Registry::container()->get(FancyImagebarModule::class);
+

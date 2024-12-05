@@ -273,7 +273,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function headContent(): string
     {
-        $request    = app(ServerRequestInterface::class);
+        $request    = Registry::container()->get(ServerRequestInterface::class);
         $tree       = $request->getAttribute('tree');
 
         if ($tree === null) {
@@ -332,7 +332,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     public function fancyImagebar(): string
     {
-        $request = app(ServerRequestInterface::class);
+        $request = Registry::container()->get(ServerRequestInterface::class);
 
         $tree = $request->getAttribute('tree');
         if ($tree === null) {

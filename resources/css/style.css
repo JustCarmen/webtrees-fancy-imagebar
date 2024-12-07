@@ -6,18 +6,15 @@
 }
 
 .jc-fancy-imagebar img {
-  -o-object-fit: cover;
-     object-fit: cover;
+  object-fit: cover;
 }
 
 [dir="ltr"] .jc-fancy-imagebar img {
-  -o-object-position: left;
-     object-position: left;
+  object-position: left;
 }
 
 [dir="rtl"] .jc-fancy-imagebar img {
-  -o-object-position: right;
-     object-position: right;
+  object-position: right;
 }
 
 .jc-fancy-imagebar-map area {

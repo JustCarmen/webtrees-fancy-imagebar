@@ -17,7 +17,7 @@ msgstr "Recadrer les miniatures en carré"
 
 #: resources/views/settings.phtml:97
 msgid "Display the image table to refine the selection of images"
-msgstr "Display the image table to refine the selection of images"
+msgstr "Afficher la table d'images pour affiner la sélection d'images"
 
 #: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"
@@ -41,7 +41,7 @@ msgstr "Tout sélectionner/désélectionner"
 
 #: resources/views/settings.phtml:86
 msgid "Show the Fancy Imagebar on the homepage only"
-msgstr "Show the Fancy Imagebar on the homepage only"
+msgstr "Afficher la barre d'images fantaisie sur la page d'accueil uniquement"
 
 #: resources/views/media-table.phtml:22
 msgid "The Fancy Imagebar module respects privacy settings!"

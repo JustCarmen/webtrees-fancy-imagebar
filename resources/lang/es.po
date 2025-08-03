@@ -19,7 +19,6 @@ msgstr "Recorte imágenes a cuadro"
 msgid "Display the image table to refine the selection of images"
 msgstr "Muestre la tabla de imágenes para refinar su selección."
 
-#. I have removed "de Imágenes¨ to fit the alloted space.
 #: FancyImagebarModule.php:80
 msgid "Fancy Imagebar"
 msgstr "Barra Elegante"

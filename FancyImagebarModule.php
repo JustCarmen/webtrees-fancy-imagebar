@@ -18,6 +18,7 @@ use Fisharebest\Webtrees\GedcomRecord;
 use Fisharebest\Webtrees\FlashMessages;
 use Psr\Http\Message\ResponseInterface;
 use Fisharebest\Localization\Translation;
+use Illuminate\Database\Query\Expression;
 use Psr\Http\Message\ServerRequestInterface;
 use Fisharebest\Webtrees\Services\TreeService;
 use Illuminate\Database\Capsule\Manager as DB;
@@ -480,14 +481,14 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $query = DB::table('media_file')
             ->where('m_file', '=', $tree->id())
             ->where('multimedia_file_refn', 'LIKE', $folder . '%')
-            ->whereIn('multimedia_format', ['jpg', 'jpeg', 'png']);
+            ->whereIn(new Expression('lower(multimedia_format)'), ['jpg', 'jpeg', 'png']);
 
         if ($subfolders === 'exclude') {
             $query->where('multimedia_file_refn', 'NOT LIKE', $folder . '%/%');
         }
 
         if ($type) {
-            $query->where('source_media_type', '=', $type);
+            $query->where(new Expression('upper(source_media_type)'), '=', $type);
         }
 
         return $query->pluck('m_id')->unique();

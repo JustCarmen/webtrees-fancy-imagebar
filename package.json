@@ -15,7 +15,7 @@
     "laravel-mix-clean": "^0.1.0",
     "postcss": "^8.5.6",
     "postcss-rtlcss": "^5.7.1",
-    "webpack": "^5.100.2",
+    "webpack": "^5.105.0",
     "webpack-cli": "^6.0.1"
   }
 }

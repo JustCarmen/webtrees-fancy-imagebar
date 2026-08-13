@@ -138,9 +138,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         // Register a namespace for our views.
         View::registerNamespace($this->name(), $this->resourcesFolder() . 'views/');
-
-         // Add the javascript used by this module in a separate view
-         View($this->name() . '::script');
     }
 
     /**
@@ -259,8 +256,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     public function bodyContent(): string
     {
         $body = $this->fancyImagebar();
+        $body .= '<script src="' . e($this->assetUrl('js/fancy-imagebar.js')) . '"></script>';
         $body .= '<script>';
-        $body .= '$(".wt-main-wrapper").prepend($(".jc-fancy-imagebar"))';
+        $body .= '$(".wt-main-wrapper").prepend($(".jc-fancy-imagebar"));';
         $body .= '</script>';
 
         return $body;

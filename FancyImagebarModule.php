@@ -547,6 +547,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         return view($this->name() . '::fancy-imagebar', [
             'fancy_imagebar' => $fancy_imagebar,
             'fancy_map'      => $fancy_map,
+            'canvas_width'   => $canvas_width,
             'canvas_height'  => $canvas_height
         ]);
     }

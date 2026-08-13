@@ -6,66 +6,54 @@ use Fisharebest\Webtrees\View;
 
 <?php View::push('javascript') ?>
 <script>
-    // Detect browser screen width and store it in a session cookie
-    // https://www.w3schools.com/js/js_cookies.asp
-    // https://stackoverflow.com/questions/14196671/session-only-cookies-with-javascript
-    // https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Set-Cookie#samesitesamesite-value
-    function setCookie(cname, cvalue) {
-        if (window.location.protocol == 'http:') {
-            document.cookie = cname + "=" + cvalue + ";path=/;SameSite=Lax";
-        } else {
-            document.cookie = cname + "=" + cvalue + ";path=/;SameSite=Lax;Secure";
-        }
-    }
-
-    function getCookie(cname) {
-        let name = cname + "=";
-        let ca = document.cookie.split(';');
-        for(let i = 0; i < ca.length; i++) {
-            let c = ca[i];
-            while (c.charAt(0) === ' ') {
-                c = c.substring(1);
-            }
-            if (c.indexOf(name) == 0) {
-                return c.substring(name.length, c.length);
-            }
-        }
-        return "";
-    }
-
-    if (window.innerWidth !== getCookie("FIB_WIDTH")) {
-        setCookie("FIB_WIDTH", window.innerWidth);
-    }
-
-    // Script to keep map coords and images in sync
+    // Script to keep map coordinates in sync with the rendered image.
     function mapcoords() {
-        var height = $('.jc-fancy-imagebar img').height(); // current height of the imagebar
-        var setting = $('.jc-fancy-imagebar').attr('data-height'); // original height (from the settings in control panel)
-        var ratio = height / setting
-        $('.jc-fancy-imagebar-map area').each(function() {
-            // save the original coords
-            if (!$(this).attr('data-coords')) {
-                $(this).attr('data-coords', $(this).attr('coords'));
+        const $container = $('.jc-fancy-imagebar');
+        const $img = $('.jc-fancy-imagebar img');
+        const $areas = $('.jc-fancy-imagebar-map area');
+
+        if (!$img.length || !$areas.length) {
+            return;
+        }
+
+        const originalWidth = Number($container.attr('data-width')) || $img[0].naturalWidth || $img.width();
+        const originalHeight = Number($container.attr('data-height')) || $img[0].naturalHeight || $img.height();
+        const renderedWidth = $img[0].getBoundingClientRect().width || $img.width();
+        const renderedHeight = $img[0].getBoundingClientRect().height || $img.height();
+
+        const ratioX = originalWidth > 0 ? renderedWidth / originalWidth : 1;
+        const ratioY = originalHeight > 0 ? renderedHeight / originalHeight : 1;
+
+        $areas.each(function () {
+            const $area = $(this);
+            const dataCoords = $area.attr('data-coords') || $area.attr('coords') || '';
+
+            if (!$area.attr('data-coords')) {
+                $area.attr('data-coords', dataCoords);
             }
-            var coords = $(this).attr('data-coords').split(', ');
-            var new_coords = [];
-            new_coords[0] = parseInt(coords[0]) * ratio;
-            new_coords[1] = parseInt(coords[1]);
-            new_coords[2] = parseInt(coords[2]) * ratio;
-            new_coords[3] = parseInt(coords[3]);
-            $(this).attr("coords", new_coords.join(', '));
+
+            const coords = ($area.attr('data-coords') || '').split(/[\s,]+/).filter(Boolean).map(Number);
+
+            if (coords.length < 4 || coords.some(Number.isNaN)) {
+                return;
+            }
+
+            const newCoords = [
+                Math.round(coords[0] * ratioX),
+                Math.round(coords[1] * ratioY),
+                Math.round(coords[2] * ratioX),
+                Math.round(coords[3] * ratioY),
+            ];
+
+            $area.attr('coords', newCoords.join(','));
         });
     }
 
-    // Map coordinates as soon as html is parsed, so that data-coords can be stored in area
+    // Map coordinates as soon as the HTML is parsed and again after the image has loaded.
     document.addEventListener('DOMContentLoaded', mapcoords);
+    window.addEventListener('load', mapcoords);
 
-    // Listen for window resizing
-    $(window).resize(function() {
-        if (window.innerWidth !== getCookie("FIB_WIDTH")) {
-            setCookie("FIB_WIDTH", window.innerWidth);
-            mapcoords();
-        }
-    });   
+    // Listen for window resizing and orientation changes.
+    $(window).on('resize orientationchange', mapcoords);
 </script>
 <?php View::endpush() ?>

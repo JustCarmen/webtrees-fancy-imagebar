@@ -6,6 +6,18 @@ use Fisharebest\Webtrees\View;
 
 <?php View::push('javascript') ?>
 <script>
+    // Keep the server-side image width in sync with the browser viewport for the next request.
+    function setFibWidthCookie() {
+        const viewportWidth = Math.max(
+            window.innerWidth || 0,
+            document.documentElement ? document.documentElement.clientWidth || 0 : 0,
+            320
+        );
+
+        const expires = new Date(Date.now() + (30 * 24 * 60 * 60 * 1000)).toUTCString();
+        document.cookie = `FIB_WIDTH=${encodeURIComponent(viewportWidth)}; expires=${expires}; path=/; SameSite=Lax`;
+    }
+
     // Script to keep map coordinates in sync with the rendered image.
     function mapcoords() {
         const $container = $('.jc-fancy-imagebar');
@@ -49,11 +61,21 @@ use Fisharebest\Webtrees\View;
         });
     }
 
-    // Map coordinates as soon as the HTML is parsed and again after the image has loaded.
-    document.addEventListener('DOMContentLoaded', mapcoords);
-    window.addEventListener('load', mapcoords);
+    const onPageReady = function () {
+        setFibWidthCookie();
+        mapcoords();
+    };
 
-    // Listen for window resizing and orientation changes.
-    $(window).on('resize orientationchange', mapcoords);
+    // Map coordinates as soon as the HTML is parsed and again after the image has loaded.
+    document.addEventListener('DOMContentLoaded', onPageReady);
+    window.addEventListener('load', onPageReady);
+
+    // Cookie updates are only needed for subsequent requests, so keep resizing throttled.
+    let fibResizeTimer;
+    $(window).on('resize orientationchange', function () {
+        clearTimeout(fibResizeTimer);
+        fibResizeTimer = setTimeout(setFibWidthCookie, 250);
+        mapcoords();
+    });
 </script>
 <?php View::endpush() ?>

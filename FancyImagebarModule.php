@@ -346,7 +346,6 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
            return '';
         }
 
-        $data_filesystem = Registry::filesystem()->data();
         $data_folder = Registry::filesystem()->dataName();
 
         $wt_media_folder = $tree->getPreference('MEDIA_DIRECTORY', 'media/');
@@ -412,7 +411,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
                     $process_image = $media->mediaFiles()->count() > 1 ? $media_list->contains($media_id) : true;
 
-                    if ($process_image && $media_file->fileExists($data_filesystem)) {
+                    if ($process_image && $media_file->fileExists()) {
 
                         $file       = $data_folder . $wt_media_folder . $media_file->filename();
                         $cache_file = $this->cacheFile($tree, $media_id, $file);

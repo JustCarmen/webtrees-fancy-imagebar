@@ -557,7 +557,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @param string $file
      * @param string $canvas_height
-     * @param string $canvas_width
+     * @param bool   $square_thumbs
      *
      * https://www.jveweb.net/en/archives/2010/09/how-to-create-cropped-and-scaled-thumbnails-in-php.html
      */

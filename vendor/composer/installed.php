@@ -1,0 +1,41 @@
+<?php return array(
+    'root' => array(
+        'name' => 'justcarmen/jc-fancy-imagebar',
+        'pretty_version' => 'dev-main',
+        'version' => 'dev-main',
+        'reference' => '609667050f02e14b9de6afe46026fbdf93925e23',
+        'type' => 'webtrees-module',
+        'install_path' => __DIR__ . '/../../',
+        'aliases' => array(),
+        'dev' => true,
+    ),
+    'versions' => array(
+        'justcarmen/jc-common-code' => array(
+            'pretty_version' => 'v1.0.0',
+            'version' => '1.0.0.0',
+            'reference' => 'b6d0f9f685dfb2ed09dc7419a2f0286f5692c52a',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../justcarmen/jc-common-code',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'justcarmen/jc-fancy-imagebar' => array(
+            'pretty_version' => 'dev-main',
+            'version' => 'dev-main',
+            'reference' => '609667050f02e14b9de6afe46026fbdf93925e23',
+            'type' => 'webtrees-module',
+            'install_path' => __DIR__ . '/../../',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+        'magicsunday/webtrees-module-installer-plugin' => array(
+            'pretty_version' => '2.1.0',
+            'version' => '2.1.0.0',
+            'reference' => '0d9744918e74775228f317450a0b64d1f2ce4bc3',
+            'type' => 'composer-plugin',
+            'install_path' => __DIR__ . '/../magicsunday/webtrees-module-installer-plugin',
+            'aliases' => array(),
+            'dev_requirement' => false,
+        ),
+    ),
+);

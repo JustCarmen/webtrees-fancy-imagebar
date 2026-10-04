@@ -1,0 +1,25 @@
+{
+	"name": "justcarmen/jc-fancy-imagebar",
+	"description": "A webtrees module that adds an image bar with small images to the top of the page.",
+	"type": "webtrees-module",
+	"license": "GPL-3.0+",
+	"keywords": [
+		"webtrees",
+		"genealogy",
+		"webtrees-module"
+	],
+    "require": {
+		"php": ">=7.4",
+		"justcarmen/jc-common-code": "^1.0",
+    	"magicsunday/webtrees-module-installer-plugin": "^2.1"
+	},
+    "config": {
+        "prepend-autoloader": false,
+		"allow-plugins": {
+			"magicsunday/webtrees-module-installer-plugin": true
+		}
+    },
+    "conflict": {
+        "fisharebest/webtrees": "<2.1"
+    }
+}

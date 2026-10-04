@@ -1,0 +1,91 @@
+{
+    "name": "magicsunday/webtrees-module-installer-plugin",
+    "description": "Composer plugin for the webtrees genealogy application — auto-installs webtrees-module packages into the modules_v4 directory during composer install and update.",
+    "license": "GPL-3.0-or-later",
+    "type": "composer-plugin",
+    "keywords": [
+        "module",
+        "installer",
+        "webtrees",
+        "composer-plugin",
+        "webtrees-module"
+    ],
+    "authors": [
+        {
+            "name": "Rico Sonntag",
+            "email": "mail@ricosonntag.de",
+            "homepage": "https://ricosonntag.de",
+            "role": "Developer"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "MagicSunday\\Webtrees\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "MagicSunday\\Webtrees\\Test\\": "tests/"
+        }
+    },
+    "extra": {
+        "class": "MagicSunday\\Webtrees\\Composer\\ModuleInstallerPlugin",
+        "branch-alias": {
+            "dev-main": "2.0.x-dev"
+        }
+    },
+    "config": {
+        "bin-dir": ".build/bin",
+        "vendor-dir": ".build/vendor",
+        "discard-changes": true,
+        "sort-packages": true,
+        "optimize-autoloader": true
+    },
+    "require": {
+        "php": "8.3 - 8.5",
+        "composer-plugin-api": "^2.6"
+    },
+    "require-dev": {
+        "composer/composer": "^2.8",
+        "friendsofphp/php-cs-fixer": "^3.0",
+        "overtrue/phplint": "^9.0",
+        "phpstan/phpstan": "^2.0",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpstan/phpstan-deprecation-rules": "^2.0",
+        "phpunit/phpunit": "^12.0",
+        "rector/rector": "^2.0"
+    },
+    "scripts": {
+        "ci:cgl": [
+            "php-cs-fixer fix --config .php-cs-fixer.dist.php --diff --verbose"
+        ],
+        "ci:rector": [
+            "rector process --config rector.php"
+        ],
+        "ci:test:php:cgl": [
+            "@ci:cgl --dry-run"
+        ],
+        "ci:test:php:lint": [
+            "phplint --configuration .phplint.yml"
+        ],
+        "ci:test:php:phpstan": [
+            "phpstan analyze --configuration phpstan.neon --memory-limit=-1"
+        ],
+        "ci:test:php:unit": [
+            "phpunit --configuration phpunit.xml"
+        ],
+        "ci:test:php:phpstan:baseline": [
+            "phpstan analyze --configuration phpstan.neon --memory-limit=-1 --generate-baseline phpstan-baseline.neon --allow-empty-baseline"
+        ],
+        "ci:test:php:rector": [
+            "@ci:rector --dry-run"
+        ],
+        "ci:test": [
+            "@ci:test:php:lint",
+            "@ci:test:php:phpstan",
+            "@ci:test:php:rector",
+            "@ci:test:php:cgl",
+            "@ci:test:php:unit"
+        ]
+    }
+}

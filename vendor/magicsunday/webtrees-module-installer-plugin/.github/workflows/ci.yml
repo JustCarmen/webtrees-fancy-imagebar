@@ -1,0 +1,85 @@
+name: CI
+
+on:
+    push:
+    pull_request:
+
+permissions:
+    contents: read
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+
+        strategy:
+            fail-fast: false
+            matrix:
+                php: ['8.3', '8.4', '8.5']
+
+        steps:
+            - id: checkout
+              name: Checkout
+              uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+              with:
+                  persist-credentials: false
+
+            - id: setup_php
+              name: Set up PHP version ${{ matrix.php }}
+              uses: shivammathur/setup-php@7c071dfe9dc99bdf297fa79cb49ea005b9fcadbc # v2
+              with:
+                  php-version: ${{ matrix.php }}
+                  tools: composer:v2
+
+            - name: Validate composer.json and composer.lock
+              run: composer validate
+
+            - id: composer-cache-vars
+              name: Composer Cache Vars
+              run: |
+                  echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+                  echo "timestamp=$(date +"%s")" >> $GITHUB_OUTPUT
+
+            - id: composer-cache-dependencies
+              name: Cache Composer dependencies
+              uses: actions/cache@27d5ce7f107fe9357f9df03efb73ab90386fccae # v5
+              with:
+                  path: ${{ steps.composer-cache-vars.outputs.dir }}
+                  key: ${{ runner.os }}-composer-${{ matrix.php }}-${{ steps.composer-cache-vars.outputs.timestamp }}
+                  restore-keys: |
+                      ${{ runner.os }}-composer-${{ matrix.php }}-
+                      ${{ runner.os }}-composer-
+
+            - id: install
+              name: Install dependencies
+              run: |
+                  composer install --no-progress --no-interaction
+
+            - id: php-lint
+              name: PHP Lint
+              if: ${{ always() && steps.install.conclusion == 'success' }}
+              run: |
+                  composer ci:test:php:lint
+
+            - id: phpstan
+              name: PHPStan
+              if: ${{ always() && steps.install.conclusion == 'success' }}
+              run: |
+                  composer ci:test:php:phpstan -- --error-format=github
+
+            - id: rector
+              name: Rector
+              if: ${{ always() && steps.install.conclusion == 'success' }}
+              run: |
+                  composer ci:test:php:rector
+
+            - id: cgl
+              name: CGL
+              if: ${{ always() && steps.install.conclusion == 'success' }}
+              run: |
+                  composer ci:cgl -- --dry-run
+
+            - id: unit
+              name: PHPUnit
+              if: ${{ always() && steps.install.conclusion == 'success' }}
+              run: |
+                  composer ci:test:php:unit

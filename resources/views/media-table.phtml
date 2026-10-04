@@ -72,7 +72,7 @@ $arr_media_xrefs = array();
                         // Get list of media xrefs (for select all checkbox)
                         $arr_media_xrefs[] = $media_id;
                     ?>
-                    <?= $media_file->displayImage(100, 100, 'crop', ['data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => $media_file->title()]) ?>
+                    <?= $media_file->displayImage(100, 100, 'crop', ['data-toggle' => 'tooltip', 'data-placement' => 'top', 'title' => $media_file->title(), 'loading' => 'lazy', 'decoding' => 'async']) ?>
                     <div class="text-center"><?= view('components/checkbox-inline', ['label' => '', 'name' => 'media-checkbox', 'value' => $media_id, 'checked' => $checked]) ?></div>
                     </td>
                     <td><?= $media_id ?></td>
@@ -87,44 +87,55 @@ $arr_media_xrefs = array();
 
 <?php View::push('javascript') ?>
 <script>
+    const allMediaXrefs = <?= json_encode(array_values(array_filter(explode(',', trim((string) $media_xrefs, ','))))); ?>;
+    const selectedMedia = new Set((($('#media-list').val() || '').split(',').filter(Boolean)));
+    let selectionInitialized = false;
+
+    function syncMediaTableSelection(table) {
+        const checkboxes = $('input[type="checkbox"]', table);
+
+        checkboxes.each(function () {
+            const value = $(this).val();
+            $(this).prop('checked', selectedMedia.has(value));
+        });
+    }
+
     $("#fancy-imagebar-media-table").on('draw.dt', function() {
-        if ($("#media-list").val()) {
-            var images = $("#media-list").val().split(",");
-            $("input[type=checkbox]", this).each(function(){
-                if($.inArray($(this).val(), images) > -1){
-                    $(this).prop("checked", true);
-                } else {
-                    $(this).prop("checked", false);
-                }
+        if (!selectionInitialized && !$('#media-list').val()) {
+            selectedMedia.clear();
+            allMediaXrefs.forEach(function(value) {
+                selectedMedia.add(value);
             });
-        } else {
-            $("input[type=checkbox]", this).prop('checked', true);
-            $('#media-list').val('<?= $media_xrefs ?>');
+            $('#media-list').val(allMediaXrefs.join(','));
         }
+        selectionInitialized = true;
+
+        syncMediaTableSelection(this);
     });
 
-    $('#fancy-imagebar-media-table').on("change", "input[type=checkbox]",function() {
-        var images = $("#media-list").val().split(",")
-        if(this.checked){
-            images.push($(this).val());
+    $('#fancy-imagebar-media-table').on('change', 'input[type=checkbox]', function() {
+        const value = $(this).val();
+
+        if (this.checked) {
+            selectedMedia.add(value);
         } else {
-            var index = images.indexOf($(this).val());
-            images.splice(index, 1 );
+            selectedMedia.delete(value);
         }
 
-        // remove empty values from array
-        images = images.filter(function(e){return e});
-
-        // turn array into a string
-        $('#media-list').val(images.join(","));
+        $('#media-list').val(Array.from(selectedMedia).join(','));
     });
 
     $('#select-all-1').change(function(e) {
         if (e.currentTarget.checked) {
-            $('#media-list').val('<?= $media_xrefs ?>');
+            selectedMedia.clear();
+            allMediaXrefs.forEach(function(value) {
+                selectedMedia.add(value);
+            });
+            $('#media-list').val(allMediaXrefs.join(','));
             $('#fancy-imagebar-media-table input[type="checkbox"]').prop('checked', true);
         } else {
-            $('#media-list').val("");
+            selectedMedia.clear();
+            $('#media-list').val('');
             $('#fancy-imagebar-media-table input[type="checkbox"]').prop('checked', false);
         }
     });

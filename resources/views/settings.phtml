@@ -6,6 +6,7 @@ use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Services\ModuleService;
 use Fisharebest\Webtrees\View;
 use Illuminate\Support\Collection;
+use JustCarmen\Webtrees\Internationalization\MoreI18N;
 
 /**
  * Fancy Imagebar Settings
@@ -29,7 +30,7 @@ use Illuminate\Support\Collection;
 
 ?>
 
-<?= view('components/breadcrumbs', ['links' => [route(ControlPanel::class) => I18N::translate('Control panel'), $title]]) ?>
+<?= view('components/breadcrumbs', ['links' => [route(ControlPanel::class) => MoreI18N::xlate('Control panel'), $title]]) ?>
 
 <h1><?= $title ?></h1>
 
@@ -41,10 +42,10 @@ use Illuminate\Support\Collection;
         <input id="media-list" type="hidden" name="media-list" value = "<?= $media_list->implode(',') ?>">
         <!-- TREE LIST -->
         <div class="row mb-3">
-            <label class="col-sm-3 col-form-label" for="tree"><?= I18N::translate('Family tree') ?></label>
+            <label class="col-sm-3 col-form-label" for="tree"><?= MoreI18N::xlate('Family tree') ?></label>
             <div class="col-sm-9">
                 <select class="form-control" id="tree" name="tree-id" type="text" required>
-                    <option value=""><?= I18N::translate('&lt;select&gt;') ?></option>
+                    <option value=""><?= MoreI18N::xlate('&lt;select&gt;') ?></option>
                     <?php foreach ($all_trees as $tree) : ?>
                         <?php if($tree->id() === (int)$tree_id) : ?>
                         <option value="<?= $tree->id() ?>" selected="selected">
@@ -63,19 +64,19 @@ use Illuminate\Support\Collection;
         <!-- MEDIA FOLDER LIST -->
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label" for="media-folder">
-                <?= I18N::translate('Media folder') ?>
+                <?= MoreI18N::xlate('Media folder') ?>
             </label>
             <div class="col-sm-9">
                 <?= view('components/select', ['name' => 'media-folder', 'selected' => $media_folder, 'options' => $media_folders]) ?>
                 <div class="mx-1 mt-2">
-                    <?= view('components/checkbox-inline', ['id' => 'subfolders', 'label' => /* I18N: Label for check-box */ I18N::translate('Include subfolders'), 'name' => 'subfolders', 'checked' => (int)$subfolders]) ?>
+                    <?= view('components/checkbox-inline', ['id' => 'subfolders', 'label' => MoreI18N::xlate('Include subfolders'), 'name' => 'subfolders', 'checked' => (int)$subfolders]) ?>
                 </div>
             </div>
         </div>
         <!-- MEDIA TYPE LIST -->
         <div class="row mb-3">
             <label class="col-sm-3 col-form-label" for="media-type">
-                <?= I18N::translate('Media type') ?>
+                <?= MoreI18N::xlate('Media type') ?>
             </label>
             <div class="col-sm-9">
                 <?= view('components/select', ['name' => 'media-type', 'selected' => $media_type, 'options' => $media_types]) ?>
@@ -98,7 +99,7 @@ use Illuminate\Support\Collection;
                     <?= I18N::translate('Crop thumbnails to square') ?>
                 </legend>
                 <div class="col-sm-9">
-                    <?= view('components/radios-inline', ['name' => 'square-thumbs', 'options' => [I18N::translate('no'), I18N::translate('yes')], 'selected' => (int)$square_thumbs]) ?>
+                    <?= view('components/radios-inline', ['name' => 'square-thumbs', 'options' => [MoreI18N::xlate('no'), MoreI18N::xlate('yes')], 'selected' => (int)$square_thumbs]) ?>
                 </div>
             </div>
         </fieldset>
@@ -109,7 +110,7 @@ use Illuminate\Support\Collection;
                     <?= I18N::translate('Show the Fancy Imagebar on the homepage only') ?>
                 </legend>
                 <div class="col-sm-9">
-                    <?= view('components/radios-inline', ['name' => 'homepage-only', 'options' => [I18N::translate('no'), I18N::translate('yes')], 'selected' => (int)$homepage_only]) ?>
+                    <?= view('components/radios-inline', ['name' => 'homepage-only', 'options' => [MoreI18N::xlate('no'), MoreI18N::xlate('yes')], 'selected' => (int)$homepage_only]) ?>
                 </div>
             </div>
         </fieldset>
@@ -120,7 +121,7 @@ use Illuminate\Support\Collection;
                     <?= I18N::translate('Display the image table to refine the selection of images') ?>
                 </legend>
                 <div class="col-sm-9">
-                    <?= view('components/radios-inline', ['name' => 'display-all', 'options' => [I18N::translate('no'), I18N::translate('yes')], 'selected' => (int)$display_all]) ?>
+                    <?= view('components/radios-inline', ['name' => 'display-all', 'options' => [MoreI18N::xlate('no'), MoreI18N::xlate('yes')], 'selected' => (int)$display_all]) ?>
                 </div>
             </div>
         </fieldset>
@@ -134,7 +135,7 @@ use Illuminate\Support\Collection;
         <?php endif ?>
         <button type="submit" class="btn btn-primary">
             <?= view('icons/save') ?>
-            <?= I18N::translate('save') ?>
+            <?= MoreI18N::xlate('save') ?>
         </button>
     </form>
 </div>

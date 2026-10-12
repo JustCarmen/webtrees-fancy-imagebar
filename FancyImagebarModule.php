@@ -5,33 +5,34 @@ declare(strict_types=1);
 namespace JustCarmen\Webtrees\Module\FancyImagebar;
 
 use Exception;
-use Throwable;
+use Fisharebest\Localization\Translation;
+use Fisharebest\Webtrees\FlashMessages;
+use Fisharebest\Webtrees\GedcomRecord;
+use Fisharebest\Webtrees\Http\RequestHandlers\TreePage;
 use Fisharebest\Webtrees\I18N;
+use Fisharebest\Webtrees\Individual;
+use Fisharebest\Webtrees\Media;
+use Fisharebest\Webtrees\Module\AbstractModule;
+use Fisharebest\Webtrees\Module\ModuleConfigInterface;
+use Fisharebest\Webtrees\Module\ModuleConfigTrait;
+use Fisharebest\Webtrees\Module\ModuleCustomInterface;
+use Fisharebest\Webtrees\Module\ModuleCustomTrait;
+use Fisharebest\Webtrees\Module\ModuleGlobalInterface;
+use Fisharebest\Webtrees\Module\ModuleGlobalTrait;
+use Fisharebest\Webtrees\Registry;
+use Fisharebest\Webtrees\Services\LinkedRecordService;
+use Fisharebest\Webtrees\Services\MediaFileService;
+use Fisharebest\Webtrees\Services\TreeService;
 use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
-use Fisharebest\Webtrees\Media;
-use Fisharebest\Webtrees\Registry;
 use Fisharebest\Webtrees\Webtrees;
-use Illuminate\Support\Collection;
-use Fisharebest\Webtrees\Individual;
-use Fisharebest\Webtrees\GedcomRecord;
-use Fisharebest\Webtrees\FlashMessages;
-use Psr\Http\Message\ResponseInterface;
-use Fisharebest\Localization\Translation;
-use Illuminate\Database\Query\Expression;
-use Psr\Http\Message\ServerRequestInterface;
-use Fisharebest\Webtrees\Services\TreeService;
 use Illuminate\Database\Capsule\Manager as DB;
-use Fisharebest\Webtrees\Module\AbstractModule;
-use Fisharebest\Webtrees\Module\ModuleConfigTrait;
-use Fisharebest\Webtrees\Module\ModuleCustomTrait;
-use Fisharebest\Webtrees\Module\ModuleGlobalTrait;
-use Fisharebest\Webtrees\Services\MediaFileService;
-use Fisharebest\Webtrees\Module\ModuleConfigInterface;
-use Fisharebest\Webtrees\Module\ModuleCustomInterface;
-use Fisharebest\Webtrees\Module\ModuleGlobalInterface;
-use Fisharebest\Webtrees\Services\LinkedRecordService;
-use Fisharebest\Webtrees\Http\RequestHandlers\TreePage;
+use Illuminate\Database\Query\Expression;
+use Illuminate\Support\Collection;
+use JustCarmen\Webtrees\Internationalization\MoreI18N;
+use Psr\Http\Message\ResponseInterface;
+use Psr\Http\Message\ServerRequestInterface;
+use Throwable;
 
 class FancyImagebarModule extends AbstractModule implements ModuleCustomInterface, ModuleConfigInterface, ModuleGlobalInterface
 {
@@ -238,7 +239,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             $tree = $this->tree_service->find((int)$tree_id);
             $this->emptyCache($tree);
 
-            $message = I18N::translate('The preferences for the module “%s” have been updated.', $this->title());
+            $message = MoreI18N::xlate('The preferences for the module “%s” have been updated.', $this->title());
             FlashMessages::addMessage($message, 'success');
         }
 

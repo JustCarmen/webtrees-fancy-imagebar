@@ -1,11 +1,12 @@
 <?php
 
 use Fisharebest\Webtrees\I18N;
-use Fisharebest\Webtrees\Tree;
-use Fisharebest\Webtrees\View;
 use Fisharebest\Webtrees\Media;
 use Fisharebest\Webtrees\Registry;
+use Fisharebest\Webtrees\Tree;
+use Fisharebest\Webtrees\View;
 use Illuminate\Support\Collection;
+use JustCarmen\Webtrees\Internationalization\MoreI18N;
 
 /**
  * @var Collection<Media> $media_objects
@@ -25,7 +26,7 @@ $arr_media_xrefs = array();
     <p class="small"><?= I18N::translate('Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated.') ?></p>
     <p class="small"><?= I18N::translate('Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications.') ?></p>
     <p class="small"><?= I18N::translate('The Fancy Imagebar module respects privacy settings!') ?></p>
-    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="' . I18N::translate('close') . '"></button>
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="' . MoreI18N::xlate('close') . '"></button>
 </div>
 <!-- SELECT ALL -->
 <div class="col">
@@ -42,12 +43,12 @@ $arr_media_xrefs = array();
     ], JSON_THROW_ON_ERROR)) ?>"
 >
     <caption class="sr-only">
-        <?= $caption ?? I18N::translate('Media objects') ?>
+        <?= $caption ?? MoreI18N::xlate('Media objects') ?>
     </caption>
 
     <thead>
         <tr>
-            <th><?= I18N::translate('Media') ?></th>
+            <th><?= MoreI18N::xlate('Media') ?></th>
             <th></th>
             <th></th>
         </tr>

@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
-"POT-Creation-Date: 2023-07-12 21:29+0200\n"
+"POT-Creation-Date: 2026-10-12 22:07+0200\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Carmen <carmen@justcarmen.nl>\n"
 "Language-Team: \n"
@@ -11,57 +11,58 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: Poedit 3.3.2\n"
+"X-Generator: Poedit 3.6\n"
 "X-Poedit-Basepath: ../..\n"
 "X-Poedit-SourceCharset: UTF-8\n"
 "X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
-"X-Poedit-Flags-xgettext: --add-comments\n"
+"X-Poedit-Flags-xgettext: --add-comments=I18N:\n"
 "X-Poedit-SearchPath-0: .\n"
 "X-Poedit-SearchPathExcluded-0: .git\n"
 "X-Poedit-SearchPathExcluded-1: dist\n"
 "X-Poedit-SearchPathExcluded-2: node_modules\n"
 "X-Poedit-SearchPathExcluded-3: src\n"
+"X-Poedit-SearchPathExcluded-4: vendor\n"
 
-#: FancyImagebarModule.php:91
+#: FancyImagebarModule.php:92
 msgid "An imagebar with small images between header and content."
 msgstr ""
 
-#: resources/views/settings.phtml:74
+#: resources/views/settings.phtml:99
 msgid "Crop thumbnails to square"
 msgstr ""
 
-#: resources/views/settings.phtml:97
+#: resources/views/settings.phtml:121
 msgid "Display the image table to refine the selection of images"
 msgstr ""
 
-#: FancyImagebarModule.php:80
+#: FancyImagebarModule.php:82
 msgid "Fancy Imagebar"
 msgstr ""
 
-#: resources/views/settings.phtml:64
+#: resources/views/settings.phtml:88
 msgid "Height of the Fancy Imagebar"
 msgstr ""
 
-#: resources/views/media-table.phtml:20
+#: resources/views/media-table.phtml:26
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
 msgstr ""
 
-#: resources/views/media-table.phtml:21
+#: resources/views/media-table.phtml:27
 msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
 msgstr ""
 
-#: resources/views/media-table.phtml:27
+#: resources/views/media-table.phtml:33
 msgid "Select/unselect all"
 msgstr ""
 
-#: resources/views/settings.phtml:86
+#: resources/views/settings.phtml:110
 msgid "Show the Fancy Imagebar on the homepage only"
 msgstr ""
 
-#: resources/views/media-table.phtml:22
+#: resources/views/media-table.phtml:28
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr ""
 
-#: resources/views/media-table.phtml:28
+#: resources/views/media-table.phtml:34
 msgid "Toggle this checkbox to select all images."
 msgstr ""

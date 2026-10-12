@@ -38,10 +38,10 @@ You can help translate this module. The language files are available on [POEdito
 Installation
 ------------
 Install using [Custom Module Manager][6] for an easy and convenient way to install webtrees custom modules.
-Open the Custom Module Manager in webtrees, scroll to “Fancy Research Links”, and click “Install Module”.
+Open the Custom Module Manager in webtrees, scroll to “Fancy Imagebar”, and click “Install Module”.
 
 ### Manual installation
-Download the [latest release][1] of the module. Unpack the ZIP file and place the folder `jc-fancy-research-links` in the `modules_v4` folder of webtrees. Upload the new folder to your server. The module is enabled by default. Go to the control panel to adjust the options. You can find the Fancy Research Links configuration page in the Sidebar section and on the module page.
+Download the [latest release][1] of the module. Unpack the ZIP file and place the folder `jc-fancy-imagebar` in the `modules_v4` folder of webtrees. Upload the new folder to your server. The module is enabled by default. Go to the control panel to adjust the options. You can find the Fancy Imagebar configuration page in the 'Other' section and on the module page.
 
 ### Install using Composer
 If you are using the webtrees source code, you can install this module with Composer:

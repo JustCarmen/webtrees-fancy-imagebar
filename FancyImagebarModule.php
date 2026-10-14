@@ -463,7 +463,22 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             $resources = array_merge(...array_fill(0, (int)ceil($num_thumbs/count($resources)), $resources));
         }
 
-        return $this->createFancyImagebar($resources, $canvas_width, $canvas_height);
+        try {
+            return $this->createFancyImagebar($resources, $canvas_width, $canvas_height);
+        } finally {
+            $released_images = [];
+            foreach ($resources as $resource) {
+                $image = $resource['image'];
+                $image_id = is_object($image) ? spl_object_id($image) : (int) $image;
+
+                if (!isset($released_images[$image_id])) {
+                    imagedestroy($image);
+                    $released_images[$image_id] = true;
+                }
+            }
+
+            unset($fancy_thumb, $image, $resource, $resources);
+        }
     }
 
     private function getMediaList(Tree $tree): Collection
@@ -513,41 +528,54 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         // create the FancyImagebar canvas to put the thumbs on
         $fancy_imagebar_canvas = imagecreatetruecolor((int) $canvas_width, (int) $canvas_height);
 
-        $fancy_map = [];
-        $pos = 0;
-        foreach ($source_images as $source) {
+        try {
+            $fancy_map = [];
+            $pos = 0;
+            foreach ($source_images as $source) {
 
-            $image  = $source['image'];
-            $linked = $source['linked'];
+                $image  = $source['image'];
+                $linked = $source['linked'];
 
-            $x1  = $pos;
-            $x2  = $x1 + imagesx($image);
-            $pos = $pos + imagesx($image);
+                $x1  = $pos;
+                $x2  = $x1 + imagesx($image);
+                $pos = $pos + imagesx($image);
 
-            // copy the images (thumbnails) to the canvas
-            // imagecopy (resource $dst_im , resource $src_im , int $dst_x , int $dst_y , int $src_x , int $src_y , int $src_w , int $src_h)
-            imagecopy($fancy_imagebar_canvas, $image, $x1, 0, 0, 0, imagesx($image), (int) $canvas_height);
+                // copy the images (thumbnails) to the canvas
+                // imagecopy (resource $dst_im , resource $src_im , int $dst_x , int $dst_y , int $src_x , int $src_y , int $src_w , int $src_h)
+                imagecopy($fancy_imagebar_canvas, $image, $x1, 0, 0, 0, imagesx($image), (int) $canvas_height);
 
-            // prepare the map
-            if ($linked !== null) {
-                $lifespan = $linked instanceof Individual ? ' (' . $linked->lifespan() . ')' : '';
-                $fancy_map[] = [
-                    'coords' => [
-                        'x1' => $x1,
-                        'y1' => '0',
-                        'x2' => $x2,
-                        'y2' => $canvas_height
-                    ],
-                    'title' => strip_tags($linked->fullName() . $lifespan),
-                    'url'   => $linked->url()
-                ];
+                // prepare the map
+                if ($linked !== null) {
+                    $lifespan = $linked instanceof Individual ? ' (' . $linked->lifespan() . ')' : '';
+                    $fancy_map[] = [
+                        'coords' => [
+                            'x1' => $x1,
+                            'y1' => '0',
+                            'x2' => $x2,
+                            'y2' => $canvas_height
+                        ],
+                        'title' => strip_tags($linked->fullName() . $lifespan),
+                        'url'   => $linked->url()
+                    ];
+                }
+            }
+
+            // Output
+            $buffer_level = ob_get_level();
+            ob_start();
+            try {
+                imagejpeg($fancy_imagebar_canvas);
+                $fancy_imagebar = ob_get_contents();
+            } finally {
+                while (ob_get_level() > $buffer_level) {
+                    ob_end_clean();
+                }
+            }
+        } finally {
+            if ($fancy_imagebar_canvas !== false) {
+                imagedestroy($fancy_imagebar_canvas);
             }
         }
-
-        // Output
-        ob_start();
-        imagejpeg($fancy_imagebar_canvas);
-        $fancy_imagebar = ob_get_clean();
 
         return view($this->name() . '::fancy-imagebar', [
             'fancy_imagebar' => $fancy_imagebar,

@@ -415,16 +415,16 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                         $file       = $data_folder . $wt_media_folder . $media_file->filename();
                         $cache_file = $this->cacheFile($tree, $media_id, $file);
 
-                        if (is_file($cache_file)) {
-                            $fancy_thumb = $this->loadImage($cache_file);
-                        } else {
+                        $fancy_thumb = is_file($cache_file) ? $this->loadImage($cache_file) : false;
+
+                        if ($fancy_thumb === false) {
                             $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
                             if (!is_null($fancy_thumb)) {
                                 imagejpeg($fancy_thumb, $cache_file);
                             }
                         }
 
-                        if (!is_null($fancy_thumb)) {
+                        if ($fancy_thumb !== false && $fancy_thumb !== null) {
                             $calculated_width = $calculated_width + imagesx($fancy_thumb);
                             $resources[] = [
                                 'image'     => $fancy_thumb,

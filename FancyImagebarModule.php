@@ -382,7 +382,14 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         // We need to set a limit due to performance. We use a cookie based on the user's screen width to achieve that.
         // The default value (3840) is equal to a 4K screen.
-        $canvas_width = (int)isset($_COOKIE["FIB_WIDTH"]) ? $_COOKIE["FIB_WIDTH"] : "3840";
+        $cookie_width = $_COOKIE['FIB_WIDTH'] ?? null;
+        $canvas_width = is_string($cookie_width) ? filter_var($cookie_width, FILTER_VALIDATE_INT) : false;
+
+        if ($canvas_width === false || $canvas_width <= 0) {
+            $canvas_width = 3840;
+        } else {
+            $canvas_width = min($canvas_width, 3840);
+        }
 
         // add support for small screens (to be in sync with smaller height - see function HeadContent())
         switch ($canvas_width) {

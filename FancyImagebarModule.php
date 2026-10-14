@@ -532,7 +532,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                         'y2' => $canvas_height
                     ],
                     'title' => strip_tags($linked->fullName() . $lifespan),
-                    'url'   => e($linked->url())
+                    'url'   => $linked->url()
                 ];
             }
         }

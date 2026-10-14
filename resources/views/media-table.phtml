@@ -77,7 +77,7 @@ $arr_media_xrefs = array();
                     <div class="text-center"><?= view('components/checkbox-inline', ['label' => '', 'name' => 'media-checkbox', 'value' => $media_id, 'checked' => $checked]) ?></div>
                     </td>
                     <td><?= $media_id ?></td>
-                    <td><?= $media_file->title() ?></td>
+                    <td><?= e($media_file->title()) ?></td>
                 </tr>
             <?php endforeach ?>
         <?php endforeach ?>

@@ -457,7 +457,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
                         $fancy_thumb = is_file($cache_file) ? $this->loadImage($cache_file) : false;
 
                         if ($fancy_thumb === false) {
-                            $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs);
+                            $fancy_thumb = $this->fancyThumb($file, $canvas_height, $square_thumbs === '1');
                             if (!is_null($fancy_thumb)) {
                                 imagejpeg($fancy_thumb, $cache_file);
                             }
@@ -566,13 +566,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     /**
      * Create the Fancy Imagebar + html output
      *
-     * @param array $source_images
-     * @param string $canvas_width
-     * @param string $canvas_height
+     * @param array<int, array{image: \GdImage|resource, linked: GedcomRecord|null}> $source_images
+     * @param int|float $canvas_width
+     * @param int $canvas_height
      *
      * @return string
      */
-    private function createFancyImagebar($source_images, $canvas_width, $canvas_height): string
+    private function createFancyImagebar(array $source_images, $canvas_width, int $canvas_height): string
     {
         // create the FancyImagebar canvas to put the thumbs on
         $fancy_imagebar_canvas = imagecreatetruecolor((int) $canvas_width, (int) $canvas_height);
@@ -638,32 +638,40 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      * Create a thumbnail
      *
      * @param string $file
-     * @param string $canvas_height
+     * @param int    $canvas_height
      * @param bool   $square_thumbs
+     *
+     * @return \GdImage|resource|null
      *
      * https://www.jveweb.net/en/archives/2010/09/how-to-create-cropped-and-scaled-thumbnails-in-php.html
      */
-    private function fancyThumb($file, $canvas_height, $square_thumbs)
+    private function fancyThumb(string $file, int $canvas_height, bool $square_thumbs)
     {
         // error handling to prevent bad images from loading
+        $source_image = false;
         try {
 
             $source_image = $this->loadImage($file);
-            list($source_width, $source_height) = getimagesize($file);
-            $source_ratio = $source_width / $source_height;
+            $image_size = getimagesize($file);
 
         } catch (Throwable $exception) {
+            if ($source_image !== false) {
+                imagedestroy($source_image);
+            }
 
             return null;
-
         }
 
-        // Cases have been reported where a false source image produces a fatal error at
-        // the imagecopyresampled function: imagecopyresampled() expects parameter 2 to be resource, bool given
-        // This source image got through the try/catch section
-        if ($source_image === false) {
+        if ($source_image === false || $image_size === false) {
+            if ($source_image !== false) {
+                imagedestroy($source_image);
+            }
+
             return null;
         }
+
+        [$source_width, $source_height] = $image_size;
+        $source_ratio = $source_width / $source_height;
 
         $source_x = 0;
         $source_y = 0;
@@ -694,15 +702,20 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         return $thumb; // resource
     }
 
-     /**
-     * load image from file
-     * return false if image could not be loaded
+    /**
+     * Load a supported image from a file.
      *
      * @param string $file
+     *
+     * @return \GdImage|resource|false
      */
-    private function loadImage($file)
+    private function loadImage(string $file)
     {
         $size = getimagesize($file);
+        if ($size === false) {
+            return false;
+        }
+
         switch ($size["mime"]) {
             case "image/jpeg":
                 $image = imagecreatefromjpeg($file);
@@ -726,7 +739,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
 	 * @return string
 	 */
-	private function cacheFile(Tree $tree, string $media_id, string $file) {
+	private function cacheFile(Tree $tree, string $media_id, string $file): string {
 		return self::CACHE_DIR . $tree->id() . '-' . $media_id . '-' . filemtime($file) . '.jpg';
 	}
 

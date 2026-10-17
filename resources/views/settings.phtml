@@ -20,6 +20,8 @@ use JustCarmen\Webtrees\Internationalization\MoreI18N;
  * @var array $media_types
  * @var string $media_type
  * @var int $canvas_height
+ * @var int $canvas_height_min
+ * @var int $canvas_height_max
  * @var int $square_thumbs
  * @var int $homepage_only
  * @var int $display_all
@@ -84,13 +86,22 @@ use JustCarmen\Webtrees\Internationalization\MoreI18N;
         </div>
         <!-- HEIGHT OF THE IMAGE BAR -->
         <div class="row mb-3">
-            <label class="col-form-label col-sm-3">
+            <label class="col-form-label col-sm-3" for="canvas-height">
                 <?= I18N::translate('Height of the Fancy Imagebar') ?>
             </label>
             <div class="col-auto">
-                <input class="form-control" type="text" name="canvas-height" size="3" value="<?= $canvas_height ?>" required>
+                <input class="form-control" id="canvas-height" type="number" name="canvas-height" step="any" value="<?= $canvas_height ?>" required>
             </div>
             <div class="col-auto align-self-center">px</div>
+            <div class="col-sm-9 offset-sm-3">
+                <div class="form-text">
+                    <?= I18N::translate(
+                        'Enter an integer between %s and %s pixels.',
+                        I18N::number($canvas_height_min),
+                        I18N::number($canvas_height_max)
+                    ) ?>
+                </div>
+            </div>
         </div>
         <!-- CROP THUMBNAILS TO SQUARE -->
         <fieldset class="mb-3">

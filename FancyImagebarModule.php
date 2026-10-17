@@ -47,6 +47,10 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     public const AUTHOR_WEBSITE = 'https://justcarmen.nl';
     public const CUSTOM_SUPPORT_URL = self::AUTHOR_WEBSITE . '/modules-webtrees-2/fancy-imagebar/';
 
+    private const MIN_CANVAS_HEIGHT = 40;
+    private const MAX_CANVAS_HEIGHT = 160;
+    private const DEFAULT_CANVAS_HEIGHT = 80;
+
     // Image cache dir
     private const CACHE_DIR = Webtrees::DATA_DIR . 'fib-cache/';
 
@@ -191,7 +195,9 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         return $this->viewResponse($this->name() . '::settings', [
             'all_trees'        => $this->tree_service->all(),
-            'canvas_height'    => $this->getPreference($tree_id . '-canvas-height', '80'),
+            'canvas_height'    => $this->canvasHeight($tree),
+            'canvas_height_min' => self::MIN_CANVAS_HEIGHT,
+            'canvas_height_max' => self::MAX_CANVAS_HEIGHT,
             'display_all'      => $this->getPreference($tree_id . '-display-all'),
             'homepage_only'    => $this->getPreference($tree_id . '-homepage-only'),
             'media_folder'     => $media_folder,
@@ -218,6 +224,32 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     {
         $params = (array) $request->getParsedBody();
 
+        $canvas_height = null;
+        if (($params['save'] ?? null) === '1') {
+            $canvas_height_input = $params['canvas-height'] ?? null;
+            if (is_string($canvas_height_input) || is_int($canvas_height_input)) {
+                $canvas_height = filter_var($canvas_height_input, FILTER_VALIDATE_INT, [
+                    'options' => [
+                        'min_range' => self::MIN_CANVAS_HEIGHT,
+                        'max_range' => self::MAX_CANVAS_HEIGHT,
+                    ],
+                ]);
+            }
+
+            if ($canvas_height === false || $canvas_height === null) {
+                FlashMessages::addMessage(
+                    I18N::translate(
+                        'The height must be an integer between %s and %s pixels.',
+                        I18N::number(self::MIN_CANVAS_HEIGHT),
+                        I18N::number(self::MAX_CANVAS_HEIGHT)
+                    ),
+                    'danger'
+                );
+
+                return redirect($this->getConfigLink());
+            }
+        }
+
         // store the preferences in the database when editing the form
         $tree_id = $params['tree-id'];
         $this->setPreference('last-tree-id', $tree_id);
@@ -230,7 +262,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         }
 
         if ($params['save'] === '1') {
-            $this->setPreference($tree_id . '-canvas-height',  $params['canvas-height']);
+            $this->setPreference($tree_id . '-canvas-height', (string) $canvas_height);
             $this->setPreference($tree_id . '-square-thumbs',  $params['square-thumbs']);
             $this->setPreference($tree_id . '-homepage-only',  $params['homepage-only']);
             $this->setPreference($tree_id . '-media-list', $params['media-list']);
@@ -280,7 +312,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
             return '';
         }
 
-        $canvas_height = $this->getPreference($tree->id() . '-canvas-height', '80');
+        $canvas_height = $this->canvasHeight($tree);
         $canvas_height_md = 0.85 * $canvas_height;
         $canvas_height_sm = 0.75 * $canvas_height;
 
@@ -357,7 +389,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         $subfolders      = $this->getPreference($tree->id() . '-subfolders', '1');
         $media_type      = $this->getPreference($tree->id() . '-media-type');
         $square_thumbs   = $this->getPreference($tree->id() . '-square-thumbs', '0');
-        $canvas_height   = (int)$this->getPreference($tree->id() . '-canvas-height', '80');
+        $canvas_height   = $this->canvasHeight($tree);
 
         // strip out the default media directory from the folder path. It is not stored in the database
         $folder = str_replace($wt_media_folder, "", $this->getPreference($tree->id() . '-media-folder'));
@@ -486,6 +518,23 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         return collect(explode(',', $this->getPreference($tree->id() . '-media-list')))->filter(function (string $value) {
             return $value <> "";
         });
+    }
+
+    private function canvasHeight(Tree $tree): int
+    {
+        $height = $this->getPreference($tree->id() . '-canvas-height', (string) self::DEFAULT_CANVAS_HEIGHT);
+        if (!is_string($height) && !is_int($height)) {
+            return self::DEFAULT_CANVAS_HEIGHT;
+        }
+
+        $height = filter_var($height, FILTER_VALIDATE_INT, [
+            'options' => [
+                'min_range' => self::MIN_CANVAS_HEIGHT,
+                'max_range' => self::MAX_CANVAS_HEIGHT,
+            ],
+        ]);
+
+        return $height === false ? self::DEFAULT_CANVAS_HEIGHT : $height;
     }
 
     /**

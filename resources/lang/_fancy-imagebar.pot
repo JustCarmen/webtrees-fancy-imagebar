@@ -35,6 +35,10 @@ msgstr ""
 msgid "Display the image table to refine the selection of images"
 msgstr ""
 
+#: resources/views/settings.phtml
+msgid "Enter an integer between %s and %s pixels."
+msgstr ""
+
 #: FancyImagebarModule.php:82
 msgid "Fancy Imagebar"
 msgstr ""
@@ -61,6 +65,10 @@ msgstr ""
 
 #: resources/views/media-table.phtml:28
 msgid "The Fancy Imagebar module respects privacy settings!"
+msgstr ""
+
+#: FancyImagebarModule.php:241
+msgid "The height must be an integer between %s and %s pixels."
 msgstr ""
 
 #: resources/views/media-table.phtml:34

@@ -53,7 +53,7 @@ After installation you should run composer update to install the neccessary vend
 
 Configuration
 -------------
-The module is easy to configure from the control panel. You can choose one or more folders containing the images to display, filter by image type (leave empty to show all), set the imagebar height, and enable square thumbnails if desired. External images are not supported, and you can configure separate settings for each tree.
+The module is easy to configure from the control panel. You can choose one or more folders containing the images to display, filter by image type (leave empty to show all), set the imagebar height between 40 and 160 pixels, and enable square thumbnails if desired. External images are not supported, and you can configure separate settings for each tree.
 
 Bugs and feature requests
 -------------------------
@@ -65,4 +65,3 @@ If you are experiencing bugs or have a feature request for this module, please [
  [4]: https://github.com/JustCarmen/webtrees-fancy-imagebar/issues?state=open
  [5]: mailto:carmen@justcarmen.nl
  [6]: https://github.com/Jefferson49/CustomModuleManager
-

@@ -140,7 +140,7 @@ use JustCarmen\Webtrees\Internationalization\MoreI18N;
             <!-- IMAGE TABLE -->
             <hr/>
             <?php $module = Registry::container()->get(ModuleService::class)->findByName('_jc-fancy-imagebar_'); ?>
-            <?= view($module->name() . '::media-table', ['tree' => $selectedTree, 'xrefs' => $xrefs, 'media_list' => $media_list]) ?>
+            <?= view($module->name() . '::media-table', ['module' => $module, 'tree' => $selectedTree, 'xrefs' => $xrefs, 'media_list' => $media_list]) ?>
             <!-- SAVE BUTTON -->
             <hr/>
         <?php endif ?>

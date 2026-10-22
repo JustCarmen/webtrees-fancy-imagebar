@@ -7,9 +7,11 @@ use Fisharebest\Webtrees\Tree;
 use Fisharebest\Webtrees\View;
 use Illuminate\Support\Collection;
 use JustCarmen\Webtrees\Internationalization\MoreI18N;
+use JustCarmen\Webtrees\Module\FancyImagebar\FancyImagebarModule;
 
 /**
  * @var Collection<Media> $media_objects
+ * @var FancyImagebarModule $module
  * @var Tree              $tree
  * @var Collection<string>  $media_list
  * @var string            $caption
@@ -61,6 +63,7 @@ $arr_media_xrefs = array();
             <?php $i = 0 ?>
             <?php foreach ($media->mediaFiles() as $media_file) : ?>
                 <?php $i++ ?>
+                <?php if (!$module->isSupportedImage($media_file)) continue ?>
                 <tr class="d-block float-start">
                     <td>
                     <?php

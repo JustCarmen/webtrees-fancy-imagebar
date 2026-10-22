@@ -12,6 +12,7 @@ use Fisharebest\Webtrees\Http\RequestHandlers\TreePage;
 use Fisharebest\Webtrees\I18N;
 use Fisharebest\Webtrees\Individual;
 use Fisharebest\Webtrees\Media;
+use Fisharebest\Webtrees\MediaFile;
 use Fisharebest\Webtrees\Module\AbstractModule;
 use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleConfigTrait;
@@ -53,6 +54,15 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
     // Image cache dir
     private const CACHE_DIR = Webtrees::DATA_DIR . 'fib-cache/';
+
+    // Supported image formats. GEDCOM 5.5.1 uses a file extension as format (FORM jpg),
+    // GEDCOM 7 uses a media type (FORM image/jpeg). Both are accepted.
+    private const SUPPORTED_FORMATS = ['jpg', 'jpeg', 'png'];
+    private const SUPPORTED_MEDIA_TYPES = ['image/jpeg', 'image/jpg', 'image/png'];
+
+    // webtrees stores only the first four characters of the format in the media_file table,
+    // so every GEDCOM 7 image media type (image/jpeg, image/png, image/gif, ...) is stored as 'IMAG'.
+    private const GEDCOM7_IMAGE_FORMAT = 'IMAG';
 
     /** @var MediaFileService */
     private $media_file_service;
@@ -449,7 +459,7 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
                     $process_image = $media->mediaFiles()->count() > 1 ? $media_list->contains($media_id) : true;
 
-                    if ($process_image && $media_file->fileExists()) {
+                    if ($process_image && $this->isSupportedImage($media_file) && $media_file->fileExists()) {
 
                         $file       = $data_folder . $wt_media_folder . $media_file->filename();
                         $cache_file = $this->cacheFile($tree, $media_id, $file);
@@ -548,19 +558,72 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     private function getMediaXrefs(Tree $tree, string $folder, string $subfolders, string $type): Collection
     {
         $query = DB::table('media_file')
-            ->where('m_file', '=', $tree->id())
+            ->join('media', function ($join): void {
+                $join
+                    ->on('media.m_id', '=', 'media_file.m_id')
+                    ->on('media.m_file', '=', 'media_file.m_file');
+            })
+            ->where('media_file.m_file', '=', $tree->id())
             ->where('multimedia_file_refn', 'LIKE', $folder . '%')
-            ->whereIn(new Expression('lower(multimedia_format)'), ['jpg', 'jpeg', 'png']);
+            ->where(function ($query): void {
+                // GEDCOM 5.5.1: the format is a file extension
+                $query->whereIn(new Expression('lower(multimedia_format)'), self::SUPPORTED_FORMATS);
+
+                // GEDCOM 7: the format is a media type, which webtrees truncates to 'IMAG'.
+                // A missing format is allowed as well. Use the file extension to select jpg and png images.
+                // Each file is checked again with isSupportedImage() before it is used.
+                $query->orWhere(function ($query): void {
+                    $query
+                        ->whereIn(new Expression('upper(multimedia_format)'), [self::GEDCOM7_IMAGE_FORMAT, ''])
+                        ->where(function ($query): void {
+                            foreach (self::SUPPORTED_FORMATS as $extension) {
+                                $query->orWhere(new Expression('lower(multimedia_file_refn)'), 'LIKE', '%.' . $extension);
+                            }
+                        });
+                });
+            });
 
         if ($subfolders === 'exclude') {
             $query->where('multimedia_file_refn', 'NOT LIKE', $folder . '%/%');
         }
 
         if ($type) {
-            $query->where(new Expression('upper(source_media_type)'), '=', $type);
+            $query->where(function ($query) use ($type): void {
+                // GEDCOM 5.5.1: FILE:FORM:TYPE, stored by webtrees in the media_file table
+                $query->where(new Expression('upper(source_media_type)'), '=', $type);
+
+                // GEDCOM 7: FILE:FORM:MEDI, which webtrees does not store in the media_file table
+                $query
+                    ->orWhere('media.m_gedcom', 'LIKE', "%\n3 MEDI " . $type . "\n%")
+                    ->orWhere('media.m_gedcom', 'LIKE', "%\n3 MEDI " . $type);
+            });
         }
 
-        return $query->pluck('m_id')->unique();
+        return $query->pluck('media_file.m_id')->unique();
+    }
+
+    /**
+     * Is this media file a local jpg or png image that can be used in the Fancy Imagebar?
+     * Supports both the GEDCOM 5.5.1 format (FORM jpg) and the GEDCOM 7 media type (FORM image/jpeg).
+     *
+     * @param MediaFile $media_file
+     *
+     * @return bool
+     */
+    public function isSupportedImage(MediaFile $media_file): bool
+    {
+        if ($media_file->isExternal()) {
+            return false;
+        }
+
+        $format = strtolower(trim($media_file->format()));
+
+        if (in_array($format, self::SUPPORTED_FORMATS, true) || in_array($format, self::SUPPORTED_MEDIA_TYPES, true)) {
+            return true;
+        }
+
+        // No format given: use the file extension, like webtrees does
+        return $format === '' && in_array($media_file->mimeType(), ['image/jpeg', 'image/png'], true);
     }
 
     /**

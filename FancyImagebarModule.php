@@ -647,26 +647,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      */
     private function fancyThumb(string $file, int $canvas_height, bool $square_thumbs)
     {
-        // error handling to prevent bad images from loading
-        $source_image = false;
-        try {
-
-            $source_image = $this->loadImage($file);
-            $image_size = getimagesize($file);
-
-        } catch (Throwable $exception) {
-            if ($source_image !== false) {
-                imagedestroy($source_image);
-            }
-
+        $image_size = getimagesize($file);
+        if ($image_size === false) {
             return null;
         }
 
-        if ($source_image === false || $image_size === false) {
-            if ($source_image !== false) {
-                imagedestroy($source_image);
-            }
-
+        $source_image = $this->loadImage($file, $image_size['mime']);
+        if ($source_image === false) {
             return null;
         }
 
@@ -695,11 +682,19 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
         }
 
         $thumb = ImageCreateTrueColor((int)$thumb_width, (int)$thumb_height);
-        imagecopyresampled($thumb, $source_image, 0, 0, (int)$source_x, (int)$source_y, (int)$thumb_width, (int)$thumb_height, (int)$source_width, (int)$source_height);
+        if ($thumb === false) {
+            imagedestroy($source_image);
 
-        imagedestroy($source_image);
+            return null;
+        }
 
-        return $thumb; // resource
+        try {
+            imagecopyresampled($thumb, $source_image, 0, 0, (int)$source_x, (int)$source_y, (int)$thumb_width, (int)$thumb_height, (int)$source_width, (int)$source_height);
+        } finally {
+            imagedestroy($source_image);
+        }
+
+        return $thumb;
     }
 
     /**
@@ -709,14 +704,18 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @return \GdImage|resource|false
      */
-    private function loadImage(string $file)
+    private function loadImage(string $file, ?string $mime_type = null)
     {
-        $size = getimagesize($file);
-        if ($size === false) {
-            return false;
+        if ($mime_type === null) {
+            $size = getimagesize($file);
+            if ($size === false) {
+                return false;
+            }
+
+            $mime_type = $size['mime'];
         }
 
-        switch ($size["mime"]) {
+        switch ($mime_type) {
             case "image/jpeg":
                 $image = imagecreatefromjpeg($file);
                 break;

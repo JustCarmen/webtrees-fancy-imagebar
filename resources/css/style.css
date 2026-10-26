@@ -35,10 +35,6 @@
   margin-top: 1px;
 }
 
-.wt-theme-fab .jc-fancy-imagebar {
-  width: 100%;
-}
-
 [dir] .wt-theme-fab .jc-fancy-imagebar {
   border: 5px solid #EEE;
   border-bottom-right-radius: 0.25rem;
@@ -63,6 +59,10 @@
   .wt-theme-fab .jc-fancy-imagebar {
     max-width: 1320px;
   }
+}
+
+.wt-theme-fab .jc-fancy-imagebar {
+  width: 100%;
 }
 
 .wt-theme-minimal .jc-fancy-imagebar-divider {
@@ -100,16 +100,9 @@
 }
 
 /** Custom themes */
-.wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
-  width: 100%;
-  max-width: 95vw;
-}
-
 [dir] .wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
   margin-left: auto;
   margin-right: auto;
-  border-left: 15px solid white;
-  border-right: 15px solid white;
 }
 
 @media (min-width: 992px) {
@@ -130,10 +123,20 @@
   }
 }
 
+.wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
+  width: 100%;
+  max-width: 95vw;
+}
+
 @media (min-width: 768px) {
   .wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
     max-width: 85vw;
   }
+}
+
+[dir] .wt-theme-_myartjaub_ruraltheme_ .jc-fancy-imagebar {
+  border-left: 15px solid white;
+  border-right: 15px solid white;
 }
 
 [dir] .wt-theme-_myartjaub_ruraltheme_ .container-lg {

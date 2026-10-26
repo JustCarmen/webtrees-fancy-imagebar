@@ -2,7 +2,7 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: Fancy Imagebar\n"
-"POT-Creation-Date: 2026-10-12 22:07+0200\n"
+"POT-Creation-Date: 2026-10-26 16:46+0100\n"
 "PO-Revision-Date: \n"
 "Last-Translator: Carmen <carmen@justcarmen.nl>\n"
 "Language-Team: \n"
@@ -23,27 +23,28 @@ msgstr ""
 "X-Poedit-SearchPathExcluded-3: src\n"
 "X-Poedit-SearchPathExcluded-4: vendor\n"
 
-#: FancyImagebarModule.php:92
+#: FancyImagebarModule.php:96
 msgid "An imagebar with small images between header and content."
 msgstr ""
 
-#: resources/views/settings.phtml:99
+#: resources/views/settings.phtml:110
 msgid "Crop thumbnails to square"
 msgstr ""
 
-#: resources/views/settings.phtml:121
+#: resources/views/settings.phtml:132
 msgid "Display the image table to refine the selection of images"
 msgstr ""
 
-#: resources/views/settings.phtml
+#: resources/views/settings.phtml:99
+#, php-format
 msgid "Enter an integer between %s and %s pixels."
 msgstr ""
 
-#: FancyImagebarModule.php:82
+#: FancyImagebarModule.php:86
 msgid "Fancy Imagebar"
 msgstr ""
 
-#: resources/views/settings.phtml:88
+#: resources/views/settings.phtml:90
 msgid "Height of the Fancy Imagebar"
 msgstr ""
 
@@ -59,7 +60,7 @@ msgstr ""
 msgid "Select/unselect all"
 msgstr ""
 
-#: resources/views/settings.phtml:110
+#: resources/views/settings.phtml:121
 msgid "Show the Fancy Imagebar on the homepage only"
 msgstr ""
 
@@ -67,7 +68,8 @@ msgstr ""
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr ""
 
-#: FancyImagebarModule.php:241
+#: FancyImagebarModule.php:242
+#, php-format
 msgid "The height must be an integer between %s and %s pixels."
 msgstr ""
 

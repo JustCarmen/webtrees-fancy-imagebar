@@ -1,3 +1,4 @@
+@use "sass:meta";
 /**
  * Fancy Imagebar
  */
@@ -18,9 +19,9 @@
 
  }
 
- @import "webtrees-themes";
+ @include meta.load-css("webtrees-themes");
 
 /** Custom themes */
-@import "custom-themes-rural";
+@include meta.load-css("custom-themes-rural");
 
 // The JustLight theme supports this module from the theme css.

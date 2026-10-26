@@ -27,6 +27,7 @@ Features
 - Display a gallery-style image strip between the header and main content
 - Choose one or more folders containing the images to show
 - Filter images by type, or leave empty to show all supported files
+- Supports media records from both GEDCOM 5.5.1 (`FORM jpg`, `TYPE photo`) and GEDCOM 7 (`FORM image/jpeg`, `MEDI PHOTO`)
 - Set the imagebar height and enable square thumbnails
 - Configure separate settings for each tree
 - Each image is linked to the related individual, family, or source page

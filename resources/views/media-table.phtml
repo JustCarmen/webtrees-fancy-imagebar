@@ -14,6 +14,7 @@ use JustCarmen\Webtrees\Module\FancyImagebar\FancyImagebarModule;
  * @var FancyImagebarModule $module
  * @var Tree              $tree
  * @var Collection<string>  $media_list
+ * @var string            $media_type
  * @var string            $caption
  * @var string            $media_xrefs
  * @var array             $xrefs
@@ -63,7 +64,7 @@ $arr_media_xrefs = array();
             <?php $i = 0 ?>
             <?php foreach ($media->mediaFiles() as $media_file) : ?>
                 <?php $i++ ?>
-                <?php if (!$module->isSupportedImage($media_file)) continue ?>
+                <?php if (!$module->isSupportedImage($media_file, $media_type)) continue ?>
                 <tr class="d-block float-start">
                     <td>
                     <?php

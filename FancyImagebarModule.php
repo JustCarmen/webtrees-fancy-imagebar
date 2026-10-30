@@ -459,7 +459,11 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
                     $process_image = $media->mediaFiles()->count() > 1 ? $media_list->contains($media_id) : true;
 
-                    if ($process_image && $this->isSupportedImage($media_file) && $media_file->fileExists()) {
+                    if (
+                        $process_image &&
+                        $this->isSupportedImage($media_file, $media_type) &&
+                        $media_file->fileExists()
+                    ) {
 
                         $file       = $data_folder . $wt_media_folder . $media_file->filename();
                         $cache_file = $this->cacheFile($tree, $media_id, $file);
@@ -610,9 +614,13 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
      *
      * @return bool
      */
-    public function isSupportedImage(MediaFile $media_file): bool
+    public function isSupportedImage(MediaFile $media_file, string $type = ''): bool
     {
         if ($media_file->isExternal()) {
+            return false;
+        }
+
+        if ($type !== '' && !$this->mediaFileMatchesType($media_file, $type)) {
             return false;
         }
 
@@ -624,6 +632,29 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
 
         // No format given: use the file extension, like webtrees does
         return $format === '' && in_array($media_file->mimeType(), ['image/jpeg', 'image/png'], true);
+    }
+
+    /**
+     * Match a media type against this FILE fact, including GEDCOM 7 MEDI.
+     */
+    private function mediaFileMatchesType(MediaFile $media_file, string $type): bool
+    {
+        $type = strtoupper(trim($type));
+
+        if (strtoupper(trim($media_file->type())) === $type) {
+            return true;
+        }
+
+        foreach ($media_file->media()->facts(['FILE']) as $fact) {
+            if (
+                $fact->id() === $media_file->factId() &&
+                preg_match('/^\d+ MEDI ([^\r\n]+)$/m', $fact->gedcom(), $match) === 1
+            ) {
+                return strtoupper(trim($match[1])) === $type;
+            }
+        }
+
+        return false;
     }
 
     /**

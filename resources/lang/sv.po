@@ -4,50 +4,68 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
+"X-Poedit-Flags-xgettext: --add-comments=I18N:\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: .git\n"
+"X-Poedit-SearchPathExcluded-1: dist\n"
+"X-Poedit-SearchPathExcluded-2: node_modules\n"
+"X-Poedit-SearchPathExcluded-3: src\n"
+"X-Poedit-SearchPathExcluded-4: vendor\n"
 "Project-Id-Version: Fancy Imagebar for webtrees 2\n"
 "Language: sv\n"
 
-#: FancyImagebarModule.php:91
+#: FancyImagebarModule.php:96
 msgid "An imagebar with small images between header and content."
 msgstr "Ett bildfält med små foton placerat mellan sidhuvud och innehåll."
 
-#: resources/views/settings.phtml:74
+#: resources/views/settings.phtml:110
 msgid "Crop thumbnails to square"
-msgstr "Beskär miniatyrer till storleketn av en fyrkant"
+msgstr "Beskär miniatyrer till storleken av en fyrkant"
 
-#: resources/views/settings.phtml:97
+#: resources/views/settings.phtml:132
 msgid "Display the image table to refine the selection of images"
-msgstr "Display the image table to refine the selection of images"
+msgstr "Visa bildtabellen för att förfina bildvalet"
 
-#: FancyImagebarModule.php:80
+#: resources/views/settings.phtml:99
+msgid "Enter an integer between %s and %s pixels."
+msgstr "Enter an integer between %s and %s pixels."
+
+#: FancyImagebarModule.php:86
 msgid "Fancy Imagebar"
 msgstr "Fancy Imagebar"
 
-#: resources/views/settings.phtml:64
+#: resources/views/settings.phtml:90
 msgid "Height of the Fancy Imagebar"
-msgstr "Höjd på Fancy Imagebar fältet"
+msgstr "Höjd på Fancy Imagebar-fältet"
 
-#: resources/views/media-table.phtml:20
+#: resources/views/media-table.phtml:26
 msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
-msgstr "Här kan du välja vilka bilder som ska visas i Fancy Imagebar fältet. Om inte tillräckligt många bilder är valda, kommer valda bilder att återupprepas."
-
-#: resources/views/media-table.phtml:21
-msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
-msgstr "Notera: Endast lokala \"jpg\" eller \"png\" bilder stödjs av den här modulen. Externa bilder stöds ej. Det är inte möjligt att behålla transparansen i miniatyrer av png format. Transparenta png-miniatyrer får en svart bakgrund. Bilderna i denna tabellen har redan rätt specifikationer."
+msgstr "Här kan du välja vilka bilder som ska visas i Fancy Imagebar-fältet. Om inte tillräckligt många bilder är valda så kommer valda bilder att återupprepas."
 
 #: resources/views/media-table.phtml:27
+msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
+msgstr "Notera: Endast lokala \"jpg\"- eller \"png\"-bilder stödjs av den här modulen. Externa bilder stöds ej. Det är inte möjligt att behålla transparansen i miniatyrer av png-format. Transparenta png-miniatyrer får en svart bakgrund. Bilderna i denna tabell har redan rätt specifikationer."
+
+#: resources/views/media-table.phtml:33
 msgid "Select/unselect all"
 msgstr "Välj/Välj bort alla"
 
-#: resources/views/settings.phtml:86
+#: resources/views/settings.phtml:121
 msgid "Show the Fancy Imagebar on the homepage only"
-msgstr "Visa Fancy Imagebar endast på startsidan"
-
-#: resources/views/media-table.phtml:22
-msgid "The Fancy Imagebar module respects privacy settings!"
-msgstr "Fancy Imagebarmodulen respekterar integritetsinställningar!"
+msgstr "Visa endast Fancy Imagebar på startsidan"
 
 #: resources/views/media-table.phtml:28
+msgid "The Fancy Imagebar module respects privacy settings!"
+msgstr "Fancy Imagebar-modulen respekterar integritetsinställningar!"
+
+#: FancyImagebarModule.php:242
+msgid "The height must be an integer between %s and %s pixels."
+msgstr "The height must be an integer between %s and %s pixels."
+
+#: resources/views/media-table.phtml:34
 msgid "Toggle this checkbox to select all images."
 msgstr "Klicka i kryssrutan för att välja alla bilder."
 

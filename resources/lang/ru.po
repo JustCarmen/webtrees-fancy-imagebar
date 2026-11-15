@@ -4,50 +4,68 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: POEditor.com\n"
+"X-Poedit-Basepath: ../..\n"
+"X-Poedit-SourceCharset: UTF-8\n"
+"X-Poedit-KeywordsList: translate;noop;plural:1,2\n"
+"X-Poedit-Flags-xgettext: --add-comments=I18N:\n"
+"X-Poedit-SearchPath-0: .\n"
+"X-Poedit-SearchPathExcluded-0: .git\n"
+"X-Poedit-SearchPathExcluded-1: dist\n"
+"X-Poedit-SearchPathExcluded-2: node_modules\n"
+"X-Poedit-SearchPathExcluded-3: src\n"
+"X-Poedit-SearchPathExcluded-4: vendor\n"
 "Project-Id-Version: Fancy Imagebar for webtrees 2\n"
 "Language: ru\n"
 
-#: FancyImagebarModule.php:91
+#: FancyImagebarModule.php:96
 msgid "An imagebar with small images between header and content."
 msgstr "Панель изображений с небольшими изображениями между заголовком и содержимым."
 
-#: resources/views/settings.phtml:74
+#: resources/views/settings.phtml:110
 msgid "Crop thumbnails to square"
 msgstr "Обрезать миниатюры до квадрата"
 
-#: resources/views/settings.phtml:97
-msgid "Display the image table to refine the selection of images"
-msgstr "Отобразите таблицу изображений, чтобы уточнить выбор изображений"
-
-#: FancyImagebarModule.php:80
+#: FancyImagebarModule.php:86
 msgid "Fancy Imagebar"
 msgstr "Необычная панель изображений"
 
-#: resources/views/settings.phtml:64
+#: resources/views/settings.phtml:90
 msgid "Height of the Fancy Imagebar"
 msgstr "Высота необычной панели изображений"
 
-#: resources/views/media-table.phtml:20
-msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
-msgstr "Здесь вы можете выбрать, какие изображения должны отображаться на Fancy Imagebar. Если выбрано меньше изображений, чем необходимо для заполнения всей Fancy Imagebar, изображения будут повторяться."
-
-#: resources/views/media-table.phtml:21
-msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
-msgstr "Примечание. Этот модуль поддерживает только локальные изображения в формате «jpg» или «png». Внешние образы не поддерживаются. Невозможно сохранить прозрачность миниатюр png на Fancy Imagebar. Прозрачные миниатюры в формате png получат черный фон. Изображения в этой таблице уже имеют правильные характеристики."
-
-#: resources/views/media-table.phtml:27
-msgid "Select/unselect all"
-msgstr "Выбрать все / отменить выбор"
-
-#: resources/views/settings.phtml:86
+#: resources/views/settings.phtml:121
 msgid "Show the Fancy Imagebar on the homepage only"
 msgstr "Показывать Fancy Imagebar только на главной странице"
 
-#: resources/views/media-table.phtml:22
+#: resources/views/media-table.phtml:26
+msgid "Here you can choose which images should be shown in the Fancy Imagebar. If less images are selected than needed to fill the entire Fancy Imagebar, the images will be repeated."
+msgstr "Здесь вы можете выбрать, какие изображения должны отображаться на Fancy Imagebar. Если выбрано меньше изображений, чем необходимо для заполнения всей Fancy Imagebar, изображения будут повторяться."
+
+#: resources/views/media-table.phtml:27
+msgid "Note: Only local “jpg” or “png” images are supported by this module. External images are not supported. It is not possible to keep transparency for png thumbnails in the Fancy Imagebar. Transparent png-thumbnails will get a black background. The images in this table already have the correct specifications."
+msgstr "Примечание. Этот модуль поддерживает только локальные изображения в формате «jpg» или «png». Внешние образы не поддерживаются. Невозможно сохранить прозрачность миниатюр png на Fancy Imagebar. Прозрачные миниатюры в формате png получат черный фон. Изображения в этой таблице уже имеют правильные характеристики."
+
+#: resources/views/media-table.phtml:33
+msgid "Select/unselect all"
+msgstr "Выбрать все / отменить выбор"
+
+#: resources/views/media-table.phtml:28
 msgid "The Fancy Imagebar module respects privacy settings!"
 msgstr "Модуль Fancy Imagebar уважает настройки конфиденциальности!"
 
-#: resources/views/media-table.phtml:28
+#: resources/views/media-table.phtml:34
 msgid "Toggle this checkbox to select all images."
 msgstr "Установите этот флажок, чтобы выбрать все изображения."
+
+#: resources/views/settings.phtml:132
+msgid "Display the image table to refine the selection of images"
+msgstr "Отобразите таблицу изображений, чтобы уточнить выбор изображений"
+
+#: resources/views/settings.phtml:99
+msgid "Enter an integer between %s and %s pixels."
+msgstr "Enter an integer between %s and %s pixels."
+
+#: FancyImagebarModule.php:242
+msgid "The height must be an integer between %s and %s pixels."
+msgstr "The height must be an integer between %s and %s pixels."
 

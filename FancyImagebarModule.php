@@ -17,7 +17,6 @@ use Fisharebest\Webtrees\Module\AbstractModule;
 use Fisharebest\Webtrees\Module\ModuleConfigInterface;
 use Fisharebest\Webtrees\Module\ModuleConfigTrait;
 use Fisharebest\Webtrees\Module\ModuleCustomInterface;
-use Fisharebest\Webtrees\Module\ModuleCustomTrait;
 use Fisharebest\Webtrees\Module\ModuleGlobalInterface;
 use Fisharebest\Webtrees\Module\ModuleGlobalTrait;
 use Fisharebest\Webtrees\Registry;
@@ -31,6 +30,7 @@ use Illuminate\Database\Capsule\Manager as DB;
 use Illuminate\Database\Query\Expression;
 use Illuminate\Support\Collection;
 use JustCarmen\Webtrees\Internationalization\MoreI18N;
+use JustCarmen\Webtrees\Traits\ModuleCustomTrait;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
 use Throwable;
@@ -41,13 +41,32 @@ class FancyImagebarModule extends AbstractModule implements ModuleCustomInterfac
     use ModuleConfigTrait;
     use ModuleGlobalTrait;
 
-    // Module constants
-    public const CUSTOM_AUTHOR = 'JustCarmen';
+   /**
+     * @var string
+     */
     public const CUSTOM_VERSION = '2.4.2';
-    public const GITHUB_REPO = 'webtrees-fancy-imagebar';
-    public const AUTHOR_WEBSITE = 'https://justcarmen.nl';
-    public const CUSTOM_SUPPORT_URL = self::AUTHOR_WEBSITE . '/modules-webtrees-2/fancy-imagebar/';
 
+    /**
+     * @var string
+     */
+    public const CUSTOM_AUTHOR = 'JustCarmen';
+
+    /**
+     * @var string
+     */
+    private const GITHUB_REPO = self::CUSTOM_AUTHOR . '/webtrees-fancy-imagebar';
+
+    /**
+     * @var string
+     */
+    public const CUSTOM_SUPPORT_URL = 'https://github.com/' . self::GITHUB_REPO . '/issues';
+
+    /**
+     * @var string
+     */
+    public const CUSTOM_LATEST_VERSION = 'https://api.github.com/repos/' . self::GITHUB_REPO . '/releases/latest';
+
+    // Canvas height settings
     private const MIN_CANVAS_HEIGHT = 40;
     private const MAX_CANVAS_HEIGHT = 160;
     private const DEFAULT_CANVAS_HEIGHT = 80;
